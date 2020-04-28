@@ -1,0 +1,41 @@
+/*!
+XDITA to JDITA is a tool for converting LwDITA XDITA format to JDITA.
+Copyright (C) 2020 Evolved Binary
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
+import * as saxes from "../node_modules/saxes/saxes";
+
+const printEvent = (description: string) => {
+    console.log('Event: ' + description);
+};
+
+const parser = new saxes.SaxesParser({
+    xmlns: true,
+    fragment: false,
+    position: true
+});
+
+parser.on("opentag", function (node: saxes.SaxesTagNS) {
+    printEvent('Opened Tag: ' + node.name);
+});
+
+parser.on("closetag", function (node: saxes.SaxesTagNS) {
+    printEvent('Closed Tag: ' + node.name);
+});
+
+parser
+    .write('<xml>Hello, <who name="world">world</who>!</xml>')
+    .close();

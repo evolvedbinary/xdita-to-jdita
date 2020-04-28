@@ -1,0 +1,15 @@
+node_modules/
+build/
+
+package-lock.json
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+.vscode/
