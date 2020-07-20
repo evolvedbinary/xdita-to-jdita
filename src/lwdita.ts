@@ -1,5 +1,7 @@
 import { SaxesAttributeNS } from "saxes";
 
+export const has = (array: Array<any>, value: any): boolean => array.indexOf(value) >= 0;
+
 export function isOrUndefined<T>(check: (value?: any) => boolean, value?: any): value is T | undefined {
     return typeof value ==='undefined' || check(value);
 }
@@ -17,7 +19,7 @@ export const isNMTOKEN = (value?: any): value is NMTOKEN =>  typeof value ==='st
 // TODO(AR) should these be union types, or should they be base interfaces which other interfaces like `ph` inherit from?
 export type RefrenceContentScope = 'local' | 'peer' | 'external';
 export const isRefrenceContentScope = (value?: any): value is RefrenceContentScope =>
-    value in ['local', 'peer', 'external'];
+    has(['local', 'peer', 'external'], value);
 export type CommonInline = PCDATA/* | IntPh | IntXImage | IntData*/;
 export const isCommonInline = (value?: any): value is CommonInline => isPCDATA(value);
 // export type AllInline = CommonInline | XRef;
