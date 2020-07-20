@@ -1,149 +1,212 @@
-namespace LwDita {
-    
-    // TODO(AR) can we further refine these types?
-    type ID = String
-    type CDATA = String
-    type PCDATA = String
-    type NMTOKEN = String
+// TODO(AR) can we further refine these types?
+export type ID = string;
+export type CDATA = string;
+export type PCDATA = string;
+export type NMTOKEN = string;
 
-    // TODO(AR) should these be union types, or should they be base interfaces which other interfaces like `ph` inherit from?
-    type CommonInline = PCDATA | Ph | Image | Data
-    type AllInline = PCDATA | Ph | Image | XRef | Data
+// TODO(AR) should these be union types, or should they be base interfaces which other interfaces like `ph` inherit from?
+export type RefrenceContentScope = 'local' | 'peer' | 'external';
+export type CommonInline = PCDATA | IntPh | IntXImage | IntData;
+export type AllInline = CommonInline | XRef;
 
-    interface NamedElement {
-        readonly elementName: String
-    }
+export interface IntNamedElement {
+    readonly elementName: string;
+}
 
-    interface FilterAdds {}
+export type IntFilterAdds = {};
 
-    interface Filters extends FilterAdds {
-        "@props"?: CDATA
-    }
+export interface IntFilters extends IntFilterAdds {
+    props?: CDATA;
+}
 
-    interface Reuse {
-        "@id"?: NMTOKEN
-        "conref"?: CDATA
-    }
+export interface IntReuse {
+    id?: NMTOKEN;
+    conref?: CDATA;
+}
 
-    interface ReferenceContent {
-        "@href"?: CDATA
-        "@format"?: CDATA
-        "@scope"?: "local" | "peer" | "external"
-    }
+export interface IntReferenceContent {
+    href?: CDATA;
+    format?: CDATA;
+    scope?: RefrenceContentScope;
+}
 
-    interface VariableContent {
-        "@keyref?": CDATA
-    }
+export interface IntVariableContent {
+    keyref?: CDATA;
+}
 
-    interface VariableLinks {
-        "@keyref": CDATA
-    }
+export interface IntVariableLinks {
+    keyref: CDATA;
+}
 
-    interface Localization {
-        "@dir"?: CDATA
-        "@xml:lang"?: CDATA
-        "translate"?: CDATA
-    }
+export interface IntLocalization {
+    dir?: CDATA;
+    xml_lang?: CDATA;
+    translate?: CDATA;
+}
 
-    interface Topic extends NamedElement, Localization {
-        "@id": ID
-        "@xmlns:ditaarch": CDATA
-        "@ditaarch:DITAArchVersion"?: CDATA
-        "@domains"?: CDATA
-        "@outputClass"?: CDATA
-        "@class"?: CDATA
+export interface IntTopic extends IntNamedElement, IntLocalization {
+    id: ID;
+    xmlns_ditaarch: CDATA;
+    ditaarch_DITAArchVersion?: CDATA;
+    domains?: CDATA;
+    outputClass?: CDATA;
+    className?: CDATA;
 
-        //TODO(AR) how to ensure correct ordering of children here? also cannot have a shortdesc without a title! Need somelike like a HList
-        title: Title
-        shortdesc?: Shortdesc
-        prolog?: Prolog
-        body?: Body
-    }
-    class Topic {
-        readonly elementName = "topic"
-    }
+    //TODO(AR) how to ensure correct ordering of children here? also cannot have a shortdesc without a title! Need somelike like a HList
+    children: {
+        title?: Title;
+        shortdesc?: Shortdesc;
+        prolog?: Prolog;
+        body?: Body;
+    };
+}
+export class Topic implements IntTopic {
+    readonly elementName = 'topic';
+    children = {};
+    constructor(
+        public id: ID,
+        public xmlns_ditaarch: CDATA,
+        public ditaarch_DITAArchVersion?: CDATA,
+        public domains?: CDATA,
+        public outputClass?: CDATA,
+        public className?: CDATA,
+    ) { }
+}
 
-    interface Title extends Localization {
-        "@outputClass"?: CDATA
-        "@class"?: CDATA
-        children: Array<CommonInline>
-    }
-    class Title {
-        readonly elementName = "Title"
-    }
+export interface IntTitle extends IntLocalization {
+    outputClass?: CDATA;
+    className?: CDATA;
+    children: Array<CommonInline>;
+}
+export class Title implements IntTitle {
+    readonly elementName = 'Title';
+    children = [];
+    constructor(
+        public outputClass?: CDATA,
+        public className?: CDATA,
+    ) { }
+}
 
-    interface Shortdesc extends Filters, Localization, Reuse {
-        "@outputClass"?: CDATA
-        "@class"?: CDATA
-        children: Array<AllInline>
-    }
-    class Shortdesc {
-        readonly elementName = "shortdesc"
-    }
+export interface IntShortdesc extends IntFilters, IntLocalization, IntReuse {
+    outputClass?: CDATA;
+    className?: CDATA;
+    children: Array<AllInline>;
+}
+export class Shortdesc implements IntShortdesc {
+    readonly elementName = 'shortdesc';
+    children = [];
+    constructor(
+        public outputClass?: CDATA,
+        public className?: CDATA,
+    ) { }
+}
 
-    interface Prolog extends Filters, Localization {
-        "@class"?: CDATA
-        children: Array<Data>
-    }
-    class Prolog {
-        readonly elementName = "prolog"
-    }
+export interface IntProlog extends IntFilters, IntLocalization {
+    className?: CDATA;
+    children: Array<Data>;
+}
+export class Prolog implements IntProlog {
+    readonly elementName = 'prolog'
+    children = [];
+    constructor(
+        public outputClass?: CDATA,
+    ) { }
+}
 
-    interface Body extends Localization {
-        "@outputClass"?: CDATA
-        "@class"?: CDATA
-        //TODO(AR) implement children
-    }
-    class Body {
-        readonly elementName = "body"
-    }
+export interface IntBody extends IntLocalization {
+    outputClass?: CDATA;
+    className?: CDATA;
+    //TODO(AR) implement children
+}
+export class Body implements IntBody {
+    readonly elementName = 'body';
+    children = [];
+    constructor(
+        public outputClass?: CDATA,
+        public className?: CDATA,
+    ) { }
+}
 
-    interface Ph extends Filters, Localization, VariableContent {
-        "@outputClass"?: CDATA
-        "@class"?: CDATA
-        children: Array<AllInline>
-    }
-    class Ph {
-        readonly elementName = "ph"
-    }
+export interface IntPh extends IntFilters, IntLocalization, IntVariableContent {
+    outputClass?: CDATA;
+    className?: CDATA;
+    children: Array<AllInline>;
+}
+export class Ph implements IntPh {
+    readonly elementName = 'ph'
+    children = [];
+    constructor(
+        public outputClass?: CDATA,
+        public className?: CDATA,
+    ) { }
+}
 
-    interface Image extends Filters, Localization, ReferenceContent, VariableContent {
-        "@height"?: NMTOKEN
-        "@with"?: NMTOKEN
-        "@outputClass"?: CDATA
-        "@class"?: CDATA
-        alt?: Alt
-    }
-    class Image {
-        readonly elementName = "image"
-    }
+export interface IntXImage extends IntFilters, IntLocalization, IntReferenceContent, IntVariableContent {
+    height?: NMTOKEN;
+    width?: NMTOKEN;
+    outputClass?: CDATA;
+    className?: CDATA;
+    alt?: Alt;
+}
+export class XImage implements IntXImage {
+    readonly elementName = 'Ximage';
+    constructor(
+        public height?: NMTOKEN,
+        public width?: NMTOKEN,
+        public outputClass?: CDATA,
+        public className?: CDATA,
+        public alt?: Alt,
+    ) { }
+}
 
-    interface Alt extends Filters, Localization, VariableContent {
-        "@outputClass"?: CDATA
-        "@class"?: CDATA
-        children: Array<PCDATA | Ph | Data>
-    }
-    class Alt {
-        readonly elementName = "alt"
-    }
+export interface IntAlt extends IntFilters, IntLocalization, IntVariableContent {
+    outputClass?: CDATA;
+    className?: CDATA;
+    children: Array<PCDATA | Ph | Data>;
+}
+export class Alt implements IntAlt {
+    readonly elementName = 'alt';
+    children = [];
+    constructor(
+        public outputClass?: CDATA,
+        public className?: CDATA,
+    ) { }
+}
 
-    interface Data extends  Filters, Localization, ReferenceContent, VariableContent {
-        "@name"?: CDATA
-        "@value"?: CDATA
-        "@outputClass"?: CDATA
-        "@class"?: CDATA
-        children: Array<PCDATA | Data>
-    }
-    class Data {
-        readonly elementName = "data"
-    }
+export interface IntData extends IntFilters, IntLocalization, IntReferenceContent, IntVariableContent {
+    name?: CDATA;
+    value?: CDATA;
+    outputClass?: CDATA;
+    className?: CDATA;
+    children: Array<PCDATA | Data>;
+}
+export class Data implements IntData {
+    readonly elementName = 'data';
+    children = [];
+    constructor(
+        public outputClass?: CDATA,
+        public className?: CDATA,
+    ) { }
+}
 
-    interface XRef extends Filters, Localization, ReferenceContent, VariableLinks {
-        "@outputClass"?: CDATA
-        "@class"?: CDATA
-        children: Array<CommonInline>   
-    }
-    class XRef {
-        readonly elementName = "xref"
-    }
+export interface IntXRef extends IntFilters, IntLocalization, IntReferenceContent, IntVariableLinks {
+    outputClass?: CDATA;
+    className?: CDATA;
+    children: Array<CommonInline>;
+}
+export class XRef implements IntXRef {
+    readonly elementName = 'xref';
+    children = [];
+    constructor(
+        public keyref: CDATA,
+        public outputClass?: CDATA,
+        public className?: CDATA,
+        public props?: CDATA,
+        public dir?: CDATA,
+        public xml_lang?: CDATA,
+        public translate?: CDATA,
+        public href?: CDATA,
+        public format?: CDATA,
+        public scope?: RefrenceContentScope,
+    ) { }
 }
