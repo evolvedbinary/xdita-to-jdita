@@ -28,7 +28,7 @@ type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;
 export abstract class BaseElement {
     elementName = '';
     abstract fields: Array<string>;
-    props!: Record<string, any>;
+    protected _props!: Record<string, any>;
     protected attributesToProps<T = Record<string, any>>(attributes: Attributes): T {
         const result: Record<string, any> = { elementName: this.elementName };
         this.fields.forEach(field => {
@@ -41,7 +41,7 @@ export abstract class BaseElement {
         if (this.fields.indexOf(field) < 0) {
             throw new Error('unkown property "' + field + '"');
         }
-        return this.props[field];
+        return this._props[field];
     }
     writeProp<T = any>(field: string, value: T): void {
         if (this.fields.indexOf(field) < 0) {
@@ -50,7 +50,7 @@ export abstract class BaseElement {
         if (!this.isValidField(field, value)) {
             throw new Error('wrong property  type "' + typeof(value) + '" for field"' + field + '"');
         }
-        this.props[field] = value;
+        this._props[field] = value;
     }
     abstract isValidField(field: string, value: any): boolean;
 }
@@ -129,7 +129,7 @@ export const isIntTopic = (value?: any): value is IntTopic =>
 
 export class Topic extends BaseElement implements IntTopic {
     elementName = 'topic';
-    props!: IntTopic;
+    _props!: IntTopic;
     fields = [
         'elementName',
         'dir',
@@ -158,7 +158,7 @@ export class Topic extends BaseElement implements IntTopic {
     }
     constructor(attributes: Attributes){
         super();
-        this.props = this.attributesToProps(attributes);
+        this._props = this.attributesToProps(attributes);
     }
     get 'id'(): ID {
         return this.readProp<ID>('id'); }
@@ -189,7 +189,7 @@ export const isIntTitle = (value?: any): value is IntTitle =>
     // children: Array<CommonInline>;
 export class Title extends BaseElement implements IntTitle {
     elementName = 'title';
-    props!: IntTitle;
+    _props!: IntTitle;
     fields = [
         'dir',
         'xml:lang',
@@ -209,7 +209,7 @@ export class Title extends BaseElement implements IntTitle {
     }
     constructor(attributes?: Attributes) {
         super();
-        this.props = this.attributesToProps(attributes || {});
+        this._props = this.attributesToProps(attributes || {});
     }
     get 'dir'(): CDATA | undefined {
         return this.readProp<CDATA>('dir'); }
@@ -269,21 +269,65 @@ export class Title extends BaseElement implements IntTitle {
 //     }
 // }
 
-// export interface IntPh extends IntFilters, IntLocalization, IntVariableContent {
-//     outputClass?: CDATA;
-//     className?: CDATA;
-//     children: Array<AllInline>;
-// }
-// export class Ph extends BaseElement implements IntPh {
-//     readonly elementName = 'ph'
-//     children = [];
-//     constructor(
-//         public outputClass?: CDATA,
-//         public className?: CDATA,
-//     ) {
-//         super();
-//     }
-// }
+export interface IntPh extends IntFilters, IntLocalization, IntVariableContent {
+    // 'props'?: CDATA;
+    // 'dir'?: CDATA;
+    // 'xml:lang'?: CDATA;
+    // 'translate'?: CDATA;
+    // 'keyref'?: CDATA;
+    'outputClass'?: CDATA;
+    'className'?: CDATA;
+    // children: Array<AllInline>;
+}
+export const isIntPh = (value?: any): value is IntPh =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['keyref']) &&
+    isIntFilters(value) &&
+    isIntLocalization(value) &&
+    isIntVariableContent(value);
+export class Ph extends BaseElement implements IntPh {
+    elementName = 'ph';
+    _props!: IntPh;
+    fields = [
+        'props',
+        'dir',
+        'xml:lang',
+        'translate',
+        'keyref',
+        'outputClass',
+        'className',
+    ];
+    isValidField(field: string, value: any): boolean {
+        switch(field) {
+            case 'props': return isOrUndefined(isCDATA, value);
+            case 'dir': return isOrUndefined(isCDATA, value);
+            case 'xml:lang': return isOrUndefined(isCDATA, value);
+            case 'translate': return isOrUndefined(isCDATA, value);
+            case 'keyref': return isOrUndefined(isCDATA, value);
+            case 'outputClass': return isOrUndefined(isCDATA, value);
+            case 'className': return isOrUndefined(isCDATA, value);
+            default: return false;
+        }
+    }
+    constructor(attributes?: Attributes) {
+        super();
+        this._props = this.attributesToProps(attributes || {});
+    }
+    get 'props'(): CDATA | undefined {
+        return this.readProp<CDATA>('props'); }
+    get 'dir'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'xml:lang'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'translate'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'keyref'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'outputClass'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'className'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+}
 
 // export interface IntXImage extends IntFilters, IntLocalization, IntReferenceContent, IntVariableContent {
 //     height?: NMTOKEN;
