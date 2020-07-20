@@ -1,5 +1,9 @@
 import { SaxesAttributeNS } from "saxes";
 
+export function isOrUndefined<T>(check: (value?: any) => boolean, value?: any): value is T | undefined {
+    return typeof value ==='undefined' || check(value);
+}
+
 // TODO(AR) can we further refine these types?
 export type ID = string;
 export const isID = (value?: any): value is ID =>  typeof value ==='string';
@@ -12,7 +16,10 @@ export const isNMTOKEN = (value?: any): value is NMTOKEN =>  typeof value ==='st
 
 // TODO(AR) should these be union types, or should they be base interfaces which other interfaces like `ph` inherit from?
 export type RefrenceContentScope = 'local' | 'peer' | 'external';
-// export type CommonInline = PCDATA | IntPh | IntXImage | IntData;
+export const isRefrenceContentScope = (value?: any): value is RefrenceContentScope =>
+    value in ['local', 'peer', 'external'];
+export type CommonInline = PCDATA/* | IntPh | IntXImage | IntData*/;
+export const isCommonInline = (value?: any): value is CommonInline => isPCDATA(value);
 // export type AllInline = CommonInline | XRef;
 
 type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;
@@ -76,10 +83,15 @@ export interface IntVariableLinks {
 }
 
 export interface IntLocalization {
-    dir?: CDATA;
-    xml_lang?: CDATA;
-    translate?: CDATA;
+    'dir'?: CDATA;
+    'xml:lang'?: CDATA;
+    'translate'?: CDATA;
 }
+export const isIntLocalization = (value?: any): value is IntLocalization =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['dir']) &&
+    isOrUndefined(isCDATA, value['xml:lang']) &&
+    isOrUndefined(isCDATA, value['translate']);
 
 export interface IntTopic extends IntNamedElement, IntLocalization {
     'id': ID;
@@ -97,6 +109,15 @@ export interface IntTopic extends IntNamedElement, IntLocalization {
     //     body?: Body;
     // };
 }
+export const isIntTopic = (value?: any): value is IntTopic =>
+    typeof value === 'object' &&
+    isID(value['id']) &&
+    isCDATA(value['xmlns:ditaarch']) &&
+    isOrUndefined(isCDATA, value['ditaarch:DITAArchVersion']) &&
+    isOrUndefined(isCDATA, value['domains']) &&
+    isOrUndefined(isCDATA, value['outputClass']) &&
+    isOrUndefined(isCDATA, value['className']);
+
 export class Topic extends BaseElement implements IntTopic {
     elementName = 'topic';
     props!: IntTopic;
@@ -112,10 +133,10 @@ export class Topic extends BaseElement implements IntTopic {
         switch(field) {
             case 'id': return isID(value);
             case 'xmlns:ditaarch': return isCDATA(value);
-            case 'ditaarch:DITAArchVersion': return isCDATA(value);
-            case 'domains': return isCDATA(value);
-            case 'outputClass': return isCDATA(value);
-            case 'className': return isCDATA(value);
+            case 'ditaarch:DITAArchVersion': return isOrUndefined(isCDATA, value);
+            case 'domains': return isOrUndefined(isCDATA, value);
+            case 'outputClass': return isOrUndefined(isCDATA, value);
+            case 'className': return isOrUndefined(isCDATA, value);
             default: return false;
         }
     }
@@ -140,41 +161,80 @@ export class Topic extends BaseElement implements IntTopic {
         } : attributes);
     }
     get 'id'(): ID {
-        return this.readProp<ID>('id');
-    }
+        return this.readProp<ID>('id'); }
     get 'xmlns:ditaarch'(): CDATA {
-        return this.readProp<CDATA>('xmlns:ditaarch');
-    }
-    get 'ditaarch:DITAArchVersion'(): CDATA {
-        return this.readProp<CDATA>('ditaarch:DITAArchVersion');
-    }
-    get 'domains'(): CDATA {
-        return this.readProp<CDATA>('domains');
-    }
-    get 'outputClass'(): CDATA {
-        return this.readProp<CDATA>('outputClass');
-    }
-    get 'className'(): CDATA {
-        return this.readProp<CDATA>('className');
-    }
+        return this.readProp<CDATA>('xmlns:ditaarch'); }
+    get 'ditaarch:DITAArchVersion'(): CDATA | undefined {
+        return this.readProp<CDATA>('ditaarch:DITAArchVersion'); }
+    get 'domains'(): CDATA | undefined {
+        return this.readProp<CDATA>('domains'); }
+    get 'outputClass'(): CDATA | undefined {
+        return this.readProp<CDATA>('outputClass'); }
+    get 'className'(): CDATA | undefined {
+        return this.readProp<CDATA>('className'); }
 
 }
 
-// export interface IntTitle extends IntLocalization {
-//     outputClass?: CDATA;
-//     className?: CDATA;
-//     children: Array<CommonInline>;
-// }
-// export class Title extends BaseElement implements IntTitle {
-//     readonly elementName = 'Title';
-//     children = [];
-//     constructor(
-//         public outputClass?: CDATA,
-//         public className?: CDATA,
-//     ) {
-//         super();
-//     }
-// }
+export interface IntTitle extends IntLocalization {
+    outputClass?: CDATA;
+    className?: CDATA;
+}
+export const isIntTitle = (value?: any): value is IntTitle =>
+    typeof value === 'object' &&
+    isID(value['id']) &&
+    isCDATA(value['xmlns:ditaarch']) &&
+    isOrUndefined(isCDATA, value['outputClass']) &&
+    isOrUndefined(isCDATA, value['className']) &&
+    isIntLocalization(value);
+export class Title extends BaseElement implements IntTitle {
+    elementName = 'title';
+    props!: IntTitle;
+    fields = [
+        'dir',
+        'xml:lang',
+        'translate',
+        'outputClass',
+        'className',
+    ];
+    isValidField(field: string, value: any): boolean {
+        switch(field) {
+            case 'dir': return isOrUndefined(isCDATA, value);
+            case 'xml:lang': return isOrUndefined(isCDATA, value);
+            case 'translate': return isOrUndefined(isCDATA, value);
+            case 'outputClass': return isOrUndefined(isCDATA, value);
+            case 'className': return isOrUndefined(isCDATA, value);
+            default: return false;
+        }
+    }
+    constructor(
+        dir?: CDATA,
+        xmlLang?: CDATA,
+        translate?: CDATA,
+        outputClass?: CDATA,
+        className?: CDATA,
+    );
+    constructor(attributes: Attributes);
+    constructor(attributes?: Attributes | CDATA, ...props: CDATA[]) {
+        super();
+        this.props = this.attributesToProps(isCDATA(attributes) ? {
+            'dir': attributes,
+            'xml:lang': props[0],
+            'translate': props[1],
+            'outputClass': props[2],
+            'className': props[3],
+        } : attributes || {});
+    }
+    get 'dir'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'xml:lang'(): CDATA | undefined {
+        return this.readProp<CDATA>('xml:lang'); }
+    get 'translate'(): CDATA | undefined {
+        return this.readProp<CDATA>('translate'); }
+    get 'outputClass'(): CDATA | undefined {
+        return this.readProp<CDATA>('outputClass'); }
+    get 'className'(): CDATA | undefined {
+        return this.readProp<CDATA>('className'); }
+}
 
 // export interface IntShortdesc extends IntFilters, IntLocalization, IntReuse {
 //     outputClass?: CDATA;
