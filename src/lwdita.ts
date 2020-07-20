@@ -9,6 +9,10 @@ export type RefrenceContentScope = 'local' | 'peer' | 'external';
 export type CommonInline = PCDATA | IntPh | IntXImage | IntData;
 export type AllInline = CommonInline | XRef;
 
+export class BaseElement {
+    elementName = '';
+}
+
 export interface IntNamedElement {
     readonly elementName: string;
 }
@@ -60,7 +64,7 @@ export interface IntTopic extends IntNamedElement, IntLocalization {
         body?: Body;
     };
 }
-export class Topic implements IntTopic {
+export class Topic extends BaseElement implements IntTopic {
     readonly elementName = 'topic';
     children = {};
     constructor(
@@ -70,7 +74,9 @@ export class Topic implements IntTopic {
         public domains?: CDATA,
         public outputClass?: CDATA,
         public className?: CDATA,
-    ) { }
+    ) {
+        super();
+    }
 }
 
 export interface IntTitle extends IntLocalization {
@@ -78,13 +84,15 @@ export interface IntTitle extends IntLocalization {
     className?: CDATA;
     children: Array<CommonInline>;
 }
-export class Title implements IntTitle {
+export class Title extends BaseElement implements IntTitle {
     readonly elementName = 'Title';
     children = [];
     constructor(
         public outputClass?: CDATA,
         public className?: CDATA,
-    ) { }
+    ) {
+        super();
+    }
 }
 
 export interface IntShortdesc extends IntFilters, IntLocalization, IntReuse {
@@ -92,25 +100,29 @@ export interface IntShortdesc extends IntFilters, IntLocalization, IntReuse {
     className?: CDATA;
     children: Array<AllInline>;
 }
-export class Shortdesc implements IntShortdesc {
+export class Shortdesc extends BaseElement implements IntShortdesc {
     readonly elementName = 'shortdesc';
     children = [];
     constructor(
         public outputClass?: CDATA,
         public className?: CDATA,
-    ) { }
+    ) {
+        super();
+    }
 }
 
 export interface IntProlog extends IntFilters, IntLocalization {
     className?: CDATA;
     children: Array<Data>;
 }
-export class Prolog implements IntProlog {
+export class Prolog extends BaseElement implements IntProlog {
     readonly elementName = 'prolog'
     children = [];
     constructor(
         public outputClass?: CDATA,
-    ) { }
+    ) {
+        super();
+    }
 }
 
 export interface IntBody extends IntLocalization {
@@ -118,13 +130,15 @@ export interface IntBody extends IntLocalization {
     className?: CDATA;
     //TODO(AR) implement children
 }
-export class Body implements IntBody {
+export class Body extends BaseElement implements IntBody {
     readonly elementName = 'body';
     children = [];
     constructor(
         public outputClass?: CDATA,
         public className?: CDATA,
-    ) { }
+    ) {
+        super();
+    }
 }
 
 export interface IntPh extends IntFilters, IntLocalization, IntVariableContent {
@@ -132,13 +146,15 @@ export interface IntPh extends IntFilters, IntLocalization, IntVariableContent {
     className?: CDATA;
     children: Array<AllInline>;
 }
-export class Ph implements IntPh {
+export class Ph extends BaseElement implements IntPh {
     readonly elementName = 'ph'
     children = [];
     constructor(
         public outputClass?: CDATA,
         public className?: CDATA,
-    ) { }
+    ) {
+        super();
+    }
 }
 
 export interface IntXImage extends IntFilters, IntLocalization, IntReferenceContent, IntVariableContent {
@@ -148,7 +164,7 @@ export interface IntXImage extends IntFilters, IntLocalization, IntReferenceCont
     className?: CDATA;
     alt?: Alt;
 }
-export class XImage implements IntXImage {
+export class XImage extends BaseElement implements IntXImage {
     readonly elementName = 'Ximage';
     constructor(
         public height?: NMTOKEN,
@@ -156,7 +172,9 @@ export class XImage implements IntXImage {
         public outputClass?: CDATA,
         public className?: CDATA,
         public alt?: Alt,
-    ) { }
+    ) {
+        super();
+    }
 }
 
 export interface IntAlt extends IntFilters, IntLocalization, IntVariableContent {
@@ -164,13 +182,15 @@ export interface IntAlt extends IntFilters, IntLocalization, IntVariableContent 
     className?: CDATA;
     children: Array<PCDATA | Ph | Data>;
 }
-export class Alt implements IntAlt {
+export class Alt extends BaseElement implements IntAlt {
     readonly elementName = 'alt';
     children = [];
     constructor(
         public outputClass?: CDATA,
         public className?: CDATA,
-    ) { }
+    ) {
+        super();
+    }
 }
 
 export interface IntData extends IntFilters, IntLocalization, IntReferenceContent, IntVariableContent {
@@ -180,13 +200,15 @@ export interface IntData extends IntFilters, IntLocalization, IntReferenceConten
     className?: CDATA;
     children: Array<PCDATA | Data>;
 }
-export class Data implements IntData {
+export class Data extends BaseElement implements IntData {
     readonly elementName = 'data';
     children = [];
     constructor(
         public outputClass?: CDATA,
         public className?: CDATA,
-    ) { }
+    ) {
+        super();
+    }
 }
 
 export interface IntXRef extends IntFilters, IntLocalization, IntReferenceContent, IntVariableLinks {
@@ -194,7 +216,7 @@ export interface IntXRef extends IntFilters, IntLocalization, IntReferenceConten
     className?: CDATA;
     children: Array<CommonInline>;
 }
-export class XRef implements IntXRef {
+export class XRef extends BaseElement implements IntXRef {
     readonly elementName = 'xref';
     children = [];
     constructor(
@@ -208,5 +230,7 @@ export class XRef implements IntXRef {
         public href?: CDATA,
         public format?: CDATA,
         public scope?: RefrenceContentScope,
-    ) { }
+    ) {
+        super();
+    }
 }
