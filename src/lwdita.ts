@@ -22,7 +22,7 @@ export const isRefrenceContentScope = (value?: any): value is RefrenceContentSco
     has(['local', 'peer', 'external'], value);
 export type CommonInline = PCDATA/* | IntPh | IntXImage | IntData*/;
 export const isCommonInline = (value?: any): value is CommonInline => isPCDATA(value);
-// export type AllInline = CommonInline | XRef;
+export type AllInline = CommonInline/* | XRef*/;
 
 type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;
 export abstract class BaseElement {
@@ -56,7 +56,7 @@ export abstract class BaseElement {
 }
 
 export interface IntNamedElement {
-    readonly elementName: string;
+    readonly 'elementName': string;
 }
 
 export type IntFilterAdds = {};
@@ -64,6 +64,9 @@ export type IntFilterAdds = {};
 export interface IntFilters extends IntFilterAdds {
     props?: CDATA;
 }
+export const isIntFilters = (value?: any): value is IntFilters =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['props']);
 
 export interface IntReuse {
     id?: NMTOKEN;
@@ -79,6 +82,9 @@ export interface IntReferenceContent {
 export interface IntVariableContent {
     keyref?: CDATA;
 }
+export const isIntVariableContent = (value?: any): value is IntVariableContent =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['keyref']);
 
 export interface IntVariableLinks {
     keyref: CDATA;
@@ -118,12 +124,17 @@ export const isIntTopic = (value?: any): value is IntTopic =>
     isOrUndefined(isCDATA, value['ditaarch:DITAArchVersion']) &&
     isOrUndefined(isCDATA, value['domains']) &&
     isOrUndefined(isCDATA, value['outputClass']) &&
-    isOrUndefined(isCDATA, value['className']);
+    isOrUndefined(isCDATA, value['className']) &&
+    isIntLocalization(value);
 
 export class Topic extends BaseElement implements IntTopic {
     elementName = 'topic';
     props!: IntTopic;
     fields = [
+        'elementName',
+        'dir',
+        'xml:lang',
+        'translate',
         'id',
         'xmlns:ditaarch',
         'ditaarch:DITAArchVersion',
@@ -134,6 +145,9 @@ export class Topic extends BaseElement implements IntTopic {
     isValidField(field: string, value: any): boolean {
         switch(field) {
             case 'id': return isID(value);
+            case 'dir': return isOrUndefined(isCDATA, value);
+            case 'xml:lang': return isOrUndefined(isCDATA, value);
+            case 'translate': return isOrUndefined(isCDATA, value);
             case 'xmlns:ditaarch': return isCDATA(value);
             case 'ditaarch:DITAArchVersion': return isOrUndefined(isCDATA, value);
             case 'domains': return isOrUndefined(isCDATA, value);
@@ -142,25 +156,9 @@ export class Topic extends BaseElement implements IntTopic {
             default: return false;
         }
     }
-    constructor(
-        id: ID,
-        xmlnsDitaarch: CDATA,
-        ditaarchDITAArchVersion?: CDATA,
-        domains?: CDATA,
-        outputClass?: CDATA,
-        className?: CDATA,
-    );
-    constructor(attributes: Attributes);
-    constructor(attributes: Attributes | ID, ...props: CDATA[]) {
+    constructor(attributes: Attributes){
         super();
-        this.props = this.attributesToProps(isID(attributes) ? {
-            'id': attributes,
-            'xmlns:ditaarch': props[0],
-            'ditaarch:DITAArchVersion': props[1],
-            'domains': props[2],
-            'outputClass': props[3],
-            'className': props[4],
-        } : attributes);
+        this.props = this.attributesToProps(attributes);
     }
     get 'id'(): ID {
         return this.readProp<ID>('id'); }
@@ -178,8 +176,8 @@ export class Topic extends BaseElement implements IntTopic {
 }
 
 export interface IntTitle extends IntLocalization {
-    outputClass?: CDATA;
-    className?: CDATA;
+    'outputClass'?: CDATA;
+    'className'?: CDATA;
 }
 export const isIntTitle = (value?: any): value is IntTitle =>
     typeof value === 'object' &&
@@ -188,6 +186,7 @@ export const isIntTitle = (value?: any): value is IntTitle =>
     isOrUndefined(isCDATA, value['outputClass']) &&
     isOrUndefined(isCDATA, value['className']) &&
     isIntLocalization(value);
+    // children: Array<CommonInline>;
 export class Title extends BaseElement implements IntTitle {
     elementName = 'title';
     props!: IntTitle;
@@ -208,23 +207,9 @@ export class Title extends BaseElement implements IntTitle {
             default: return false;
         }
     }
-    constructor(
-        dir?: CDATA,
-        xmlLang?: CDATA,
-        translate?: CDATA,
-        outputClass?: CDATA,
-        className?: CDATA,
-    );
-    constructor(attributes: Attributes);
-    constructor(attributes?: Attributes | CDATA, ...props: CDATA[]) {
+    constructor(attributes?: Attributes) {
         super();
-        this.props = this.attributesToProps(isCDATA(attributes) ? {
-            'dir': attributes,
-            'xml:lang': props[0],
-            'translate': props[1],
-            'outputClass': props[2],
-            'className': props[3],
-        } : attributes || {});
+        this.props = this.attributesToProps(attributes || {});
     }
     get 'dir'(): CDATA | undefined {
         return this.readProp<CDATA>('dir'); }
