@@ -442,7 +442,7 @@ export const isIntDL = (value?: any): value is IntDL =>
 export class DL extends BaseElement implements IntDL {
     static nodeName = 'dl';
     static childTypes = ['dlentry'];
-    _props!: IntPh;
+    _props!: IntDL;
     static fields = [
         'props',
         'dir',
@@ -502,7 +502,7 @@ export const isIntDLEntry = (value?: any): value is IntDLEntry =>
 export class DLEntry extends BaseElement implements IntDLEntry {
     static nodeName = 'dlentry';
     static childTypes = ['dt', 'dd'];
-    _props!: IntPh;
+    _props!: IntDLEntry;
     static fields = [
         'props',
         'dir',
