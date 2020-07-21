@@ -49,12 +49,13 @@ export abstract class BaseElement {
     protected get static(): typeof BaseElement {
         return this.constructor as any;
     }
-    // get children(): BaseElement[] {
-    //     if (this.static.childTypes.length === 0) {
-    //         throw new Error('inline nodes don\'t have children');
-    //     }
-    //     return [ ...this._children ];
-    // }
+    get json(): Record<string, any> {
+        return {
+            nodeName: this.static.nodeName,
+            ...this._props,
+            children: this._children.map(child => child.json),
+        };
+    }
     static canAdd(child: BaseElement): boolean {
         return (this.childTypes.length > 0 && has(this.childTypes, child.static.nodeName)) ||
             (this.childGroups.length > 0 && !!this.childGroups.find(group => has(nodeGroups[group], child.static.nodeName)));
@@ -126,7 +127,7 @@ export class TextNode extends BaseElement implements IntTextNode {
 
 export class DocumentNode extends BaseElement {
     static nodeName = 'document';
-    static childTypes = [ 'topic' ];
+    static childTypes = ['topic'];
     topic?: Topic;
     static fields = [];
     static isValidField = (): boolean => true;
