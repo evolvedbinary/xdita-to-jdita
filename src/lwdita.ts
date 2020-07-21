@@ -19,6 +19,12 @@ export type PCDATA = string;
 export const isPCDATA = (value?: any): value is PCDATA =>  typeof value ==='string';
 export type NMTOKEN = string;
 export const isNMTOKEN = (value?: any): value is NMTOKEN =>  typeof value ==='string';
+export type DisplayScale = 50 | 60 | 70 | 80 | 90 | 100 | 110 | 120 | 140 | 160 | 180 | 200;
+export const isDisplayScale = (value?: any): value is DisplayScale =>  has([50, 60, 70, 80, 90, 100, 110, 120, 140, 160, 180, 200], value);
+export type DisplayFrame = 'all' | 'bottom' | 'none' | 'sides' | 'top' | 'topbot';
+export const isDisplayFrame = (value?: any): value is DisplayFrame =>  has(['all', 'bottom', 'none', 'sides', 'top', 'topbot'], value);
+export type DisplayExpanse = 'column' | 'page' | 'spread' | 'textline';
+export const isDisplayExpanse = (value?: any): value is DisplayExpanse =>  has(['column', 'page', 'spread', 'textline'], value);
 
 // TODO(AR) should these be union types, or should they be base interfaces which other interfaces like `ph` inherit from?
 export type RefrenceContentScope = 'local' | 'peer' | 'external';
@@ -148,6 +154,17 @@ export interface IntFilters extends IntFilterAdds {
 export const isIntFilters = (value?: any): value is IntFilters =>
     typeof value === 'object' &&
     isOrUndefined(isCDATA, value['props']);
+
+export interface IntDIsplayAttrs {
+    scale?: DisplayScale;
+    frame?: DisplayFrame;
+    expanse?: DisplayExpanse;
+}
+export const isIntDIsplayAttrs = (value?: any): value is IntDIsplayAttrs =>
+    typeof value === 'object' &&
+    isOrUndefined(isDisplayScale, value['scale']) &&
+    isOrUndefined(isDisplayFrame, value['frame']) &&
+    isOrUndefined(isDisplayExpanse, value['expanse']);
 
 export interface IntReuse {
     id?: NMTOKEN;
@@ -886,6 +903,71 @@ export class Alt extends BaseElement implements IntAlt {
     }
     get 'props'(): CDATA | undefined {
         return this.readProp<CDATA>('props'); }
+    get 'dir'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'xml:lang'(): CDATA | undefined {
+        return this.readProp<CDATA>('xml:lang'); }
+    get 'translate'(): CDATA | undefined {
+        return this.readProp<CDATA>('translate'); }
+    get 'keyref'(): CDATA | undefined {
+        return this.readProp<CDATA>('keyref'); }
+    get 'outputClass'(): CDATA | undefined {
+        return this.readProp<CDATA>('outputClass'); }
+    get 'className'(): CDATA | undefined {
+        return this.readProp<CDATA>('className'); }
+}
+
+export interface IntFig extends IntDIsplayAttrs, IntLocalization, IntVariableContent {
+    'outputClass'?: CDATA;
+    'className'?: CDATA;
+}
+export const isIntFig = (value?: any): value is IntFig =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['outputClass']) &&
+    isOrUndefined(isCDATA, value['className']) &&
+    isIntFilters(value) &&
+    isIntLocalization(value) &&
+    isIntDIsplayAttrs(value);
+export class Fig extends BaseElement implements IntFig {
+    static nodeName = 'fig';
+    static childTypes = ['image', 'xref'];
+    static childGroups = ['fig-blocks'];
+    _props!: IntFig;
+    static fields = [
+        'scale',
+        'frame',
+        'expanse',
+        'dir',
+        'xml:lang',
+        'translate',
+        'keyref',
+        'outputClass',
+        'className',
+    ];
+    static isValidField(field: string, value: any): boolean {
+        switch(field) {
+            case 'scale': return isOrUndefined(isDisplayScale, value);
+            case 'frame': return isOrUndefined(isDisplayFrame, value);
+            case 'expanse': return isOrUndefined(isDisplayExpanse, value);
+            case 'dir': return isOrUndefined(isCDATA, value);
+            case 'xml:lang': return isOrUndefined(isCDATA, value);
+            case 'translate': return isOrUndefined(isCDATA, value);
+            case 'keyref': return isOrUndefined(isCDATA, value);
+            case 'outputClass': return isOrUndefined(isCDATA, value);
+            case 'className': return isOrUndefined(isCDATA, value);
+            default: return false;
+        }
+    }
+    constructor(attributes?: Attributes) {
+        super();
+        this._props = this.attributesToProps(attributes);
+    }
+    get 'scale'(): DisplayScale | undefined {
+        return this.readProp<DisplayScale>('scale'); }
+    get 'frame'(): DisplayFrame | undefined {
+        return this.readProp<DisplayFrame>('frame'); }
+    get 'expanse'(): DisplayExpanse | undefined {
+        return this.readProp<DisplayExpanse>('expanse'); }
     get 'dir'(): CDATA | undefined {
         return this.readProp<CDATA>('dir'); }
     get 'xml:lang'(): CDATA | undefined {
