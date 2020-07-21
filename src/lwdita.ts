@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import { SaxesAttributeNS } from "saxes";
 
 type Class<T> = new (...args: any[]) => T;
@@ -22,25 +23,44 @@ export const isNMTOKEN = (value?: any): value is NMTOKEN =>  typeof value ==='st
 export type RefrenceContentScope = 'local' | 'peer' | 'external';
 export const isRefrenceContentScope = (value?: any): value is RefrenceContentScope =>
     has(['local', 'peer', 'external'], value);
-export type CommonInline = PCDATA/* | IntPh | IntXImage | IntData*/;
-export const isCommonInline = (value?: any): value is CommonInline => isPCDATA(value);
+const _commonInline = ['text', 'ph', 'ximage', 'data'];
+export const nodeGroups: Record<string, Array<string>> = {
+    'common-inline': _commonInline,
+    'all-inline'   : [..._commonInline, 'xref'],
+}
+export type CommonInline = PCDATA | IntPh /* | IntXImage | IntData*/;
+export const isCommonInline = (value?: any): value is CommonInline => isPCDATA(value) || isIntPh(value);
 export type AllInline = CommonInline/* | XRef*/;
+export const isAllInline = (value?: any): value is AllInline => isCommonInline(value);
 
 type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;
 export abstract class BaseElement {
     static nodeName = 'node';
-    static inline: boolean;
     static fields: Array<string>;
+    static childTypes: Array<string> = [];
+    static childGroups: Array<string> = [];
     protected _children: BaseElement[] = [];
     protected _props!: Record<string, any>;
     protected get static(): typeof BaseElement {
         return this.constructor as any;
     }
-    get children(): BaseElement[] {
-        if (this.static.inline) {
-            throw new Error('inline nodes don\'t have children');
+    // get children(): BaseElement[] {
+    //     if (this.static.childTypes.length === 0) {
+    //         throw new Error('inline nodes don\'t have children');
+    //     }
+    //     return [ ...this._children ];
+    // }
+    static canAdd(child: BaseElement): boolean {
+        return (this.childTypes.length > 0 && has(this.childTypes, child.static.nodeName)) ||
+            (this.childGroups.length > 0 && !!this.childGroups.find(group => has(nodeGroups[group], child.static.nodeName)));
+    }
+    add(child: BaseElement, breakOnError = true): void {
+        if (!this.static.canAdd(child)) {
+            if (breakOnError) {
+                throw new Error(`"${child.static.nodeName}" node can't be a child of "${this.static.nodeName}" node`);
+            }
         }
-        return this._children;
+        this._children.push(child)
     }
     protected attributesToProps<T = Record<string, any>>(attributes: Attributes): T {
         const result: Record<string, any> = {};
@@ -73,7 +93,6 @@ export interface IntTextNode {
 }
 export const isIntTextNode = (value?: any): value is IntTextNode => typeof value === 'object' && typeof value.content === 'string';
 export class TextNode extends BaseElement implements IntTextNode {
-    static inline = true;
     static nodeName = 'text';
     _props!: IntTextNode;
     static fields = [
@@ -96,11 +115,10 @@ export class TextNode extends BaseElement implements IntTextNode {
 
 export class DocumentNode extends BaseElement {
     static nodeName = 'document';
+    static childTypes = [ 'topic' ];
     topic?: Topic;
     static fields = [];
-    isValidField(field: string, value: any): boolean {
-        return true;
-    }
+    isValidField = (): boolean => true;
     constructor() {
         super();
     }
@@ -180,6 +198,7 @@ export const isIntTopic = (value?: any): value is IntTopic =>
 
 export class Topic extends BaseElement implements IntTopic {
     static nodeName = 'topic';
+    static childTypes = ['title', 'shortdesc', 'prolog', 'body'];
     elementName = 'topic';
     _props!: IntTopic;
     static fields = [
@@ -241,6 +260,8 @@ export const isIntTitle = (value?: any): value is IntTitle =>
     // children: Array<CommonInline>;
 export class Title extends BaseElement implements IntTitle {
     static nodeName = 'title';
+    static childTypes = [];
+    static childGroups = ['common-inline'];
     _props!: IntTitle;
     static fields = [
         'dir',
@@ -334,6 +355,8 @@ export const isIntPh = (value?: any): value is IntPh =>
     isIntVariableContent(value);
 export class Ph extends BaseElement implements IntPh {
     static nodeName = 'ph';
+    static childTypes = [];
+    static childGroups = ['all-inline'];
     _props!: IntPh;
     static fields = [
         'props',
