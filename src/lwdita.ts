@@ -84,12 +84,14 @@ export abstract class BaseElement {
         if (this.static.fields.indexOf(field) < 0) {
             throw new Error('unkown property "' + field + '"');
         }
-        if (!this.isValidField(field, value)) {
+        if (!this.static.isValidField(field, value)) {
             throw new Error('wrong property  type "' + typeof(value) + '" for field"' + field + '"');
         }
         this._props[field] = value;
     }
-    abstract isValidField(field: string, value: any): boolean;
+    static isValidField(field: string, value: any): boolean {
+        return true;
+    }
 }
 
 export interface IntTextNode {
@@ -102,7 +104,7 @@ export class TextNode extends BaseElement implements IntTextNode {
     static fields = [
         'content',
     ];
-    isValidField(field: string, value: any): boolean {
+    static isValidField(field: string, value: any): boolean {
         switch(field) {
             case 'content': return typeof value === 'string';
             default: return false;
@@ -122,7 +124,7 @@ export class DocumentNode extends BaseElement {
     static childTypes = [ 'topic' ];
     topic?: Topic;
     static fields = [];
-    isValidField = (): boolean => true;
+    static isValidField = (): boolean => true;
     constructor() {
         super();
     }
@@ -216,7 +218,7 @@ export class Topic extends BaseElement implements IntTopic {
         'outputClass',
         'className',
     ];
-    isValidField(field: string, value: any): boolean {
+    static isValidField(field: string, value: any): boolean {
         switch(field) {
             case 'dir': return isOrUndefined(isCDATA, value);
             case 'xml:lang': return isOrUndefined(isCDATA, value);
@@ -279,7 +281,7 @@ export class Title extends BaseElement implements IntTitle {
         'outputClass',
         'className',
     ];
-    isValidField(field: string, value: any): boolean {
+    static isValidField(field: string, value: any): boolean {
         switch(field) {
             case 'dir': return isOrUndefined(isCDATA, value);
             case 'xml:lang': return isOrUndefined(isCDATA, value);
@@ -376,7 +378,7 @@ export class Ph extends BaseElement implements IntPh {
         'outputClass',
         'className',
     ];
-    isValidField(field: string, value: any): boolean {
+    static isValidField(field: string, value: any): boolean {
         switch(field) {
             case 'props': return isOrUndefined(isCDATA, value);
             case 'dir': return isOrUndefined(isCDATA, value);
