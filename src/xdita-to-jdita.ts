@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import * as saxes from "saxes";
-import { Topic, BaseElement, Title, Paragraph, Ph, TextNode, DocumentNode, ShortDesc, DL, DLEntry, Body, DD, DT, ImageNode } from "./lwdita";
+import { Topic, BaseElement, Title, Paragraph, Ph, TextNode, DocumentNode, ShortDesc, DL, DLEntry, Body, DD, DT, ImageNode, Alt } from "./lwdita";
 
 class UnknownNode extends BaseElement {
   static nodeName = 'unknown';
@@ -89,6 +89,7 @@ parser.on("opentag", function (node: saxes.SaxesTagNS) {
     case 'body': obj = new Body(node.attributes); break;
     case 'p': obj = new Paragraph(node.attributes); break;
     case 'image': obj = new ImageNode(node.attributes); break;
+    case 'alt': obj = new Alt(node.attributes); break;
     default: 
       push(new UnknownNode());
       unknownNodes.push(node.local);
@@ -141,6 +142,6 @@ parser
     .close();
 console.log('unknown nodes:', unknownNodes.length);
 console.log(unknownNodes);
-console.log(JSON.stringify(doc.json, null, 2));
+// console.log(JSON.stringify(doc.json, null, 2));
 // console.log(stack2);
     // parser.
