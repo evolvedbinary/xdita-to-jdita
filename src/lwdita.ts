@@ -22,11 +22,11 @@ export const isNMTOKEN = (value?: any): value is NMTOKEN =>  typeof value ==='st
 
 // TODO(AR) should these be union types, or should they be base interfaces which other interfaces like `ph` inherit from?
 export type RefrenceContentScope = 'local' | 'peer' | 'external';
-export const isRefrenceContentScope = (value?: any): value is RefrenceContentScope =>
+export const isReferenceContentScope = (value?: any): value is RefrenceContentScope =>
     has(['local', 'peer', 'external'], value);
 export const nodeGroups: Record<string, Array<string>> = {
-    'common-inline': ['text', 'ph', 'ximage', 'data'],
-    'all-inline'   : ['text', 'ph', 'ximage', 'xref', 'data'],
+    'common-inline': ['text', 'ph', 'image', 'data'],
+    'all-inline'   : ['text', 'ph', 'image', 'xref', 'data'],
     'simple-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'fn', 'note', 'data'],
     'fn-blocks'    : ['p', 'ul', 'ol', 'dl', 'data'],
     'all-blocks'   : ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'fn', 'note', 'data'],
@@ -156,13 +156,17 @@ export interface IntReuse {
 export const isIntReuse = (value?: any): value is IntReuse =>
     isOrUndefined(isCDATA, value['id']) &&
     isOrUndefined(isCDATA, value['conref']);
-
+    
 export interface IntReferenceContent {
     href?: CDATA;
     format?: CDATA;
     scope?: RefrenceContentScope;
 }
-
+export const isIntReferenceContent = (value?: any): value is IntReferenceContent =>
+    isOrUndefined(isCDATA, value['href']) &&
+    isOrUndefined(isCDATA, value['format']) &&
+    isOrUndefined(isReferenceContentScope, value['scope']);
+    
 export interface IntVariableContent {
     keyref?: CDATA;
 }
@@ -768,6 +772,72 @@ export class Paragraph extends BaseElement implements IntP {
         return this.readProp<NMTOKEN>('id'); }
     get 'conref'(): CDATA | undefined {
         return this.readProp<CDATA>('conref'); }
+    get 'outputClass'(): CDATA | undefined {
+        return this.readProp<CDATA>('outputClass'); }
+    get 'className'(): CDATA | undefined {
+        return this.readProp<CDATA>('className'); }
+}
+
+export interface IntImage extends IntFilters, IntLocalization, IntVariableContent, IntReferenceContent {
+    'height'?: NMTOKEN;
+    'width'?: NMTOKEN;
+    'outputClass'?: CDATA;
+    'className'?: CDATA;
+}
+export const isIntImage = (value?: any): value is IntImage =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['outputClass']) &&
+    isOrUndefined(isCDATA, value['className']) &&
+    isIntFilters(value) &&
+    isIntLocalization(value) &&
+    isIntVariableContent(value);
+export class ImageNode extends BaseElement implements IntImage {
+    static nodeName = 'image';
+    static childTypes = ['alt'];
+    _props!: IntImage;
+    static fields = [
+        'height',
+        'width',
+        'dir',
+        'dir',
+        'xml:lang',
+        'translate',
+        'keyref',
+        'outputClass',
+        'className',
+    ];
+    static isValidField(field: string, value: any): boolean {
+        switch(field) {
+            case 'height': return isOrUndefined(isNMTOKEN, value);
+            case 'width': return isOrUndefined(isNMTOKEN, value);
+            case 'props': return isOrUndefined(isCDATA, value);
+            case 'dir': return isOrUndefined(isCDATA, value);
+            case 'xml:lang': return isOrUndefined(isCDATA, value);
+            case 'translate': return isOrUndefined(isCDATA, value);
+            case 'keyref': return isOrUndefined(isCDATA, value);
+            case 'outputClass': return isOrUndefined(isCDATA, value);
+            case 'className': return isOrUndefined(isCDATA, value);
+            default: return false;
+        }
+    }
+    constructor(attributes?: Attributes) {
+        super();
+        this._props = this.attributesToProps(attributes);
+    }
+    get 'height'(): NMTOKEN | undefined {
+        return this.readProp<NMTOKEN>('height'); }
+    get 'width'(): NMTOKEN | undefined {
+        return this.readProp<NMTOKEN>('width'); }
+    get 'props'(): CDATA | undefined {
+        return this.readProp<CDATA>('props'); }
+    get 'dir'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'xml:lang'(): CDATA | undefined {
+        return this.readProp<CDATA>('xml:lang'); }
+    get 'translate'(): CDATA | undefined {
+        return this.readProp<CDATA>('translate'); }
+    get 'keyref'(): CDATA | undefined {
+        return this.readProp<CDATA>('keyref'); }
     get 'outputClass'(): CDATA | undefined {
         return this.readProp<CDATA>('outputClass'); }
     get 'className'(): CDATA | undefined {
