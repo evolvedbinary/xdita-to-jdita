@@ -455,21 +455,20 @@ export class Ph extends BaseElement implements IntPh {
     get 'dir'(): CDATA | undefined {
         return this.readProp<CDATA>('dir'); }
     get 'xml:lang'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
+        return this.readProp<CDATA>('xml:lang'); }
     get 'translate'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
+        return this.readProp<CDATA>('translate'); }
     get 'keyref'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
+        return this.readProp<CDATA>('keyref'); }
     get 'outputClass'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
+        return this.readProp<CDATA>('outputClass'); }
     get 'className'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
+        return this.readProp<CDATA>('className'); }
 }
 
-export interface IntDL extends IntFilters, IntLocalization, IntVariableContent {
+export interface IntDL extends IntFilters, IntLocalization, IntReuse {
     'outputClass'?: CDATA;
     'className'?: CDATA;
-    // children: Array<AllInline>;
 }
 export const isIntDL = (value?: any): value is IntDL =>
     typeof value === 'object' &&
@@ -477,10 +476,70 @@ export const isIntDL = (value?: any): value is IntDL =>
     isOrUndefined(isCDATA, value['className']) &&
     isIntFilters(value) &&
     isIntLocalization(value) &&
-    isIntVariableContent(value);
+    isIntReuse(value);
 export class DL extends BaseElement implements IntDL {
     static nodeName = 'dl';
     static childTypes = ['dlentry'];
+    _props!: IntPh;
+    static fields = [
+        'props',
+        'dir',
+        'xml:lang',
+        'translate',
+        'id',
+        'conref',
+        'outputClass',
+        'className',
+    ];
+    static isValidField(field: string, value: any): boolean {
+        switch(field) {
+            case 'props': return isOrUndefined(isCDATA, value);
+            case 'dir': return isOrUndefined(isCDATA, value);
+            case 'xml:lang': return isOrUndefined(isCDATA, value);
+            case 'translate': return isOrUndefined(isCDATA, value);
+            case 'id': return isOrUndefined(isNMTOKEN, value);
+            case 'conref': return isOrUndefined(isCDATA, value);
+            case 'outputClass': return isOrUndefined(isCDATA, value);
+            case 'className': return isOrUndefined(isCDATA, value);
+            default: return false;
+        }
+    }
+    constructor(attributes?: Attributes) {
+        super();
+        this._props = this.attributesToProps(attributes);
+    }
+    get 'props'(): CDATA | undefined {
+        return this.readProp<CDATA>('props'); }
+    get 'dir'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'xml:lang'(): CDATA | undefined {
+        return this.readProp<CDATA>('xml:lang'); }
+    get 'translate'(): CDATA | undefined {
+        return this.readProp<CDATA>('translate'); }
+    get 'id'(): NMTOKEN | undefined {
+        return this.readProp<NMTOKEN>('id'); }
+    get 'conref'(): CDATA | undefined {
+        return this.readProp<CDATA>('conref'); }
+    get 'outputClass'(): CDATA | undefined {
+        return this.readProp<CDATA>('outputClass'); }
+    get 'className'(): CDATA | undefined {
+        return this.readProp<CDATA>('className'); }
+}
+
+export interface IntDLEntry extends IntFilters, IntLocalization, IntVariableContent {
+    'outputClass'?: CDATA;
+    'className'?: CDATA;
+}
+export const isIntDLEntry = (value?: any): value is IntDLEntry =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['outputClass']) &&
+    isOrUndefined(isCDATA, value['className']) &&
+    isIntFilters(value) &&
+    isIntLocalization(value) &&
+    isIntVariableContent(value);
+export class DLEntry extends BaseElement implements IntDLEntry {
+    static nodeName = 'dlentry';
+    static childTypes = ['dt', 'dd'];
     _props!: IntPh;
     static fields = [
         'props',
@@ -497,7 +556,8 @@ export class DL extends BaseElement implements IntDL {
             case 'dir': return isOrUndefined(isCDATA, value);
             case 'xml:lang': return isOrUndefined(isCDATA, value);
             case 'translate': return isOrUndefined(isCDATA, value);
-            case 'keyref': return isOrUndefined(isCDATA, value);
+            case 'id': return isOrUndefined(isNMTOKEN, value);
+            case 'conref': return isOrUndefined(isCDATA, value);
             case 'outputClass': return isOrUndefined(isCDATA, value);
             case 'className': return isOrUndefined(isCDATA, value);
             default: return false;
@@ -512,15 +572,17 @@ export class DL extends BaseElement implements IntDL {
     get 'dir'(): CDATA | undefined {
         return this.readProp<CDATA>('dir'); }
     get 'xml:lang'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
+        return this.readProp<CDATA>('xml:lang'); }
     get 'translate'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
-    get 'keyref'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
+        return this.readProp<CDATA>('translate'); }
+    get 'id'(): NMTOKEN | undefined {
+        return this.readProp<NMTOKEN>('id'); }
+    get 'conref'(): CDATA | undefined {
+        return this.readProp<CDATA>('conref'); }
     get 'outputClass'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
+        return this.readProp<CDATA>('outputClass'); }
     get 'className'(): CDATA | undefined {
-        return this.readProp<CDATA>('dir'); }
+        return this.readProp<CDATA>('className'); }
 }
 
 // export interface IntXImage extends IntFilters, IntLocalization, IntReferenceContent, IntVariableContent {
