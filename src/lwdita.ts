@@ -190,14 +190,6 @@ export interface IntTopic extends IntNamedElement, IntLocalization {
     'domains'?: CDATA;
     'outputClass'?: CDATA;
     'className'?: CDATA;
-
-    //TODO(AR) how to ensure correct ordering of children here? also cannot have a shortdesc without a title! Need somelike like a HList
-    // children: {
-    //     title?: Title;
-    //     shortdesc?: ShortDesc;
-    //     prolog?: Prolog;
-    //     body?: Body;
-    // };
 }
 export const isIntTopic = (value?: any): value is IntTopic =>
     typeof value === 'object' &&
@@ -275,7 +267,6 @@ export const isIntTitle = (value?: any): value is IntTitle =>
     isOrUndefined(isCDATA, value['outputClass']) &&
     isOrUndefined(isCDATA, value['className']) &&
     isIntLocalization(value);
-    // children: Array<CommonInline>;
 export class Title extends BaseElement implements IntTitle {
     static nodeName = 'title';
     static childTypes = [];
@@ -379,40 +370,9 @@ export class ShortDesc extends BaseElement implements IntShortDesc {
         return this.readProp<CDATA>('className'); }
 }
 
-// export interface IntProlog extends IntFilters, IntLocalization {
-//     className?: CDATA;
-//     children: Array<Data>;
-// }
-// export class Prolog extends BaseElement implements IntProlog {
-//     readonly nodeName = 'prolog'
-//     children = [];
-//     constructor(
-//         public outputClass?: CDATA,
-//     ) {
-//         super();
-//     }
-// }
-
-// export interface IntBody extends IntLocalization {
-//     outputClass?: CDATA;
-//     className?: CDATA;
-//     //TODO(AR) implement children
-// }
-// export class Body extends BaseElement implements IntBody {
-//     readonly nodeName = 'body';
-//     children = [];
-//     constructor(
-//         public outputClass?: CDATA,
-//         public className?: CDATA,
-//     ) {
-//         super();
-//     }
-// }
-
 export interface IntPh extends IntFilters, IntLocalization, IntVariableContent {
     'outputClass'?: CDATA;
     'className'?: CDATA;
-    // children: Array<AllInline>;
 }
 export const isIntPh = (value?: any): value is IntPh =>
     typeof value === 'object' &&
@@ -585,80 +545,3 @@ export class DLEntry extends BaseElement implements IntDLEntry {
         return this.readProp<CDATA>('className'); }
 }
 
-// export interface IntXImage extends IntFilters, IntLocalization, IntReferenceContent, IntVariableContent {
-//     height?: NMTOKEN;
-//     width?: NMTOKEN;
-//     outputClass?: CDATA;
-//     className?: CDATA;
-//     alt?: Alt;
-// }
-// export class XImage extends BaseElement implements IntXImage {
-//     readonly nodeName = 'Ximage';
-//     constructor(
-//         public height?: NMTOKEN,
-//         public width?: NMTOKEN,
-//         public outputClass?: CDATA,
-//         public className?: CDATA,
-//         public alt?: Alt,
-//     ) {
-//         super();
-//     }
-// }
-
-// export interface IntAlt extends IntFilters, IntLocalization, IntVariableContent {
-//     outputClass?: CDATA;
-//     className?: CDATA;
-//     children: Array<PCDATA | Ph | Data>;
-// }
-// export class Alt extends BaseElement implements IntAlt {
-//     readonly nodeName = 'alt';
-//     children = [];
-//     constructor(
-//         public outputClass?: CDATA,
-//         public className?: CDATA,
-//     ) {
-//         super();
-//     }
-// }
-
-// export interface IntData extends IntFilters, IntLocalization, IntReferenceContent, IntVariableContent {
-//     name?: CDATA;
-//     value?: CDATA;
-//     outputClass?: CDATA;
-//     className?: CDATA;
-//     children: Array<PCDATA | Data>;
-// }
-// export class Data extends BaseElement implements IntData {
-//     readonly nodeName = 'data';
-//     children = [];
-//     constructor(
-//         public outputClass?: CDATA,
-//         public className?: CDATA,
-//     ) {
-//         super();
-//     }
-// }
-
-// export interface IntXRef extends IntFilters, IntLocalization, IntReferenceContent, IntVariableLinks {
-//     outputClass?: CDATA;
-//     className?: CDATA;
-//     children: Array<CommonInline>;
-// }
-// export class XRef extends BaseElement implements IntXRef {
-//     readonly nodeName = 'xref';
-//     children = [];
-//     constructor(
-//         public keyref: CDATA,
-//         public outputClass?: CDATA,
-//         public className?: CDATA,
-//         public props?: CDATA,
-//         public dir?: CDATA,
-//         public xml_lang?: CDATA,
-//         public translate?: CDATA,
-//         public href?: CDATA,
-//         public format?: CDATA,
-//         public scope?: RefrenceContentScope,
-//     ) {
-//         super();
-//     }
-// }
