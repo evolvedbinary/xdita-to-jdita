@@ -93,6 +93,20 @@ export class TextNode extends BaseElement implements IntTextNode {
         return this.readProp<CDATA>('content'); }
 }
 
+
+export class DocumentNode extends BaseElement {
+    static inline = true;
+    elementName = 'document';
+    topic?: Topic;
+    static fields = [];
+    isValidField(field: string, value: any): boolean {
+        return true;
+    }
+    constructor() {
+        super();
+    }
+}
+
 export interface IntNamedElement {
     readonly 'elementName': string;
 }
