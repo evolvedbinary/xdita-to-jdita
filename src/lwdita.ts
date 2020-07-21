@@ -62,6 +62,9 @@ export abstract class BaseElement {
         }
         this._children.push(child)
     }
+    isNode(name: string): boolean {
+        return name === this.static.nodeName;
+    }
     protected attributesToProps<T = Record<string, any>>(attributes: Attributes): T {
         const result: Record<string, any> = {};
         this.static.fields.forEach(field => {
