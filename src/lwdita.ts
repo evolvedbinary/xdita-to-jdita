@@ -462,6 +462,63 @@ export class Ph extends BaseElement implements IntPh {
         return this.readProp<CDATA>('dir'); }
 }
 
+export interface IntDL extends IntFilters, IntLocalization, IntVariableContent {
+    'outputClass'?: CDATA;
+    'className'?: CDATA;
+    // children: Array<AllInline>;
+}
+export const isIntDL = (value?: any): value is IntDL =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['outputClass']) &&
+    isOrUndefined(isCDATA, value['className']) &&
+    isIntFilters(value) &&
+    isIntLocalization(value) &&
+    isIntVariableContent(value);
+export class DL extends BaseElement implements IntDL {
+    static nodeName = 'dl';
+    static childTypes = ['dlentry'];
+    _props!: IntPh;
+    static fields = [
+        'props',
+        'dir',
+        'xml:lang',
+        'translate',
+        'keyref',
+        'outputClass',
+        'className',
+    ];
+    static isValidField(field: string, value: any): boolean {
+        switch(field) {
+            case 'props': return isOrUndefined(isCDATA, value);
+            case 'dir': return isOrUndefined(isCDATA, value);
+            case 'xml:lang': return isOrUndefined(isCDATA, value);
+            case 'translate': return isOrUndefined(isCDATA, value);
+            case 'keyref': return isOrUndefined(isCDATA, value);
+            case 'outputClass': return isOrUndefined(isCDATA, value);
+            case 'className': return isOrUndefined(isCDATA, value);
+            default: return false;
+        }
+    }
+    constructor(attributes?: Attributes) {
+        super();
+        this._props = this.attributesToProps(attributes);
+    }
+    get 'props'(): CDATA | undefined {
+        return this.readProp<CDATA>('props'); }
+    get 'dir'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'xml:lang'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'translate'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'keyref'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'outputClass'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'className'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+}
+
 // export interface IntXImage extends IntFilters, IntLocalization, IntReferenceContent, IntVariableContent {
 //     height?: NMTOKEN;
 //     width?: NMTOKEN;
