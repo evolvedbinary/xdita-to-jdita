@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/camelcase */
 /*!
 XDITA to JDITA is a tool for converting LwDITA XDITA format to JDITA.
 Copyright (C) 2020 Evolved Binary
@@ -17,52 +19,21 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import * as saxes from "saxes";
-import StateMachine from "ts-javascript-state-machine";
-import LifeCycle from "ts-javascript-state-machine";
-//import StateMachine from '@taoqf/javascript-state-machine';
+import { Topic, BaseElement, Title, has, Ph, TextNode, DocumentNode, ShortDesc, DL, DLEntry } from "./lwdita";
 
+class UnknownNode extends BaseElement {
+  static nodeName = 'unknown';
+  isValidField(field: string, value: any): boolean { return false; }
+  // static canAdd(child: BaseElement): boolean {
+  //     return true;
+  // }
+  add(child: BaseElement, breakOnError = false): void {
+      console.log('skipped');
+  }
+}
 
-const lwditaFsm : StateMachine = new StateMachine({
-    init: 'document',
-    transitions: [
-        { name: 'startTopic', from: 'document', to: 'topic' },
-        { name: 'endTopic', from: 'topic', to: 'documentic' },
-
-        { name: 'topicStartTitle', from: 'topic', to: 'topicTitle' },
-        { name: 'topicEndTitle', from: 'topicTitle', to: 'topicWithTitle' },
-
-        { name: 'topicStartShortdesc', from: 'topicWithTitle', to: 'shortdesc' },
-        { name: 'topicEndShortdesc', from: 'shortdesc', to: 'topicWithTitle' },
-
-        { name: 'topicStartProlog', from: 'topicWithTitle', to: 'prolog' },
-        { name: 'topicEndPrology', from: 'prolog', to: 'topicWithTitle' },
-
-        { name: 'topicStartBody', from: 'topicWithTitle', to: 'body' },
-        { name: 'topicEndBody', from: 'body', to: 'topicWithTitle' },
-
-        //{ name: 'topicTitle', from: 'topic', to: 'title' },
-
-        { name: 'sectionStartTitle', from: 'section', to: 'sectionTitle' },
-        { name: 'sectionEndTitle', from: 'sectionTitle', to: 'sectionWithTitle' }
-    ],
-    methods: {
-        onInvalidTransition: function(transition: String, from: String, to: String) {
-          if (to === undefined) {
-            throw new Error("transition '" + transition + "' not allowed from: " + from);
-          } else {
-            throw new Error("transition '" + transition + "' not allowed from: " + from + " to: " + to);
-          }
-        },
-        onStartTopic: function(lifecycle: LifeCycle, a1: String, a2: String) {
-            console.log("CALLED START TOPIC" + a1 + " " + a2)
-        }
-    }
-});
-
-
-const printEvent = (description: string) => {
-    console.log('Event: ' + description);
-};
+let indent = '';
+const  unknownNodes: string[] = [];
 
 const parser = new saxes.SaxesParser({
     xmlns: true,
@@ -70,36 +41,103 @@ const parser = new saxes.SaxesParser({
     position: true
 });
 
-parser.on("opentag", function (node: saxes.SaxesTagNS) {
-    printEvent('Opened Tag: ' + node.name);
-    
-    if (node.local == "topic") {
-        lwditaFsm.startTopic("x", "y");
-    
-    } else if (node.local == "title") {
-        if (lwditaFsm.current == 'startTopic') {
-            lwditaFsm.topicStartTitle();
-        } else {
-            lwditaFsm.sectionStartTitle();
-        }
+const doc = new DocumentNode();
+const stack: BaseElement[] = [ doc ];
+const stack2: BaseElement[] = [];
+function push(obj: BaseElement): void {
+  stack.push(obj);
+  stack2.push(obj);
+}
+function last(): BaseElement {
+  return stack[stack.length - 1];
+}
+function pop(): BaseElement | undefined {
+  return stack.pop();
+}
+function find(fun: (obj: BaseElement) => boolean): BaseElement | undefined {
+  for (let i = stack.length - 1; i > -1; i--) {
+    if (fun(stack[i])) {
+      return stack[i];
     }
+  }
+}
+function findByName(name: string): BaseElement | undefined {
+  return find(o => o.isNode(name));
+}
+
+parser.on("text", function (text) {
+  last().add(new TextNode(text), false);
+  console.log(indent + '*text');
+  if (findByName('unknown')) {
+    unknownNodes.push('*text');
+  }
+});
+
+parser.on("opentag", function (node: saxes.SaxesTagNS) {
+  console.log(indent + '+' + node.local);
+  indent = indent + '| ';
+  if (has(['topic', 'title', 'ph', 'shortdesc'], node.local)) {
+    let obj;
+    switch(node.local) {
+      case 'topic': obj = new Topic(node.attributes); break;
+      case 'title': obj = new Title(node.attributes); break;
+      case 'ph': obj = new Ph(node.attributes); break;
+      case 'shortdesc': obj = new ShortDesc(node.attributes); break;
+      case 'ld': obj = new DL(node.attributes); break;
+      case 'ldentry': obj = new DLEntry(node.attributes); break;
+      default: throw new Error('');
+    }
+    last().add(obj, false);
+    push(obj);
+    if (findByName('unknown')) {
+      unknownNodes.push('*' + node.local);
+    }
+  } else {
+    push(new UnknownNode());
+    unknownNodes.push(node.local);
+  }
 });
 
 parser.on("closetag", function (node: saxes.SaxesTagNS) {
-    printEvent('Closed Tag: ' + node.name);
-
-    if (node.local == "topic") {
-        lwditaFsm.endTopic();
-
-    } else if (node.local == "title") {
-        if (lwditaFsm.current == 'startTopic') {
-            lwditaFsm.topicEndTitle();
-        } else {
-            lwditaFsm.sectionendTitle();
-        }
-    }
+  indent = indent.substr(2);
+  console.log(indent + '\\' + node.local);
+  pop();
 });
 
 parser
-    .write('<topic><x><title>My Title</title></x><shortdesc>A short description</shortdesc></topic>')
+    // .write('<topic><x><title>My Title</title></x><shortdesc>A short description</shortdesc></topic>')
+    // .write('<topic><x>content</x></topic>')
+    .write(`<?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE topic PUBLIC "-//OASIS//DTD LIGHTWEIGHT DITA Topic//EN" "lw-topic.dtd">
+    <topic id="intro-product">
+      <title><ph keyref="product-name"/> Overview</title>
+      <shortdesc>The <ph keyref="product-name"/> kit allows you to operate network-based home lighting through a remote control</shortdesc>
+      <body>
+        <p>The <ph keyref="product-name"/> kit includes a wireless smart lighting system that helps make the lighting in your home more energy efficient and easier to manage. The kit includes the following
+        components:</p>
+        <dl>
+          <dlentry>
+            <dt>Remote Control</dt>
+            <dd><p>Allows you to power on, power off, and dim groups of lights on your network.</p></dd>
+          </dlentry>
+          <dlentry>
+            <dt>LED Light Bulbs</dt>
+            <dd><p>Energy-efficient network light bulbs you can install into standard light fixtures.</p></dd>
+          </dlentry>
+            </dl>
+        <fig>
+          <title><ph keyref="product-name"/> ready for installation</title>
+          <image href="../images/kit.png"><alt>Remote Lighting Kit</alt></image>
+         </fig>
+    
+        <p id="warning">Electrical hazards can cause burns, shocks and electrocution (death).</p>
+    
+      </body>
+    </topic>`)
+    // .write('<topic id="intro-product"><title><ph keyref="product-name"/> Overview</title><shortdesc>The <ph keyref="product-name"/> kit allows you to operate network-based home lighting through a remote control</shortdesc></topic>')
     .close();
+console.log('unknown nodes:', unknownNodes.length);
+console.log(unknownNodes);
+console.log(JSON.stringify(doc.json, null, 2));
+// console.log(stack2);
+    // parser.
