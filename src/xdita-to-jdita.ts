@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import * as saxes from "saxes";
-import { Topic, BaseElement, Title, has, Ph, TextNode, DocumentNode, ShortDesc, DL, DLEntry } from "./lwdita";
+import { Topic, BaseElement, Title, has, Ph, TextNode, DocumentNode, ShortDesc, DL, DLEntry, Body } from "./lwdita";
 
 class UnknownNode extends BaseElement {
   static nodeName = 'unknown';
@@ -76,25 +76,24 @@ parser.on("text", function (text) {
 parser.on("opentag", function (node: saxes.SaxesTagNS) {
   console.log(indent + '+' + node.local);
   indent = indent + '| ';
-  if (has(['topic', 'title', 'ph', 'shortdesc'], node.local)) {
-    let obj;
-    switch(node.local) {
-      case 'topic': obj = new Topic(node.attributes); break;
-      case 'title': obj = new Title(node.attributes); break;
-      case 'ph': obj = new Ph(node.attributes); break;
-      case 'shortdesc': obj = new ShortDesc(node.attributes); break;
-      case 'ld': obj = new DL(node.attributes); break;
-      case 'ldentry': obj = new DLEntry(node.attributes); break;
-      default: throw new Error('');
-    }
-    last().add(obj, false);
-    push(obj);
-    if (findByName('unknown')) {
-      unknownNodes.push('*' + node.local);
-    }
-  } else {
-    push(new UnknownNode());
-    unknownNodes.push(node.local);
+  let obj;
+  switch(node.local) {
+    case 'topic': obj = new Topic(node.attributes); break;
+    case 'title': obj = new Title(node.attributes); break;
+    case 'ph': obj = new Ph(node.attributes); break;
+    case 'shortdesc': obj = new ShortDesc(node.attributes); break;
+    case 'dl': obj = new DL(node.attributes); break;
+    case 'dlentry': obj = new DLEntry(node.attributes); break;
+    case 'body': obj = new Body(node.attributes); break;
+    default: 
+      push(new UnknownNode());
+      unknownNodes.push(node.local);
+      return;
+  }
+  last().add(obj, false);
+  push(obj);
+  if (findByName('unknown')) {
+    unknownNodes.push('*' + node.local);
   }
 });
 
