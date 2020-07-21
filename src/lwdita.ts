@@ -412,13 +412,13 @@ export interface IntPh extends IntFilters, IntLocalization, IntVariableContent {
 }
 export const isIntPh = (value?: any): value is IntPh =>
     typeof value === 'object' &&
-    isOrUndefined(isCDATA, value['keyref']) &&
+    isOrUndefined(isCDATA, value['outputClass']) &&
+    isOrUndefined(isCDATA, value['className']) &&
     isIntFilters(value) &&
     isIntLocalization(value) &&
     isIntVariableContent(value);
 export class Ph extends BaseElement implements IntPh {
     static nodeName = 'ph';
-    static childTypes = [];
     static childGroups = ['all-inline'];
     _props!: IntPh;
     static fields = [
