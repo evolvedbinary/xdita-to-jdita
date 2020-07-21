@@ -55,6 +55,30 @@ export abstract class BaseElement {
     abstract isValidField(field: string, value: any): boolean;
 }
 
+export interface IntTextNode {
+    'content'?: string;
+}
+export const isIntTextNode = (value?: any): value is IntTextNode => typeof value === 'object' && typeof value.content === 'string';
+export class TextNode extends BaseElement implements IntTextNode {
+    elementName = 'text';
+    _props!: IntTextNode;
+    fields = [
+        'content',
+    ];
+    isValidField(field: string, value: any): boolean {
+        switch(field) {
+            case 'content': return typeof value === 'string';
+            default: return false;
+        }
+    }
+    constructor(content: string) {
+        super();
+        this._props = this.attributesToProps({ content });
+    }
+    get 'content'(): CDATA | undefined {
+        return this.readProp<CDATA>('content'); }
+}
+
 export interface IntNamedElement {
     readonly 'elementName': string;
 }
@@ -270,11 +294,6 @@ export class Title extends BaseElement implements IntTitle {
 // }
 
 export interface IntPh extends IntFilters, IntLocalization, IntVariableContent {
-    // 'props'?: CDATA;
-    // 'dir'?: CDATA;
-    // 'xml:lang'?: CDATA;
-    // 'translate'?: CDATA;
-    // 'keyref'?: CDATA;
     'outputClass'?: CDATA;
     'className'?: CDATA;
     // children: Array<AllInline>;
