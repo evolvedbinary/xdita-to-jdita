@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { SaxesAttributeNS } from "saxes";
 
@@ -65,7 +66,7 @@ export abstract class BaseElement {
     isNode(name: string): boolean {
         return name === this.static.nodeName;
     }
-    protected attributesToProps<T = Record<string, any>>(attributes: Attributes): T {
+    protected attributesToProps<T = Record<string, any>>(attributes: Attributes = {}): T {
         const result: Record<string, any> = {};
         this.static.fields.forEach(field => {
             const attr = attributes[field];
@@ -205,7 +206,6 @@ export class Topic extends BaseElement implements IntTopic {
     elementName = 'topic';
     _props!: IntTopic;
     static fields = [
-        'nodeName',
         'dir',
         'xml:lang',
         'translate',
@@ -218,10 +218,10 @@ export class Topic extends BaseElement implements IntTopic {
     ];
     isValidField(field: string, value: any): boolean {
         switch(field) {
-            case 'id': return isID(value);
             case 'dir': return isOrUndefined(isCDATA, value);
             case 'xml:lang': return isOrUndefined(isCDATA, value);
             case 'translate': return isOrUndefined(isCDATA, value);
+            case 'id': return isID(value);
             case 'xmlns:ditaarch': return isCDATA(value);
             case 'ditaarch:DITAArchVersion': return isOrUndefined(isCDATA, value);
             case 'domains': return isOrUndefined(isCDATA, value);
@@ -234,6 +234,12 @@ export class Topic extends BaseElement implements IntTopic {
         super();
         this._props = this.attributesToProps(attributes);
     }
+    get 'dir'(): CDATA {
+        return this.readProp<CDATA>('dir'); }
+    get 'xml:lang'(): CDATA {
+        return this.readProp<CDATA>('xml:lang'); }
+    get 'translate'(): CDATA | undefined {
+        return this.readProp<CDATA>('translate'); }
     get 'id'(): ID {
         return this.readProp<ID>('id'); }
     get 'xmlns:ditaarch'(): CDATA {
@@ -285,7 +291,7 @@ export class Title extends BaseElement implements IntTitle {
     }
     constructor(attributes?: Attributes) {
         super();
-        this._props = this.attributesToProps(attributes || {});
+        this._props = this.attributesToProps(attributes);
     }
     get 'dir'(): CDATA | undefined {
         return this.readProp<CDATA>('dir'); }
@@ -384,7 +390,7 @@ export class Ph extends BaseElement implements IntPh {
     }
     constructor(attributes?: Attributes) {
         super();
-        this._props = this.attributesToProps(attributes || {});
+        this._props = this.attributesToProps(attributes);
     }
     get 'props'(): CDATA | undefined {
         return this.readProp<CDATA>('props'); }
