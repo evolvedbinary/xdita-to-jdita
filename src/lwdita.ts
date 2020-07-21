@@ -28,7 +28,7 @@ export type AllInline = CommonInline/* | XRef*/;
 
 type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;
 export abstract class BaseElement {
-    elementName = '';
+    static nodeName = 'node';
     static inline: boolean;
     static fields: Array<string>;
     protected _children: BaseElement[] = [];
@@ -43,7 +43,7 @@ export abstract class BaseElement {
         return this._children;
     }
     protected attributesToProps<T = Record<string, any>>(attributes: Attributes): T {
-        const result: Record<string, any> = { elementName: this.elementName };
+        const result: Record<string, any> = {};
         this.static.fields.forEach(field => {
             const attr = attributes[field];
             result[field] = typeof attr === 'string' ? attr : attr?.value;
@@ -74,7 +74,7 @@ export interface IntTextNode {
 export const isIntTextNode = (value?: any): value is IntTextNode => typeof value === 'object' && typeof value.content === 'string';
 export class TextNode extends BaseElement implements IntTextNode {
     static inline = true;
-    elementName = 'text';
+    static nodeName = 'text';
     _props!: IntTextNode;
     static fields = [
         'content',
@@ -95,8 +95,7 @@ export class TextNode extends BaseElement implements IntTextNode {
 
 
 export class DocumentNode extends BaseElement {
-    static inline = true;
-    elementName = 'document';
+    static nodeName = 'document';
     topic?: Topic;
     static fields = [];
     isValidField(field: string, value: any): boolean {
@@ -180,10 +179,11 @@ export const isIntTopic = (value?: any): value is IntTopic =>
     isIntLocalization(value);
 
 export class Topic extends BaseElement implements IntTopic {
+    static nodeName = 'topic';
     elementName = 'topic';
     _props!: IntTopic;
     static fields = [
-        'elementName',
+        'nodeName',
         'dir',
         'xml:lang',
         'translate',
@@ -240,7 +240,7 @@ export const isIntTitle = (value?: any): value is IntTitle =>
     isIntLocalization(value);
     // children: Array<CommonInline>;
 export class Title extends BaseElement implements IntTitle {
-    elementName = 'title';
+    static nodeName = 'title';
     _props!: IntTitle;
     static fields = [
         'dir',
@@ -281,7 +281,7 @@ export class Title extends BaseElement implements IntTitle {
 //     children: Array<AllInline>;
 // }
 // export class Shortdesc extends BaseElement implements IntShortdesc {
-//     readonly elementName = 'shortdesc';
+//     readonly nodeName = 'shortdesc';
 //     children = [];
 //     constructor(
 //         public outputClass?: CDATA,
@@ -296,7 +296,7 @@ export class Title extends BaseElement implements IntTitle {
 //     children: Array<Data>;
 // }
 // export class Prolog extends BaseElement implements IntProlog {
-//     readonly elementName = 'prolog'
+//     readonly nodeName = 'prolog'
 //     children = [];
 //     constructor(
 //         public outputClass?: CDATA,
@@ -311,7 +311,7 @@ export class Title extends BaseElement implements IntTitle {
 //     //TODO(AR) implement children
 // }
 // export class Body extends BaseElement implements IntBody {
-//     readonly elementName = 'body';
+//     readonly nodeName = 'body';
 //     children = [];
 //     constructor(
 //         public outputClass?: CDATA,
@@ -333,7 +333,7 @@ export const isIntPh = (value?: any): value is IntPh =>
     isIntLocalization(value) &&
     isIntVariableContent(value);
 export class Ph extends BaseElement implements IntPh {
-    elementName = 'ph';
+    static nodeName = 'ph';
     _props!: IntPh;
     static fields = [
         'props',
@@ -384,7 +384,7 @@ export class Ph extends BaseElement implements IntPh {
 //     alt?: Alt;
 // }
 // export class XImage extends BaseElement implements IntXImage {
-//     readonly elementName = 'Ximage';
+//     readonly nodeName = 'Ximage';
 //     constructor(
 //         public height?: NMTOKEN,
 //         public width?: NMTOKEN,
@@ -402,7 +402,7 @@ export class Ph extends BaseElement implements IntPh {
 //     children: Array<PCDATA | Ph | Data>;
 // }
 // export class Alt extends BaseElement implements IntAlt {
-//     readonly elementName = 'alt';
+//     readonly nodeName = 'alt';
 //     children = [];
 //     constructor(
 //         public outputClass?: CDATA,
@@ -420,7 +420,7 @@ export class Ph extends BaseElement implements IntPh {
 //     children: Array<PCDATA | Data>;
 // }
 // export class Data extends BaseElement implements IntData {
-//     readonly elementName = 'data';
+//     readonly nodeName = 'data';
 //     children = [];
 //     constructor(
 //         public outputClass?: CDATA,
@@ -436,7 +436,7 @@ export class Ph extends BaseElement implements IntPh {
 //     children: Array<CommonInline>;
 // }
 // export class XRef extends BaseElement implements IntXRef {
-//     readonly elementName = 'xref';
+//     readonly nodeName = 'xref';
 //     children = [];
 //     constructor(
 //         public keyref: CDATA,
