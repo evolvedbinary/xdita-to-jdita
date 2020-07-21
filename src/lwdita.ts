@@ -714,3 +714,62 @@ export class DD extends BaseElement implements IntDD {
     get 'className'(): CDATA | undefined {
         return this.readProp<CDATA>('className'); }
 }
+
+export interface IntP extends IntFilters, IntLocalization, IntVariableContent {
+    'outputClass'?: CDATA;
+    'className'?: CDATA;
+}
+export const isIntP = (value?: any): value is IntP =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['outputClass']) &&
+    isOrUndefined(isCDATA, value['className']) &&
+    isIntFilters(value) &&
+    isIntLocalization(value) &&
+    isIntVariableContent(value);
+export class Paragraph extends BaseElement implements IntP {
+    static nodeName = 'p';
+    static childGroups = ['all-inline'];
+    _props!: IntP;
+    static fields = [
+        'props',
+        'dir',
+        'xml:lang',
+        'translate',
+        'keyref',
+        'outputClass',
+        'className',
+    ];
+    static isValidField(field: string, value: any): boolean {
+        switch(field) {
+            case 'props': return isOrUndefined(isCDATA, value);
+            case 'dir': return isOrUndefined(isCDATA, value);
+            case 'xml:lang': return isOrUndefined(isCDATA, value);
+            case 'translate': return isOrUndefined(isCDATA, value);
+            case 'id': return isOrUndefined(isNMTOKEN, value);
+            case 'conref': return isOrUndefined(isCDATA, value);
+            case 'outputClass': return isOrUndefined(isCDATA, value);
+            case 'className': return isOrUndefined(isCDATA, value);
+            default: return false;
+        }
+    }
+    constructor(attributes?: Attributes) {
+        super();
+        this._props = this.attributesToProps(attributes);
+    }
+    get 'props'(): CDATA | undefined {
+        return this.readProp<CDATA>('props'); }
+    get 'dir'(): CDATA | undefined {
+        return this.readProp<CDATA>('dir'); }
+    get 'xml:lang'(): CDATA | undefined {
+        return this.readProp<CDATA>('xml:lang'); }
+    get 'translate'(): CDATA | undefined {
+        return this.readProp<CDATA>('translate'); }
+    get 'id'(): NMTOKEN | undefined {
+        return this.readProp<NMTOKEN>('id'); }
+    get 'conref'(): CDATA | undefined {
+        return this.readProp<CDATA>('conref'); }
+    get 'outputClass'(): CDATA | undefined {
+        return this.readProp<CDATA>('outputClass'); }
+    get 'className'(): CDATA | undefined {
+        return this.readProp<CDATA>('className'); }
+}
