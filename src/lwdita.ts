@@ -64,6 +64,7 @@ export abstract class BaseElement {
             if (breakOnError) {
                 throw new Error(`"${child.static.nodeName}" node can't be a child of "${this.static.nodeName}" node`);
             }
+            return;
         }
         this._children.push(child)
     }
