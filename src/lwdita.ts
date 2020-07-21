@@ -24,10 +24,14 @@ export const isNMTOKEN = (value?: any): value is NMTOKEN =>  typeof value ==='st
 export type RefrenceContentScope = 'local' | 'peer' | 'external';
 export const isRefrenceContentScope = (value?: any): value is RefrenceContentScope =>
     has(['local', 'peer', 'external'], value);
-const _commonInline = ['text', 'ph', 'ximage', 'data'];
 export const nodeGroups: Record<string, Array<string>> = {
-    'common-inline': _commonInline,
-    'all-inline'   : [..._commonInline, 'xref'],
+    'common-inline': ['text', 'ph', 'ximage', 'data'],
+    'all-inline'   : ['text', 'ph', 'ximage', 'xref', 'data'],
+    'simple-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'fn', 'note', 'data'],
+    'fn-blocks'    : ['p', 'ul', 'ol', 'dl', 'data'],
+    'all-blocks'   : ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'fn', 'note', 'data'],
+    'list-blocks'  : ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'note', 'data'],
+    'fig-blocks'   : ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'data'],
 }
 export type CommonInline = PCDATA | IntPh /* | IntXImage | IntData*/;
 export const isCommonInline = (value?: any): value is CommonInline => isPCDATA(value) || isIntPh(value);
