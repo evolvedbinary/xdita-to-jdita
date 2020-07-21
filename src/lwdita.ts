@@ -1,5 +1,7 @@
 import { SaxesAttributeNS } from "saxes";
 
+type Class<T> = new (...args: any[]) => T;
+
 export const has = (array: Array<any>, value: any): boolean => array.indexOf(value) >= 0;
 
 export function isOrUndefined<T>(check: (value?: any) => boolean, value?: any): value is T | undefined {
@@ -27,24 +29,27 @@ export type AllInline = CommonInline/* | XRef*/;
 type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;
 export abstract class BaseElement {
     elementName = '';
-    abstract fields: Array<string>;
+    static fields: Array<string>;
     protected _props!: Record<string, any>;
+    protected get static() {
+        return (this.constructor as unknown as typeof BaseElement);
+    }
     protected attributesToProps<T = Record<string, any>>(attributes: Attributes): T {
         const result: Record<string, any> = { elementName: this.elementName };
-        this.fields.forEach(field => {
+        this.static.fields.forEach(field => {
             const attr = attributes[field];
             result[field] = typeof attr === 'string' ? attr : attr?.value;
         });
         return result as T;
     }
     readProp<T = any>(field: string): T {
-        if (this.fields.indexOf(field) < 0) {
+        if (this.static.fields.indexOf(field) < 0) {
             throw new Error('unkown property "' + field + '"');
         }
         return this._props[field];
     }
     writeProp<T = any>(field: string, value: T): void {
-        if (this.fields.indexOf(field) < 0) {
+        if (this.static.fields.indexOf(field) < 0) {
             throw new Error('unkown property "' + field + '"');
         }
         if (!this.isValidField(field, value)) {
@@ -62,7 +67,7 @@ export const isIntTextNode = (value?: any): value is IntTextNode => typeof value
 export class TextNode extends BaseElement implements IntTextNode {
     elementName = 'text';
     _props!: IntTextNode;
-    fields = [
+    static fields = [
         'content',
     ];
     isValidField(field: string, value: any): boolean {
@@ -154,7 +159,7 @@ export const isIntTopic = (value?: any): value is IntTopic =>
 export class Topic extends BaseElement implements IntTopic {
     elementName = 'topic';
     _props!: IntTopic;
-    fields = [
+    static fields = [
         'elementName',
         'dir',
         'xml:lang',
@@ -214,7 +219,7 @@ export const isIntTitle = (value?: any): value is IntTitle =>
 export class Title extends BaseElement implements IntTitle {
     elementName = 'title';
     _props!: IntTitle;
-    fields = [
+    static fields = [
         'dir',
         'xml:lang',
         'translate',
@@ -307,7 +312,7 @@ export const isIntPh = (value?: any): value is IntPh =>
 export class Ph extends BaseElement implements IntPh {
     elementName = 'ph';
     _props!: IntPh;
-    fields = [
+    static fields = [
         'props',
         'dir',
         'xml:lang',
