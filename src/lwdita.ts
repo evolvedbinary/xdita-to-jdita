@@ -29,10 +29,18 @@ export type AllInline = CommonInline/* | XRef*/;
 type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;
 export abstract class BaseElement {
     elementName = '';
+    static inline: boolean;
     static fields: Array<string>;
+    protected _children: BaseElement[] = [];
     protected _props!: Record<string, any>;
-    protected get static() {
-        return (this.constructor as unknown as typeof BaseElement);
+    protected get static(): typeof BaseElement {
+        return this.constructor as any;
+    }
+    get children(): BaseElement[] {
+        if (this.static.inline) {
+            throw new Error('inline nodes don\'t have children');
+        }
+        return this._children;
     }
     protected attributesToProps<T = Record<string, any>>(attributes: Attributes): T {
         const result: Record<string, any> = { elementName: this.elementName };
@@ -65,6 +73,7 @@ export interface IntTextNode {
 }
 export const isIntTextNode = (value?: any): value is IntTextNode => typeof value === 'object' && typeof value.content === 'string';
 export class TextNode extends BaseElement implements IntTextNode {
+    static inline = true;
     elementName = 'text';
     _props!: IntTextNode;
     static fields = [
