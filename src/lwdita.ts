@@ -547,3 +547,52 @@ export class DLEntry extends BaseElement implements IntDLEntry {
         return this.readProp<CDATA>('className'); }
 }
 
+export interface IntBody extends IntLocalization {
+    'outputClass'?: CDATA;
+    'className'?: CDATA;
+}
+export const isIntBody = (value?: any): value is IntBody =>
+    typeof value === 'object' &&
+    isOrUndefined(isCDATA, value['outputClass']) &&
+    isOrUndefined(isCDATA, value['className']) &&
+    isIntLocalization(value);
+export class Body extends BaseElement implements IntBody {
+    static nodeName = 'body';
+    static childTypes = ['section', 'fn'];
+    static childGroups = ['list-blocks'];
+    _props!: IntBody;
+    static fields = [
+        'xml:lang',
+        'translate',
+        'keyref',
+        'outputClass',
+        'className',
+    ];
+    static isValidField(field: string, value: any): boolean {
+        switch(field) {
+            case 'xml:lang': return isOrUndefined(isCDATA, value);
+            case 'translate': return isOrUndefined(isCDATA, value);
+            case 'id': return isOrUndefined(isNMTOKEN, value);
+            case 'conref': return isOrUndefined(isCDATA, value);
+            case 'outputClass': return isOrUndefined(isCDATA, value);
+            case 'className': return isOrUndefined(isCDATA, value);
+            default: return false;
+        }
+    }
+    constructor(attributes?: Attributes) {
+        super();
+        this._props = this.attributesToProps(attributes);
+    }
+    get 'xml:lang'(): CDATA | undefined {
+        return this.readProp<CDATA>('xml:lang'); }
+    get 'translate'(): CDATA | undefined {
+        return this.readProp<CDATA>('translate'); }
+    get 'id'(): NMTOKEN | undefined {
+        return this.readProp<NMTOKEN>('id'); }
+    get 'conref'(): CDATA | undefined {
+        return this.readProp<CDATA>('conref'); }
+    get 'outputClass'(): CDATA | undefined {
+        return this.readProp<CDATA>('outputClass'); }
+    get 'className'(): CDATA | undefined {
+        return this.readProp<CDATA>('className'); }
+}
