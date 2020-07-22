@@ -143,6 +143,6 @@ parser
     .close();
 console.log('unknown nodes:', unknownNodes.length);
 console.log(unknownNodes);
-// console.log(JSON.stringify(doc.json, null, 2));
+console.log(JSON.stringify(doc.json, null, 2));
 // console.log(stack2);
     // parser.
