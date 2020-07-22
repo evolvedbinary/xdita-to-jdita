@@ -1,5 +1,6 @@
 import { CDATA, isCDATA, isOrUndefined } from "../utils";
 
+export const LocalizationFields = ['dir', 'xml:lang', 'translate'];
 export interface LocalizationAttributes {
   'dir'?: CDATA;
   'xml:lang'?: CDATA;

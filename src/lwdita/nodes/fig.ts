@@ -2,24 +2,14 @@
 
 import { CDATA, isCDATA, isOrUndefined, Attributes, isDisplayScale, isDisplayFrame, isDisplayExpanse, DisplayScale, DisplayFrame, DisplayExpanse } from "../utils";
 import { BaseNode } from "./base";
-import { FigAttributes } from "../attributes/fig";
+import { FigAttributes, FigFields } from "../attributes/fig";
 
 export class FigNode extends BaseNode implements FigAttributes {
   static nodeName = 'fig';
   static childTypes = ['image', 'xref'];
   static childGroups = ['fig-blocks'];
   _props!: FigAttributes;
-  static fields = [
-      'scale',
-      'frame',
-      'expanse',
-      'dir',
-      'xml:lang',
-      'translate',
-      'keyref',
-      'outputClass',
-      'className',
-  ];
+  static fields = FigFields;
   static isValidField(field: string, value: any): boolean {
       switch(field) {
           case 'scale': return isOrUndefined(isDisplayScale, value);

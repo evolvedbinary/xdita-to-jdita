@@ -2,20 +2,14 @@
 
 import { CDATA, isCDATA, isOrUndefined, Attributes } from "../utils";
 import { BaseNode } from "./base";
-import { TitleAttributes } from "../attributes/title";
+import { TitleAttributes, TitleFields } from "../attributes/title";
 
 export class TitleNode extends BaseNode implements TitleAttributes {
   static nodeName = 'title';
   static childTypes = [];
   static childGroups = ['common-inline'];
   _props!: TitleAttributes;
-  static fields = [
-      'dir',
-      'xml:lang',
-      'translate',
-      'outputClass',
-      'className',
-  ];
+  static fields = TitleFields;
   static isValidField(field: string, value: any): boolean {
       switch(field) {
           case 'dir': return isOrUndefined(isCDATA, value);

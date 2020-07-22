@@ -1,7 +1,8 @@
-import { LocalizationAttributes, isLocalizationAttributes } from "./localization";
-import { ClassAttributes, isClassAttributes } from "./class";
+import { LocalizationAttributes, isLocalizationAttributes, LocalizationFields } from "./localization";
+import { ClassAttributes, isClassAttributes, ClassFields } from "./class";
 import { ID, CDATA, isID, isCDATA, isOrUndefined } from "../utils";
 
+export const TopicFields = [...LocalizationFields, ...ClassFields];
 export interface TopicAttributes extends LocalizationAttributes, ClassAttributes {
   'id': ID;
   'xmlns:ditaarch': CDATA;

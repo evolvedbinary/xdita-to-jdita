@@ -2,20 +2,14 @@
 
 import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
-import { BodyAttributes } from "../attributes/body";
+import { BodyAttributes, BodyFields } from "../attributes/body";
 
 export class BodyNode extends BaseNode implements BodyAttributes {
   static nodeName = 'body';
   static childTypes = ['section', 'fn'];
   static childGroups = ['list-blocks'];
   _props!: BodyAttributes;
-  static fields = [
-      'xml:lang',
-      'translate',
-      'keyref',
-      'outputClass',
-      'className',
-  ];
+  static fields = BodyFields;
   static isValidField(field: string, value: any): boolean {
       switch(field) {
           case 'xml:lang': return isOrUndefined(isCDATA, value);

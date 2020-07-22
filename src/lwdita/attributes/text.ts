@@ -1,3 +1,4 @@
+export const TextFields = ['content'];
 export interface TextAttributes {
   'content'?: string;
 }

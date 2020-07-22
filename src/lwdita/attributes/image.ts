@@ -1,10 +1,11 @@
-import { FiltersAttributes, isFiltersAttributes } from "./filters";
-import { LocalizationAttributes, isLocalizationAttributes } from "./localization";
-import { VariableContentAttributes, isVariableContentAttributes } from "./variable-content";
-import { ReferenceContentAttributes, isReferenceContentAttributes } from "./reference-content";
+import { FiltersAttributes, isFiltersAttributes, FiltersFields } from "./filters";
+import { LocalizationAttributes, isLocalizationAttributes, LocalizationFields } from "./localization";
+import { VariableContentAttributes, isVariableContentAttributes, VariableContentFields } from "./variable-content";
+import { ReferenceContentAttributes, isReferenceContentAttributes, ReferenceContentFields } from "./reference-content";
 import { NMTOKEN, isOrUndefined, isNMTOKEN } from "../utils";
-import { ClassAttributes, isClassAttributes } from "./class";
+import { ClassAttributes, isClassAttributes, ClassFields } from "./class";
 
+export const ImageFields = [...FiltersFields, ...LocalizationFields, ...VariableContentFields, ...ReferenceContentFields, ...ClassFields];
 export interface ImageAttributes extends FiltersAttributes, LocalizationAttributes, VariableContentAttributes, ReferenceContentAttributes, ClassAttributes {
   'height'?: NMTOKEN;
   'width'?: NMTOKEN;

@@ -1,7 +1,8 @@
-import { ClassAttributes, isClassAttributes } from "./class";
-import { LocalizationAttributes, isLocalizationAttributes } from "./localization";
-import { FiltersAttributes, isFiltersAttributes } from "./filters";
+import { ClassAttributes, isClassAttributes, ClassFields } from "./class";
+import { LocalizationAttributes, isLocalizationAttributes, LocalizationFields } from "./localization";
+import { FiltersAttributes, isFiltersAttributes, FiltersFields } from "./filters";
 
+export const ShortDescFields = [...FiltersFields, ...LocalizationFields, ...ClassFields];
 export interface ShortDescAttributes extends FiltersAttributes, LocalizationAttributes, ClassAttributes {}
 export const isShortDescAttributes = (value?: any): value is ShortDescAttributes =>
   isClassAttributes(value) &&

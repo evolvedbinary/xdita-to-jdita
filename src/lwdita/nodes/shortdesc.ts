@@ -2,20 +2,11 @@
 
 import { CDATA, isOrUndefined, isCDATA, Attributes } from "../utils";
 import { BaseNode } from "./base";
-import { ShortDescAttributes } from "../attributes/shortdesc";
+import { ShortDescAttributes, ShortDescFields } from "../attributes/shortdesc";
 
-export class ShortdescNode extends BaseNode implements ShortDescAttributes {
+export class ShortDescNode extends BaseNode implements ShortDescAttributes {
   static nodeName = 'shortdesc';
-  static fields = [
-      'props',
-      'dir',
-      'xml:lang',
-      'translate',
-      'id',
-      'conref',
-      'outputClass',
-      'className',
-  ];
+  static fields = ShortDescFields;
   static childGroups = ['all-inline'];
   constructor(attributes?: Attributes) {
       super();

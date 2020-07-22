@@ -2,21 +2,13 @@
 
 import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
-import { PAttributes } from "../attributes/p";
+import { PAttributes, PFields } from "../attributes/p";
 
 export class PNode extends BaseNode implements PAttributes {
   static nodeName = 'dt';
   static childGroups = ['all-inline'];
   _props!: PAttributes;
-  static fields = [
-      'props',
-      'dir',
-      'xml:lang',
-      'translate',
-      'keyref',
-      'outputClass',
-      'className',
-  ];
+  static fields = PFields;
   static isValidField(field: string, value: any): boolean {
       switch(field) {
           case 'props': return isOrUndefined(isCDATA, value);

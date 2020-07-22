@@ -2,21 +2,13 @@
 
 import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
-import { AltAttributes } from "../attributes/alt";
+import { AltAttributes, AltFields } from "../attributes/alt";
 
 export class AltNode extends BaseNode implements AltAttributes {
   static nodeName = 'dt';
   static childGroups = ['all-inline'];
   _props!: AltAttributes;
-  static fields = [
-      'props',
-      'dir',
-      'xml:lang',
-      'translate',
-      'keyref',
-      'outputClass',
-      'className',
-  ];
+  static fields = AltFields;
   static isValidField(field: string, value: any): boolean {
       switch(field) {
           case 'props': return isOrUndefined(isCDATA, value);

@@ -2,22 +2,13 @@
 
 import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
-import { DlAttributes } from "../attributes/dl";
+import { DlAttributes, DlFields } from "../attributes/dl";
 
 export class DlNode extends BaseNode implements DlAttributes {
   static nodeName = 'dl';
   static childTypes = ['dlentry'];
   _props!: DlAttributes;
-  static fields = [
-      'props',
-      'dir',
-      'xml:lang',
-      'translate',
-      'id',
-      'conref',
-      'outputClass',
-      'className',
-  ];
+  static fields = DlFields;
   static isValidField(field: string, value: any): boolean {
       switch(field) {
           case 'props': return isOrUndefined(isCDATA, value);

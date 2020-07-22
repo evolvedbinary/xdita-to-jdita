@@ -1,9 +1,10 @@
 import { DisplayScale, DisplayFrame, DisplayExpanse, isOrUndefined, isDisplayScale, isDisplayFrame, isDisplayExpanse } from "../utils";
 
+export const DisplayFields = ['scale', 'frame', 'expanse'];
 export interface DisplayAttributes {
-  scale?: DisplayScale;
-  frame?: DisplayFrame;
-  expanse?: DisplayExpanse;
+  'scale'?: DisplayScale;
+  'frame'?: DisplayFrame;
+  'expanse'?: DisplayExpanse;
 }
 export const isDisplayAttributes = (value?: any): value is DisplayAttributes =>
   typeof value === 'object' &&

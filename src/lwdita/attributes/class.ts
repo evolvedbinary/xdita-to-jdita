@@ -1,5 +1,6 @@
 import { CDATA, isOrUndefined, isCDATA } from "../utils";
 
+export const ClassFields = ['outputClass', 'className'];
 export interface ClassAttributes {
   'outputClass'?: CDATA;
   'className'?: CDATA;

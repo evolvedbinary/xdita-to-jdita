@@ -2,23 +2,13 @@
 
 import { isOrUndefined, NMTOKEN, CDATA, isCDATA, isNMTOKEN, Attributes } from "../utils";
 import { BaseNode } from "./base";
-import { ImageAttributes } from "../attributes/image";
+import { ImageAttributes, ImageFields } from "../attributes/image";
 
 export class ImageNode extends BaseNode implements ImageAttributes {
   static nodeName = 'image';
   static childTypes = ['alt'];
   _props!: ImageAttributes;
-  static fields = [
-      'height',
-      'width',
-      'dir',
-      'dir',
-      'xml:lang',
-      'translate',
-      'keyref',
-      'outputClass',
-      'className',
-  ];
+  static fields = ImageFields;
   static isValidField(field: string, value: any): boolean {
       switch(field) {
           case 'height': return isOrUndefined(isNMTOKEN, value);

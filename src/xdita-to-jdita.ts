@@ -21,7 +21,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import * as saxes from "saxes";
 import { BaseNode } from "./lwdita/nodes/base";
 import { DocumentNode } from "./lwdita/nodes/document";
-import { TextNode, TopicNode, TitleNode, PhNode, ShortdescNode, DtNode, PNode, ImageNode, FigNode } from "./lwdita";
+import { TextNode, TopicNode, TitleNode, PhNode, ShortDescNode, DtNode, PNode, ImageNode, FigNode } from "./lwdita";
 import { DlNode } from "./lwdita/nodes/dl";
 import { DlEntryNode } from "./lwdita/nodes/dl-entry";
 import { DdNode } from "./lwdita/nodes/dd";
@@ -88,7 +88,7 @@ parser.on("opentag", function (node: saxes.SaxesTagNS) {
     case 'topic': obj = new TopicNode(node.attributes); break;
     case 'title': obj = new TitleNode(node.attributes); break;
     case 'ph': obj = new PhNode(node.attributes); break;
-    case 'shortdesc': obj = new ShortdescNode(node.attributes); break;
+    case 'shortdesc': obj = new ShortDescNode(node.attributes); break;
     case 'dl': obj = new DlNode(node.attributes); break;
     case 'dlentry': obj = new DlEntryNode(node.attributes); break;
     case 'dt': obj = new DtNode(node.attributes); break;
