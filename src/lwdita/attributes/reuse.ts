@@ -1,4 +1,4 @@
-import { NMTOKEN, CDATA, isOrUndefined, isCDATA } from "./utils";
+import { NMTOKEN, CDATA, isOrUndefined, isCDATA } from "../utils";
 
 export interface ReuseAttributes {
   id?: NMTOKEN;

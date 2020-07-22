@@ -1,5 +1,5 @@
 import { ClassAttributes, isClassAttributes } from "./class";
-import { ReuseAttributes, isReuseAttributes } from "../reuse";
+import { ReuseAttributes, isReuseAttributes } from "./reuse";
 import { LocalizationAttributes, isLocalizationAttributes } from "./localization";
 import { FiltersAttributes, isFiltersAttributes } from "./filters";
 

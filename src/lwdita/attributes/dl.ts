@@ -1,6 +1,6 @@
 import { FiltersAttributes, isFiltersAttributes } from "./filters";
 import { ClassAttributes, isClassAttributes } from "./class";
-import { ReuseAttributes, isReuseAttributes } from "../reuse";
+import { ReuseAttributes, isReuseAttributes } from "./reuse";
 import { LocalizationAttributes, isLocalizationAttributes } from "./localization";
 
 export interface DlAttributes extends FiltersAttributes, LocalizationAttributes, ReuseAttributes, ClassAttributes {}
