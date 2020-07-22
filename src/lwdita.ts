@@ -50,7 +50,7 @@ export abstract class BaseElement {
     static fields: Array<string>;
     static childTypes: Array<string> = [];
     static childGroups: Array<string> = [];
-    protected _children: BaseElement[] = [];
+    protected _children?: BaseElement[];
     protected _props!: Record<string, any>;
     protected get static(): typeof BaseElement {
         return this.constructor as any;
@@ -59,7 +59,7 @@ export abstract class BaseElement {
         return {
             nodeName: this.static.nodeName,
             ...this._props,
-            children: this._children.map(child => child.json),
+            children: this._children?.map(child => child.json),
         };
     }
     static canAdd(child: BaseElement): boolean {
@@ -67,6 +67,9 @@ export abstract class BaseElement {
             (this.childGroups.length > 0 && !!this.childGroups.find(group => has(nodeGroups[group], child.static.nodeName)));
     }
     add(child: BaseElement, breakOnError = true): void {
+        if (!this._children) {
+            this._children = [];
+        }
         if (!this.static.canAdd(child)) {
             if (breakOnError) {
                 throw new Error(`"${child.static.nodeName}" node can't be a child of "${this.static.nodeName}" node`);
