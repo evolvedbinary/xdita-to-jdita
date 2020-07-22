@@ -19,15 +19,22 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import * as saxes from "saxes";
-import { Topic, BaseElement, Title, Paragraph, Ph, TextNode, DocumentNode, ShortDesc, DL, DLEntry, Body, DD, DT, ImageNode, Alt, Fig } from "./lwdita";
+import { BaseNode } from "./lwdita/nodes/base";
+import { DocumentNode } from "./lwdita/nodes/document";
+import { TextNode, TopicNode, TitleNode, PhNode, ShortdescNode, DtNode, PNode, ImageNode, FigNode } from "./lwdita";
+import { DlNode } from "./lwdita/nodes/dl";
+import { DlEntryNode } from "./lwdita/nodes/dl-entry";
+import { DdNode } from "./lwdita/nodes/dd";
+import { BodyNode } from "./lwdita/nodes/body";
+import { AltNode } from "./lwdita/nodes/alt";
 
-class UnknownNode extends BaseElement {
+class UnknownNode extends BaseNode {
   static nodeName = 'unknown';
   isValidField(field: string, value: any): boolean { return false; }
-  // static canAdd(child: BaseElement): boolean {
+  // static canAdd(child: BaseNode): boolean {
   //     return true;
   // }
-  add(child: BaseElement, breakOnError = false): void {
+  add(child: BaseNode, breakOnError = false): void {
       console.log('skipped');
   }
 }
@@ -42,26 +49,26 @@ const parser = new saxes.SaxesParser({
 });
 
 const doc = new DocumentNode();
-const stack: BaseElement[] = [ doc ];
-const stack2: BaseElement[] = [];
-function push(obj: BaseElement): void {
+const stack: BaseNode[] = [ doc ];
+const stack2: BaseNode[] = [];
+function push(obj: BaseNode): void {
   stack.push(obj);
   stack2.push(obj);
 }
-function last(): BaseElement {
+function last(): BaseNode {
   return stack[stack.length - 1];
 }
-function pop(): BaseElement | undefined {
+function pop(): BaseNode | undefined {
   return stack.pop();
 }
-function find(fun: (obj: BaseElement) => boolean): BaseElement | undefined {
+function find(fun: (obj: BaseNode) => boolean): BaseNode | undefined {
   for (let i = stack.length - 1; i > -1; i--) {
     if (fun(stack[i])) {
       return stack[i];
     }
   }
 }
-function findByName(name: string): BaseElement | undefined {
+function findByName(name: string): BaseNode | undefined {
   return find(o => o.isNode(name));
 }
 
@@ -78,19 +85,19 @@ parser.on("opentag", function (node: saxes.SaxesTagNS) {
   indent = indent + '| ';
   let obj;
   switch(node.local) {
-    case 'topic': obj = new Topic(node.attributes); break;
-    case 'title': obj = new Title(node.attributes); break;
-    case 'ph': obj = new Ph(node.attributes); break;
-    case 'shortdesc': obj = new ShortDesc(node.attributes); break;
-    case 'dl': obj = new DL(node.attributes); break;
-    case 'dlentry': obj = new DLEntry(node.attributes); break;
-    case 'dt': obj = new DT(node.attributes); break;
-    case 'dd': obj = new DD(node.attributes); break;
-    case 'body': obj = new Body(node.attributes); break;
-    case 'p': obj = new Paragraph(node.attributes); break;
+    case 'topic': obj = new TopicNode(node.attributes); break;
+    case 'title': obj = new TitleNode(node.attributes); break;
+    case 'ph': obj = new PhNode(node.attributes); break;
+    case 'shortdesc': obj = new ShortdescNode(node.attributes); break;
+    case 'dl': obj = new DlNode(node.attributes); break;
+    case 'dlentry': obj = new DlEntryNode(node.attributes); break;
+    case 'dt': obj = new DtNode(node.attributes); break;
+    case 'dd': obj = new DdNode(node.attributes); break;
+    case 'body': obj = new BodyNode(node.attributes); break;
+    case 'p': obj = new PNode(node.attributes); break;
     case 'image': obj = new ImageNode(node.attributes); break;
-    case 'alt': obj = new Alt(node.attributes); break;
-    case 'fig': obj = new Fig(node.attributes); break;
+    case 'alt': obj = new AltNode(node.attributes); break;
+    case 'fig': obj = new FigNode(node.attributes); break;
     default: 
       push(new UnknownNode());
       unknownNodes.push(node.local);
