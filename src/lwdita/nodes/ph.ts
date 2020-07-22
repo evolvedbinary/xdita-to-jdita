@@ -1,22 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { FiltersAttributes, isFiltersAttributes } from "../attributes/filters";
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
 import { CDATA, isCDATA, isOrUndefined, Attributes } from "../utils";
 import { BaseNode } from "./base";
-import { VariableContentAttributes, isVariableContentAttributes } from "../attributes/variable-content";
+import { PhAttributes } from "../attributes/ph";
 
-export interface PhAttributes extends FiltersAttributes, LocalizationAttributes, VariableContentAttributes {
-  'outputClass'?: CDATA;
-  'className'?: CDATA;
-}
-export const isPhAttributes = (value?: any): value is PhAttributes =>
-  typeof value === 'object' &&
-  isOrUndefined(isCDATA, value['outputClass']) &&
-  isOrUndefined(isCDATA, value['className']) &&
-  isFiltersAttributes(value) &&
-  isLocalizationAttributes(value) &&
-  isVariableContentAttributes(value);
 export class PhNode extends BaseNode implements PhAttributes {
   static nodeName = 'ph';
   static childGroups = ['all-inline'];

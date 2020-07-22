@@ -1,22 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { FiltersAttributes, isFiltersAttributes } from "../attributes/filters";
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
-import { VariableContentAttributes, isVariableContentAttributes } from "../attributes/variable-content";
 import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
+import { PAttributes } from "../attributes/p";
 
-export interface PAttributes extends FiltersAttributes, LocalizationAttributes, VariableContentAttributes {
-  'outputClass'?: CDATA;
-  'className'?: CDATA;
-}
-export const isPAttributes = (value?: any): value is PAttributes =>
-  typeof value === 'object' &&
-  isOrUndefined(isCDATA, value['outputClass']) &&
-  isOrUndefined(isCDATA, value['className']) &&
-  isFiltersAttributes(value) &&
-  isLocalizationAttributes(value) &&
-  isVariableContentAttributes(value);
 export class PNode extends BaseNode implements PAttributes {
   static nodeName = 'dt';
   static childGroups = ['all-inline'];

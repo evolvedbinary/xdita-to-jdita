@@ -1,22 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { FiltersAttributes, isFiltersAttributes } from "../attributes/filters";
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
-import { VariableContentAttributes, isVariableContentAttributes } from "../attributes/variable-content";
 import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
+import { AltAttributes } from "../attributes/alt";
 
-export interface AltAttributes extends FiltersAttributes, LocalizationAttributes, VariableContentAttributes {
-  'outputClass'?: CDATA;
-  'className'?: CDATA;
-}
-export const isAltAttributes = (value?: any): value is AltAttributes =>
-  typeof value === 'object' &&
-  isOrUndefined(isCDATA, value['outputClass']) &&
-  isOrUndefined(isCDATA, value['className']) &&
-  isFiltersAttributes(value) &&
-  isLocalizationAttributes(value) &&
-  isVariableContentAttributes(value);
 export class AltNode extends BaseNode implements AltAttributes {
   static nodeName = 'dt';
   static childGroups = ['all-inline'];

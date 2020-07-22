@@ -1,24 +1,9 @@
-import { FiltersAttributes, isFiltersAttributes } from "../attributes/filters";
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
-import { VariableContentAttributes, isVariableContentAttributes } from "../attributes/variable-content";
-import { ReferenceContentAttributes, isReferenceContentAttributes } from "../attributes/reference-content";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { isOrUndefined, NMTOKEN, CDATA, isCDATA, isNMTOKEN, Attributes } from "../utils";
 import { BaseNode } from "./base";
+import { ImageAttributes } from "../attributes/image";
 
-export interface ImageAttributes extends FiltersAttributes, LocalizationAttributes, VariableContentAttributes, ReferenceContentAttributes {
-  'height'?: NMTOKEN;
-  'width'?: NMTOKEN;
-  'outputClass'?: CDATA;
-  'className'?: CDATA;
-}
-export const isImageAttributes = (value?: any): value is ImageAttributes =>
-  typeof value === 'object' &&
-  isOrUndefined(isCDATA, value['outputClass']) &&
-  isOrUndefined(isCDATA, value['className']) &&
-  isFiltersAttributes(value) &&
-  isLocalizationAttributes(value) &&
-  isReferenceContentAttributes(value) &&
-  isVariableContentAttributes(value);
 export class ImageNode extends BaseNode implements ImageAttributes {
   static nodeName = 'image';
   static childTypes = ['alt'];

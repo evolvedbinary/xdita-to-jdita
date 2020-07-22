@@ -1,23 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
 import { CDATA, isCDATA, isOrUndefined, Attributes } from "../utils";
 import { BaseNode } from "./base";
+import { TitleAttributes } from "../attributes/title";
 
-export interface IntTitle extends LocalizationAttributes {
-  'outputClass'?: CDATA;
-  'className'?: CDATA;
-}
-export const isIntTitle = (value?: any): value is IntTitle =>
-  typeof value === 'object' &&
-  isOrUndefined(isCDATA, value['outputClass']) &&
-  isOrUndefined(isCDATA, value['className']) &&
-  isLocalizationAttributes(value);
-export class TitleNode extends BaseNode implements IntTitle {
+export class TitleNode extends BaseNode implements TitleAttributes {
   static nodeName = 'title';
   static childTypes = [];
   static childGroups = ['common-inline'];
-  _props!: IntTitle;
+  _props!: TitleAttributes;
   static fields = [
       'dir',
       'xml:lang',

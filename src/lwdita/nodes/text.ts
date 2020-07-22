@@ -2,14 +2,11 @@
 
 import { BaseNode } from "./base";
 import { CDATA } from "../utils";
+import { TextAttributes } from "../attributes/text";
 
-export interface IntTextNode {
-  'content'?: string;
-}
-export const isIntTextNode = (value?: any): value is IntTextNode => typeof value === 'object' && typeof value.content === 'string';
-export class TextNode extends BaseNode implements IntTextNode {
+export class TextNode extends BaseNode implements TextAttributes {
   static nodeName = 'text';
-  _props!: IntTextNode;
+  _props!: TextAttributes;
   static fields = [
       'content',
   ];

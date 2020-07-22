@@ -1,22 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
-import { VariableContentAttributes, isVariableContentAttributes } from "../attributes/variable-content";
-import { DisplayAttributes, isDisplayAttributes } from "../attributes/display";
 import { CDATA, isCDATA, isOrUndefined, Attributes, isDisplayScale, isDisplayFrame, isDisplayExpanse, DisplayScale, DisplayFrame, DisplayExpanse } from "../utils";
 import { BaseNode } from "./base";
+import { FigAttributes } from "../attributes/fig";
 
-export interface FigAttributes extends DisplayAttributes, LocalizationAttributes, VariableContentAttributes {
-  'outputClass'?: CDATA;
-  'className'?: CDATA;
-}
-export const isFigAttributes = (value?: any): value is FigAttributes =>
-  typeof value === 'object' &&
-  isOrUndefined(isCDATA, value['outputClass']) &&
-  isOrUndefined(isCDATA, value['className']) &&
-  isVariableContentAttributes(value) &&
-  isLocalizationAttributes(value) &&
-  isDisplayAttributes(value);
 export class FigNode extends BaseNode implements FigAttributes {
   static nodeName = 'fig';
   static childTypes = ['image', 'xref'];

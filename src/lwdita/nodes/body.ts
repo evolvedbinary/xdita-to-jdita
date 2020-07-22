@@ -1,18 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
 import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
+import { BodyAttributes } from "../attributes/body";
 
-export interface BodyAttributes extends LocalizationAttributes {
-  'outputClass'?: CDATA;
-  'className'?: CDATA;
-}
-export const isBodyAttributes = (value?: any): value is BodyAttributes =>
-  typeof value === 'object' &&
-  isOrUndefined(isCDATA, value['outputClass']) &&
-  isOrUndefined(isCDATA, value['className']) &&
-  isLocalizationAttributes(value);
 export class BodyNode extends BaseNode implements BodyAttributes {
   static nodeName = 'body';
   static childTypes = ['section', 'fn'];

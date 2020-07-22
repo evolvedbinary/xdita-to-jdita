@@ -1,28 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { BaseNode } from "./base";
-import { NamedElementAttributes, isNamedElementAttributes } from "../attributes/named-element";
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
 import { ID, CDATA, isID, isCDATA, isOrUndefined, Attributes } from "../utils";
-
-export interface TopicAttributes extends NamedElementAttributes, LocalizationAttributes {
-  'id': ID;
-  'xmlns:ditaarch': CDATA;
-  'ditaarch:DITAArchVersion'?: CDATA;
-  'domains'?: CDATA;
-  'outputClass'?: CDATA;
-  'className'?: CDATA;
-}
-export const isTopicAttributes = (value?: any): value is TopicAttributes =>
-  typeof value === 'object' &&
-  isID(value['id']) &&
-  isCDATA(value['xmlns:ditaarch']) &&
-  isOrUndefined(isCDATA, value['ditaarch:DITAArchVersion']) &&
-  isOrUndefined(isCDATA, value['domains']) &&
-  isOrUndefined(isCDATA, value['outputClass']) &&
-  isOrUndefined(isCDATA, value['className']) &&
-  isLocalizationAttributes(value) &&
-  isNamedElementAttributes(value);
+import { TopicAttributes } from "../attributes/topic";
 
 export class TopicNode extends BaseNode implements TopicAttributes {
   static nodeName = 'topic';

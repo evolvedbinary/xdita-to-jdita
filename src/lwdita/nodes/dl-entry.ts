@@ -1,22 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { FiltersAttributes, isFiltersAttributes } from "../attributes/filters";
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
-import { VariableContentAttributes, isVariableContentAttributes } from "../attributes/variable-content";
 import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
+import { DlEntryAttributes } from "../attributes/dl-entry";
 
-export interface DlEntryAttributes extends FiltersAttributes, LocalizationAttributes, VariableContentAttributes {
-    'outputClass'?: CDATA;
-    'className'?: CDATA;
-}
-export const isDlEntryAttributes = (value?: any): value is DlEntryAttributes =>
-    typeof value === 'object' &&
-    isOrUndefined(isCDATA, value['outputClass']) &&
-    isOrUndefined(isCDATA, value['className']) &&
-    isFiltersAttributes(value) &&
-    isLocalizationAttributes(value) &&
-    isVariableContentAttributes(value);
 export class DlEntryNode extends BaseNode implements DlEntryAttributes {
     static nodeName = 'dlentry';
     static childTypes = ['dt', 'dd'];

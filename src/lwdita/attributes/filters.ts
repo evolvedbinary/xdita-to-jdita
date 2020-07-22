@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { CDATA, isOrUndefined, isCDATA } from "../utils";
+import { FiltersAddsAttributes } from "./filters-adds";
 
-export interface FiltersAttributes {
+export interface FiltersAttributes extends FiltersAddsAttributes {
   props?: CDATA;
 }
 export const isFiltersAttributes = (value?: any): value is FiltersAttributes =>

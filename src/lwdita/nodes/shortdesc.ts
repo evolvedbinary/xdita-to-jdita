@@ -1,29 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { LocalizationAttributes, isLocalizationAttributes } from "../attributes/localization";
-import { CDATA, NMTOKEN, isOrUndefined, isCDATA, Attributes } from "../utils";
+import { CDATA, isOrUndefined, isCDATA, Attributes } from "../utils";
 import { BaseNode } from "./base";
-import { FiltersAttributes, isFiltersAttributes } from "../attributes/filters";
-import { ReuseAttributes, isReuseAttributes } from "../reuse";
+import { ShortDescAttributes } from "../attributes/shortdesc";
 
-export interface ShortdescAttributes extends FiltersAttributes, LocalizationAttributes, ReuseAttributes {
-  'props'?: CDATA;
-  'dir'?: CDATA;
-  'xml:lang'?: CDATA;
-  'translate'?: CDATA;
-  'id'?: NMTOKEN;
-  'conref'?: CDATA;
-  'outputClass'?: CDATA;
-  'className'?: CDATA;
-  // 'children': Array<AllInline>;
-}
-export const isShortdescAttributes = (value?: any): value is ShortdescAttributes =>
-  isOrUndefined(isCDATA, value['outputClass']) &&
-  isOrUndefined(isCDATA, value['className']) &&
-  isLocalizationAttributes(value) &&
-  isFiltersAttributes(value) &&
-  isReuseAttributes(value);
-export class ShortdescNode extends BaseNode implements ShortdescAttributes {
+export class ShortdescNode extends BaseNode implements ShortDescAttributes {
   static nodeName = 'shortdesc';
   static fields = [
       'props',
