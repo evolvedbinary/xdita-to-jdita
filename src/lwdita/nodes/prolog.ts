@@ -28,5 +28,5 @@ export function makeProlog<T extends { new(...args: any[]): BaseNode }>(construc
   }, makeLocalization, makeFilters);
 }
 
-@makeComponent(makeProlog, 'prolog', isValidPrologField, PrologFields, ['li'])
+@makeComponent(makeProlog, 'prolog', isValidPrologField, PrologFields, ['data'])
 export class PrologNode extends BaseNode {}
