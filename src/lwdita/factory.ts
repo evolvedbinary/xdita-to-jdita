@@ -28,6 +28,13 @@ import { DescNode } from "./nodes/desc";
 import { XRefNode } from "./nodes/xref";
 import { AudioNode } from "./nodes/audio";
 import { VideoNode } from "./nodes/video";
+import { MediaControlsNode } from "./nodes/media-controls";
+import { VideoPosterNode } from "./nodes/video-poster";
+import { MediaAutoplayNode } from "./nodes/media-autoplay";
+import { MediaLoopNode } from "./nodes/media-loop";
+import { MediaMutedNode } from "./nodes/media-muted";
+import { MediaSourceNode } from "./nodes/media-source";
+import { MediaTrackNode } from "./nodes/media-track";
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -58,6 +65,13 @@ export function createNode(node: XMLNode<'desc'>): DescNode;
 export function createNode(node: XMLNode<'xref'>): XRefNode;
 export function createNode(node: XMLNode<'audio'>): AudioNode;
 export function createNode(node: XMLNode<'video'>): VideoNode;
+export function createNode(node: XMLNode<'media-controls'>): MediaControlsNode;
+export function createNode(node: XMLNode<'media-autoplay'>): MediaAutoplayNode;
+export function createNode(node: XMLNode<'media-loop'>): MediaLoopNode;
+export function createNode(node: XMLNode<'media-muted'>): MediaMutedNode;
+export function createNode(node: XMLNode<'media-source'>): MediaSourceNode;
+export function createNode(node: XMLNode<'media-track'>): MediaTrackNode;
+export function createNode(node: XMLNode<'video-poster'>): VideoPosterNode;
 export function createNode<T extends BaseNode = BaseNode>(node: XMLNode): T;
 export function createNode<T extends BaseNode>(node: XMLNode | string): T {
   let nodeObject: BaseNode;
@@ -93,6 +107,13 @@ export function createNode<T extends BaseNode>(node: XMLNode | string): T {
       case 'xref': nodeObject = new XRefNode(node.attributes); break;
       case 'audio': nodeObject = new AudioNode(node.attributes); break;
       case 'video': nodeObject = new VideoNode(node.attributes); break;
+      case 'media-controls': nodeObject = new MediaControlsNode(node.attributes); break;
+      case 'media-autoplay': nodeObject = new MediaAutoplayNode(node.attributes); break;
+      case 'media-loop': nodeObject = new MediaLoopNode(node.attributes); break;
+      case 'media-muted': nodeObject = new MediaMutedNode(node.attributes); break;
+      case 'media-source': nodeObject = new MediaSourceNode(node.attributes); break;
+      case 'media-track': nodeObject = new MediaTrackNode(node.attributes); break;
+      case 'video-poster': nodeObject = new VideoPosterNode(node.attributes); break;
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
