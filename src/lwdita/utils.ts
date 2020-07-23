@@ -23,6 +23,8 @@ export type DisplayFrame = 'all' | 'bottom' | 'none' | 'sides' | 'top' | 'topbot
 export const isDisplayFrame = (value?: any): value is DisplayFrame =>  has(['all', 'bottom', 'none', 'sides', 'top', 'topbot'], value);
 export type DisplayExpanse = 'column' | 'page' | 'spread' | 'textline';
 export const isDisplayExpanse = (value?: any): value is DisplayExpanse =>  has(['column', 'page', 'spread', 'textline'], value);
+export type NoteType = 'caution' | 'warning' | 'danger' | 'trouble' | 'notice' | 'note';
+export const isNoteType = (value?: any): value is NoteType =>  has(['caution', 'warning', 'danger', 'trouble', 'notice', 'note'], value);
 
 // TODO(AR) should these be union types, or should they be base interfaces which other interfaces like `ph` inherit from?
 export type ReferenceContentScope = 'local' | 'peer' | 'external';
