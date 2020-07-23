@@ -36,7 +36,16 @@ export const isImageNode = (value?: any): value is ImageNode =>
 
 export function makeImage<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
   // TODO: add properties
-  return makeAll(class extends constructor {}, makeLocalization, makeFilters, makeVariableContent, makeClass, makeReferenceContent);
+  return makeAll(class extends constructor {
+    get 'height'(): NMTOKEN | undefined {
+      return this.readProp<NMTOKEN | undefined>('height'); }
+    set 'height'(value: NMTOKEN | undefined) {
+        this.writeProp<NMTOKEN | undefined>('height', value); }
+    get 'width'(): NMTOKEN | undefined {
+      return this.readProp<NMTOKEN | undefined>('width'); }
+    set 'width'(value: NMTOKEN | undefined) {
+        this.writeProp<NMTOKEN | undefined>('width', value); }
+  }, makeLocalization, makeFilters, makeVariableContent, makeClass, makeReferenceContent);
 }
 
 @makeComponent(makeImage, 'image', isValidImageField, ImageFields, ['alt'])
