@@ -6,7 +6,7 @@ import { areFieldsValid, Attributes, CDATA, isOrUndefined, isCDATA } from "../ut
 import { makeComponent, BaseNode, makeAll } from "./base";
 import { VariableContentFields, VariableContentNode, isValidVariableContentField, makeVariableContent } from "./variable-content";
 
-export const DataFields = [...FiltersFields, ...LocalizationFields, ...ReferenceContentFields, ...ClassFields, ...VariableContentFields];
+export const DataFields = [...FiltersFields, ...LocalizationFields, ...ReferenceContentFields, ...ClassFields, ...VariableContentFields, 'name', 'value'];
 export interface DataNode extends FiltersNode, LocalizationNode, ReferenceContentNode, ClassNode, VariableContentNode {
   'name'?: CDATA;
   'value'?: CDATA;
