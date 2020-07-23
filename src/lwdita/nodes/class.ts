@@ -1,4 +1,4 @@
-import { CDATA, isOrUndefined, isCDATA, areFieldsValid } from "../utils";
+import { CDATA, isOrUndefined, isCDATA, areFieldsValid, BasicValue} from "../utils";
 import { BaseNode } from "./base";
 
 export const ClassFields = ['outputClass', 'class'];
@@ -7,7 +7,7 @@ export interface ClassNode {
   'class'?: CDATA;
 }
 
-export function isValidClassField(field: string, value: any): boolean {
+export function isValidClassField(field: string, value: BasicValue): boolean {
   switch(field) {
     case 'outputClass': return isOrUndefined(isCDATA, value);
     case 'class': return isOrUndefined(isCDATA, value);
@@ -15,9 +15,10 @@ export function isValidClassField(field: string, value: any): boolean {
   }
 }
 
-export const isClassNode = (value?: any): value is ClassNode =>
+export const isClassNode = (value?: {}): value is ClassNode =>
   typeof value === 'object' && areFieldsValid(ClassFields, value, isValidClassField);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeClass<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
   return class extends constructor implements ClassNode {
     get 'outputClass'(): CDATA | undefined {

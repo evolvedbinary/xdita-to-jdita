@@ -1,4 +1,4 @@
-import { NMTOKEN, isOrUndefined, isNMTOKEN, areFieldsValid } from "../utils";
+import { NMTOKEN, isOrUndefined, isNMTOKEN, areFieldsValid, BasicValue } from "../utils";
 import { BaseNode } from "./base";
 
 export const SizeFields = ['width', 'height'];
@@ -7,7 +7,7 @@ export interface SizeNode {
   'height'?: NMTOKEN;
 }
 
-export function isValidSizeField(field: string, value: any): boolean {
+export function isValidSizeField(field: string, value: BasicValue): boolean {
   switch(field) {
     case 'width': return isOrUndefined(isNMTOKEN, value);
     case 'height': return isOrUndefined(isNMTOKEN, value);
@@ -15,9 +15,10 @@ export function isValidSizeField(field: string, value: any): boolean {
   }
 }
 
-export const isSizeNode = (value?: any): value is SizeNode =>
+export const isSizeNode = (value?: {}): value is SizeNode =>
   typeof value === 'object' && areFieldsValid(SizeFields, value, isValidSizeField);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeSize<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
   return class extends constructor implements SizeNode {
     get 'width'(): NMTOKEN | undefined {

@@ -1,4 +1,4 @@
-import { CDATA, isCDATA, isOrUndefined, areFieldsValid } from "../utils";
+import { CDATA, isCDATA, isOrUndefined, areFieldsValid, BasicValue } from "../utils";
 import { BaseNode } from "./base";
 
 export const LocalizationFields = ['dir', 'xml:lang', 'translate'];
@@ -8,7 +8,7 @@ export interface LocalizationNode {
   'translate'?: CDATA;
 }
 
-export function isValidLocalizationField(field: string, value: any): boolean {
+export function isValidLocalizationField(field: string, value: BasicValue): boolean {
   switch(field) {
     case 'dir': return isOrUndefined(isCDATA, value);
     case 'xml:lang': return isOrUndefined(isCDATA, value);
@@ -17,9 +17,10 @@ export function isValidLocalizationField(field: string, value: any): boolean {
   }
 }
   
-export const isLocalizationNode = (value?: any): value is LocalizationNode =>
+export const isLocalizationNode = (value?: {}): value is LocalizationNode =>
   typeof value === 'object' && areFieldsValid(LocalizationFields, value, isValidLocalizationField);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeLocalization<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
   return class extends constructor implements LocalizationNode {
     get 'dir'(): CDATA | undefined {

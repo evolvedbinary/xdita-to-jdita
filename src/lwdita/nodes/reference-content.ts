@@ -1,4 +1,4 @@
-import { CDATA, ReferenceContentScope, isCDATA, isOrUndefined, isReferenceContentScope, areFieldsValid } from "../utils";
+import { CDATA, ReferenceContentScope, isCDATA, isOrUndefined, isReferenceContentScope, areFieldsValid, BasicValue } from "../utils";
 import { BaseNode } from "./base";
 
 export const ReferenceContentFields = ['href', 'format', 'scope'];
@@ -8,7 +8,7 @@ export interface ReferenceContentNode {
   'scope'?: ReferenceContentScope;
 }
 
-export function isValidReferenceContentField(field: string, value: any): boolean {
+export function isValidReferenceContentField(field: string, value: BasicValue): boolean {
   switch(field) {
     case 'href': return isOrUndefined(isCDATA, value);
     case 'format': return isOrUndefined(isCDATA, value);
@@ -17,9 +17,10 @@ export function isValidReferenceContentField(field: string, value: any): boolean
   }
 }
     
-export const isReferenceContentNode = (value?: any): value is ReferenceContentNode =>
+export const isReferenceContentNode = (value?: {}): value is ReferenceContentNode =>
   typeof value === 'object' && areFieldsValid(ReferenceContentFields, value, isValidReferenceContentField);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeReferenceContent<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
   return class extends constructor implements ReferenceContentNode {
     get 'href'(): CDATA | undefined {

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { BaseNode } from "./base";
 
 export class DocumentNode extends BaseNode {

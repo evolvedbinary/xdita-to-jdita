@@ -1,6 +1,6 @@
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
-import { ID, CDATA, isCDATA, isOrUndefined, areFieldsValid, Attributes } from "../utils";
+import { ID, CDATA, isCDATA, isOrUndefined, areFieldsValid, BasicValue } from "../utils";
 import { BaseNode, makeComponent, makeAll } from "./base";
 
 export const TopicFields = [...LocalizationFields, ...ClassFields];
@@ -11,7 +11,7 @@ export interface TopicNode extends LocalizationNode, ClassNode {
   // TODO: "&xdita-constraint; &included-domains;"
   'domains'?: CDATA;
 }
-export function isValidTopicField(field: string, value: any): boolean {
+export function isValidTopicField(field: string, value: BasicValue): boolean {
   if (isValidLocalizationField(field, value) || isValidClassField(field, value)) {
     return true;
   }
@@ -22,9 +22,10 @@ export function isValidTopicField(field: string, value: any): boolean {
     default: return false;
   }
 }
-export const isTopicNode = (value?: any): value is TopicNode =>
+export const isTopicNode = (value?: {}): value is TopicNode =>
   typeof value === 'object' && areFieldsValid(TopicFields, value, isValidTopicField);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeTopic<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
   return makeAll(class extends constructor {
     get 'id'(): ID {

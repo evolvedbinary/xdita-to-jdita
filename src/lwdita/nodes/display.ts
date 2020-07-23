@@ -1,4 +1,4 @@
-import { DisplayScale, DisplayFrame, DisplayExpanse, isOrUndefined, isDisplayScale, isDisplayFrame, isDisplayExpanse, areFieldsValid } from "../utils";
+import { DisplayScale, DisplayFrame, DisplayExpanse, isOrUndefined, isDisplayScale, isDisplayFrame, isDisplayExpanse, areFieldsValid, BasicValue } from "../utils";
 import { BaseNode } from "./base";
 
 export const DisplayFields = ['scale', 'frame', 'expanse'];
@@ -8,7 +8,7 @@ export interface DisplayNode {
   'expanse'?: DisplayExpanse;
 }
 
-export function isValidDisplayField(field: string, value: any): boolean {
+export function isValidDisplayField(field: string, value: BasicValue): boolean {
   switch(field) {
     case 'scale': return isOrUndefined(isDisplayScale, value);
     case 'frame': return isOrUndefined(isDisplayFrame, value);
@@ -17,9 +17,10 @@ export function isValidDisplayField(field: string, value: any): boolean {
   }
 }
   
-export const isDisplayNode = (value?: any): value is DisplayNode =>
+export const isDisplayNode = (value?: {}): value is DisplayNode =>
   typeof value === 'object' && areFieldsValid(DisplayFields, value, isValidDisplayField);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeDisplay<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
   return class extends constructor implements DisplayNode {
     get 'scale'(): DisplayScale | undefined {

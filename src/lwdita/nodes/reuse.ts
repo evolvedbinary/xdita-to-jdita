@@ -1,4 +1,4 @@
-import { NMTOKEN, CDATA, isOrUndefined, isCDATA, isNMTOKEN, areFieldsValid } from "../utils";
+import { NMTOKEN, CDATA, isOrUndefined, isCDATA, isNMTOKEN, areFieldsValid, BasicValue } from "../utils";
 import { BaseNode } from "./base";
 
 export const ReuseFields = ['id', 'conref'];
@@ -7,7 +7,7 @@ export interface ReuseNode {
   'conref'?: CDATA;
 }
 
-export function isValidReuseField(field: string, value: any): boolean {
+export function isValidReuseField(field: string, value: BasicValue): boolean {
   switch(field) {
     case 'id': return isOrUndefined(isNMTOKEN, value);
     case 'conref': return isOrUndefined(isCDATA, value);
@@ -15,9 +15,10 @@ export function isValidReuseField(field: string, value: any): boolean {
   }
 }
   
-export const isReuseNode = (value?: any): value is ReuseNode =>
+export const isReuseNode = (value?: {}): value is ReuseNode =>
   typeof value === 'object' && areFieldsValid(ReuseFields, value, isValidReuseField);
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeReuse<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
   return class extends constructor implements ReuseNode {
     get 'id'(): NMTOKEN | undefined {

@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-import { has, nodeGroups, Attributes } from "../utils";
+import { has, nodeGroups, Attributes, BasicValue } from "../utils";
 
 export abstract class BaseNode {
   static nodeName = 'node';
@@ -8,16 +6,16 @@ export abstract class BaseNode {
   static childTypes: Array<string> = [];
   static childGroups: Array<string> = [];
   protected _children?: BaseNode[];
-  protected _props!: Record<string, any>;
+  protected _props!: Record<string, BasicValue>;
   constructor (attributes?: Attributes) {
     if (attributes) {
         this._props = this.static.attributesToProps(attributes);
     }
   }
   protected get static(): typeof BaseNode {
-      return this.constructor as any;
+      return this.constructor as typeof BaseNode;
   }
-  get json(): Record<string, any> {
+  get json(): Record<string, BasicValue> {
       return {
           nodeName: this.static.nodeName,
           ...this._props,
@@ -43,21 +41,21 @@ export abstract class BaseNode {
   isNode(name: string): boolean {
       return name === this.static.nodeName;
   }
-  static attributesToProps<T = Record<string, any>>(attributes: Attributes = {}): T {
-      const result: Record<string, any> = {};
+  static attributesToProps<T extends Record<string, BasicValue>>(attributes: Attributes = {}): T {
+      const result: Record<string, BasicValue> = {};
       this.fields.forEach(field => {
           const attr = attributes[field];
           result[field] = typeof attr === 'string' ? attr : attr?.value;
       });
       return result as T;
   }
-  readProp<T = any>(field: string): T {
+  readProp<T = BasicValue>(field: string): T {
       if (this.static.fields.indexOf(field) < 0) {
           throw new Error('unkown property "' + field + '"');
       }
-      return this._props[field];
+      return this._props[field] as T;
   }
-  writeProp<T = any>(field: string, value: T): void {
+  writeProp<T = BasicValue>(field: string, value: T): void {
       if (this.static.fields.indexOf(field) < 0) {
           throw new Error('unkown property "' + field + '"');
       }
@@ -67,19 +65,23 @@ export abstract class BaseNode {
       this._props[field] = value;
   }
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  static isValidField(field: string, value: any): boolean {
+  static isValidField(field: string, value: BasicValue): boolean {
       return true;
   }
 }
 
+export type Constructor = { new(...args: []): BaseNode };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeAll<T extends { new(...args: any[]): BaseNode }>(constructor: T, ...decorators: ((constructor: T) => T)[]): T  {
     return decorators.reduce((result, decorator) => decorator(result), constructor);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeComponent<T extends { new(...args: any[]): BaseNode }>(
     decorator: (constructor: T) => T,
     nodeName: string,
-    fieldValidator: (field: string, value: any) => boolean,
+    fieldValidator: (field: string, value: BasicValue) => boolean,
     fields: Array<string>,
     childTypes: Array<string> = [],
     childGroups: Array<string> = [],

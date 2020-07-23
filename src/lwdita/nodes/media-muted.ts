@@ -1,18 +1,18 @@
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
-import { areFieldsValid,  } from "../utils";
-import { makeComponent, BaseNode, makeAll } from "./base";
+import { areFieldsValid, BasicValue } from "../utils";
+import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
 import { FieldFields, FieldNode, isValidBooleanFieldField, makeBooleanField } from "./field";
 import { ClassFields, ClassNode, isValidClassField, makeClass } from "./class";
 
 export const MediaMutedFields = [ ...LocalizationFields, ...FieldFields, ...ClassFields];
 export interface MediaMutedNode extends LocalizationNode, FieldNode<boolean>, ClassNode {}
-export const isValidMediaMutedField = (field: string, value: any): boolean => isValidLocalizationField(field, value)
+export const isValidMediaMutedField = (field: string, value: BasicValue): boolean => isValidLocalizationField(field, value)
   || isValidBooleanFieldField(field, value)
   || isValidClassField(field, value);
-export const isMediaMutedNode = (value?: any): value is MediaMutedNode =>
+export const isMediaMutedNode = (value?: {}): value is MediaMutedNode =>
   typeof value === 'object' && areFieldsValid(MediaMutedFields, value, isValidMediaMutedField);
 
-export function makeMediaMuted<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
+export function makeMediaMuted<T extends Constructor>(constructor: T): T  {
   return makeAll(constructor, makeLocalization, makeBooleanField, makeClass);
 }
 
