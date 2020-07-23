@@ -1,8 +1,9 @@
 import { CDATA, isOrUndefined, isCDATA, areFieldsValid } from "../utils";
-import { FiltersAddsAttributes, FiltersAddsFields } from "./filters-adds";
+import { FiltersAddsNode, FiltersAddsFields } from "./filters-adds";
+import { BaseNode } from "./base";
 
 export const FiltersFields = [...FiltersAddsFields, 'props'];
-export interface FiltersAttributes extends FiltersAddsAttributes {
+export interface FiltersNode extends FiltersAddsNode {
   'props'?: CDATA;
 }
 
@@ -13,5 +14,14 @@ export function isValidFiltersField(field: string, value: any): boolean {
   }
 }
   
-export const isFiltersAttributes = (value?: any): value is FiltersAttributes =>
+export const isFiltersNode = (value?: any): value is FiltersNode =>
   typeof value === 'object' && areFieldsValid(FiltersFields, value, isValidFiltersField);
+
+export function makeFilters<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
+  return class extends constructor implements FiltersNode {
+    get 'props'(): CDATA | undefined {
+        return this.readProp<CDATA | undefined>('props'); }
+    set 'props'(value: CDATA | undefined) {
+        this.writeProp<CDATA | undefined>('props', value); }
+  }
+}

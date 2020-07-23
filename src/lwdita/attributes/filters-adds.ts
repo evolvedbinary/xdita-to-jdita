@@ -1,4 +1,4 @@
 export const FiltersAddsFields = [];
-export type FiltersAddsAttributes = {}
-export const isFiltersAddsAttributes = (value?: any): value is FiltersAddsAttributes =>
+export type FiltersAddsNode = {}
+export const isFiltersAddsNode = (value?: any): value is FiltersAddsNode =>
   typeof value === 'object';

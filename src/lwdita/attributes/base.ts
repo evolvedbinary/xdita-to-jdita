@@ -66,3 +66,26 @@ export abstract class BaseNode {
       return true;
   }
 }
+
+export function makeAll<T extends { new(...args: any[]): BaseNode }>(constructor: T, ...decorators: ((constructor: T) => T)[]): T  {
+    return decorators.reduce((result, decorator) => decorator(result), constructor);
+}
+
+export function makeComponent<T extends { new(...args: any[]): BaseNode }>(
+    decorator: (constructor: T) => T,
+    nodeName: string,
+    fieldValidator: (field: string, value: any) => boolean,
+    fields: Array<string>,
+    childTypes: Array<string> = [],
+    childGroups: Array<string> = [],
+
+) {
+    return (constructor: T): T  => decorator(class extends constructor {
+        static nodeName = nodeName;
+        static fields = fields;
+        static childTypes = childTypes;
+        static childGroups = childGroups;
+        static isValidField = fieldValidator;
+    });
+}
+  

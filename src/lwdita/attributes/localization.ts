@@ -1,7 +1,8 @@
 import { CDATA, isCDATA, isOrUndefined, areFieldsValid } from "../utils";
+import { BaseNode } from "./base";
 
 export const LocalizationFields = ['dir', 'xml:lang', 'translate'];
-export interface LocalizationAttributes {
+export interface LocalizationNode {
   'dir'?: CDATA;
   'xml:lang'?: CDATA;
   'translate'?: CDATA;
@@ -16,5 +17,22 @@ export function isValidLocalizationField(field: string, value: any): boolean {
   }
 }
   
-export const isLocalizationAttributes = (value?: any): value is LocalizationAttributes =>
+export const isLocalizationNode = (value?: any): value is LocalizationNode =>
   typeof value === 'object' && areFieldsValid(LocalizationFields, value, isValidLocalizationField);
+
+export function makeLocalization<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
+  return class extends constructor implements LocalizationNode {
+    get 'dir'(): CDATA | undefined {
+      return this.readProp<CDATA | undefined>('dir'); }
+    set 'dir'(value: CDATA | undefined) {
+        this.writeProp<CDATA | undefined>('dir', value); }
+    get 'xml:lang'(): CDATA | undefined {
+      return this.readProp<CDATA | undefined>('xml:lang'); }
+    set 'xml:lang'(value: CDATA | undefined) {
+        this.writeProp<CDATA | undefined>('xml:lang', value); }
+    get 'translate'(): CDATA | undefined {
+      return this.readProp<CDATA | undefined>('translate'); }
+    set 'translate'(value: CDATA | undefined) {
+        this.writeProp<CDATA | undefined>('translate', value); }
+  }
+}

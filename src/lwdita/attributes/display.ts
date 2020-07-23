@@ -1,7 +1,8 @@
 import { DisplayScale, DisplayFrame, DisplayExpanse, isOrUndefined, isDisplayScale, isDisplayFrame, isDisplayExpanse, areFieldsValid } from "../utils";
+import { BaseNode } from "./base";
 
 export const DisplayFields = ['scale', 'frame', 'expanse'];
-export interface DisplayAttributes {
+export interface DisplayNode {
   'scale'?: DisplayScale;
   'frame'?: DisplayFrame;
   'expanse'?: DisplayExpanse;
@@ -16,5 +17,22 @@ export function isValidDisplayField(field: string, value: any): boolean {
   }
 }
   
-export const isDisplayAttributes = (value?: any): value is DisplayAttributes =>
+export const isDisplayNode = (value?: any): value is DisplayNode =>
   typeof value === 'object' && areFieldsValid(DisplayFields, value, isValidDisplayField);
+
+export function makeDisplay<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
+  return class extends constructor implements DisplayNode {
+    get 'scale'(): DisplayScale | undefined {
+      return this.readProp<DisplayScale | undefined>('scale'); }
+    set 'scale'(value: DisplayScale | undefined) {
+      this.writeProp<DisplayScale | undefined>('scale', value); }
+    get 'frame'(): DisplayFrame | undefined {
+      return this.readProp<DisplayFrame | undefined>('frame'); }
+    set 'frame'(value: DisplayFrame | undefined) {
+      this.writeProp<DisplayFrame | undefined>('frame', value); }
+    get 'expanse'(): DisplayExpanse | undefined {
+      return this.readProp<DisplayExpanse | undefined>('expanse'); }
+    set 'expanse'(value: DisplayExpanse | undefined) {
+      this.writeProp<DisplayExpanse | undefined>('expanse', value); }
+  }
+}

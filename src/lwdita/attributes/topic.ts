@@ -1,9 +1,10 @@
-import { LocalizationAttributes, LocalizationFields, isValidLocalizationField } from "./localization";
-import { ClassAttributes, ClassFields, isValidClassField } from "./class";
-import { ID, CDATA, isCDATA, isOrUndefined, areFieldsValid } from "../utils";
+import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
+import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
+import { ID, CDATA, isCDATA, isOrUndefined, areFieldsValid, Attributes } from "../utils";
+import { BaseNode, makeComponent, makeAll } from "./base";
 
 export const TopicFields = [...LocalizationFields, ...ClassFields];
-export interface TopicAttributes extends LocalizationAttributes, ClassAttributes {
+export interface TopicNode extends LocalizationNode, ClassNode {
   'id': ID;
   'xmlns:ditaarch': CDATA;
   'ditaarch:DITAArchVersion'?: CDATA;
@@ -21,5 +22,17 @@ export function isValidTopicField(field: string, value: any): boolean {
     default: return false;
   }
 }
-export const isTopicAttributes = (value?: any): value is TopicAttributes =>
+export const isTopicNode = (value?: any): value is TopicNode =>
   typeof value === 'object' && areFieldsValid(TopicFields, value, isValidTopicField);
+
+export function makeTopic<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
+  return makeAll(constructor, makeLocalization, makeClass,);
+}
+
+@makeComponent(makeTopic, 'topic', isValidTopicField, TopicFields, ['title', 'shortdesc', 'prolog', 'body'])
+export class TopicNode extends BaseNode {
+  constructor(attributes?: Attributes) {
+    super();
+    this._props = this.attributesToProps(attributes);
+  }
+}
