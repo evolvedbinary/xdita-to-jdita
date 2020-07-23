@@ -82,7 +82,7 @@ export function createNode<T extends BaseNode>(node: XMLNode | string): T {
   if (typeof node === 'string') {
     nodeObject = new TextNode(node);
   } else {
-    switch(node.name) {
+    switch (node.name) {
       case 'topic': nodeObject = new TopicNode(node.attributes); break;
       case 'title': nodeObject = new TitleNode(node.attributes); break;
       case 'ph': nodeObject = new PhNode(node.attributes); break;
@@ -120,7 +120,7 @@ export function createNode<T extends BaseNode>(node: XMLNode | string): T {
       case 'video-poster': nodeObject = new VideoPosterNode(node.attributes); break;
       case 'pre': nodeObject = new PreNode(node.attributes); break;
       case 'fn': nodeObject = new FnNode(node.attributes); break;
-      default: 
+      default:
         throw new Error('unkonwn node "' + node.name + '"');
     }
   }

@@ -6,17 +6,20 @@ import { areFieldsValid, BasicValue } from "../utils";
 import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
 
 export const StRowFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields];
-export interface StRowNode extends FiltersNode, LocalizationNode, ReuseNode, ClassNode {}
+
+export interface StRowNode extends FiltersNode, LocalizationNode, ReuseNode, ClassNode { }
+
 export const isValidStRowField = (field: string, value: BasicValue): boolean => isValidFiltersField(field, value)
   || isValidLocalizationField(field, value)
   || isValidReuseField(field, value)
   || isValidClassField(field, value);
+
 export const isStRowNode = (value?: {}): value is StRowNode =>
   typeof value === 'object' && areFieldsValid(StRowFields, value, isValidStRowField);
 
-export function makeStRow<T extends Constructor>(constructor: T): T  {
+export function makeStRow<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
 @makeComponent(makeStRow, 'strow', isValidStRowField, StRowFields, ['stentry'])
-export class StRowNode extends BaseNode {}
+export class StRowNode extends BaseNode { }
