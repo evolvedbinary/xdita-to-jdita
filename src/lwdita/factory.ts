@@ -17,6 +17,10 @@ import { SectionNode } from "./nodes/section";
 import { LiNode } from "./nodes/li";
 import { UlNode } from "./nodes/ul";
 import { OlNode } from "./nodes/ol";
+import { SimpleTableNode } from "./nodes/simple-table";
+import { StHeadNode } from "./nodes/sthead";
+import { StRowNode } from "./nodes/strow";
+import { StEntryNode } from "./nodes/stentry";
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -36,6 +40,10 @@ export function createNode(node: XMLNode<'section'>): FigNode;
 export function createNode(node: XMLNode<'ol'>): FigNode;
 export function createNode(node: XMLNode<'ul'>): FigNode;
 export function createNode(node: XMLNode<'li'>): FigNode;
+export function createNode(node: XMLNode<'simpletable'>): FigNode;
+export function createNode(node: XMLNode<'sthead'>): FigNode;
+export function createNode(node: XMLNode<'strow'>): FigNode;
+export function createNode(node: XMLNode<'stentry'>): FigNode;
 export function createNode(node: XMLNode): BaseNode;
 export function createNode(node: XMLNode | string): BaseNode {
     if (typeof node === 'string') {
@@ -59,6 +67,10 @@ export function createNode(node: XMLNode | string): BaseNode {
       case 'ol': return new OlNode(node.attributes);
       case 'ul': return new UlNode(node.attributes);
       case 'li': return new LiNode(node.attributes);
+      case 'simpletable': return new SimpleTableNode(node.attributes);
+      case 'sthead': return new StHeadNode(node.attributes);
+      case 'strow': return new StRowNode(node.attributes);
+      case 'stentry': return new StEntryNode(node.attributes);
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
