@@ -5,47 +5,30 @@ import { ReferenceContentNode, isReferenceContentNode, ReferenceContentFields, m
 import { NMTOKEN, isOrUndefined, isNMTOKEN, areFieldsValid, Attributes } from "../utils";
 import { ClassNode, isClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { BaseNode, makeComponent, makeAll } from "./base";
+import { SizeFields, SizeNode, isSizeNode, isValidSizeField, makeSize } from "./size";
 
-export const ImageFields = [...FiltersFields, ...LocalizationFields, ...VariableContentFields, ...ReferenceContentFields, ...ClassFields];
-export interface ImageNode extends FiltersNode, LocalizationNode, VariableContentNode, ReferenceContentNode, ClassNode {
-  'height'?: NMTOKEN;
-  'width'?: NMTOKEN;
-}
+export const ImageFields = [...FiltersFields, ...LocalizationFields, ...VariableContentFields, ...ReferenceContentFields, ...ClassFields, ...SizeFields];
+export interface ImageNode extends FiltersNode, LocalizationNode, VariableContentNode, ReferenceContentNode, ClassNode, SizeNode {}
 export const isImageNodes = (value?: any): value is ImageNode =>
   value &&
-  isOrUndefined(isNMTOKEN, value['height']) &&
-  isOrUndefined(isNMTOKEN, value['width']) &&
   isClassNode(value) &&
   isFiltersNode(value) &&
   isLocalizationNode(value) &&
   isReferenceContentNode(value) &&
-  isVariableContentNode(value);
+  isVariableContentNode(value) &&
+  isSizeNode(value);
 
-export function isValidImageField(field: string, value: any): boolean {
-  if (isValidLocalizationField(field, value) || isValidClassField(field, value) || isValidFiltersField(field, value) || isValidVariableContentField(field, value)) {
-    return true;
-  }
-  switch(field) {
-    case 'height': return isOrUndefined(isNMTOKEN, value);
-    case 'width': return isOrUndefined(isNMTOKEN, value);
-    default: return false;
-  }
-}
+export const isValidImageField = (field: string, value: any): boolean => isValidLocalizationField(field, value)
+  || isValidClassField(field, value)
+  || isValidFiltersField(field, value)
+  || isValidVariableContentField(field, value)
+  || isValidSizeField(field, value);
 export const isImageNode = (value?: any): value is ImageNode =>
   typeof value === 'object' && areFieldsValid(ImageFields, value, isValidImageField);
 
 export function makeImage<T extends { new(...args: any[]): BaseNode }>(constructor: T): T  {
   // TODO: add properties
-  return makeAll(class extends constructor {
-    get 'height'(): NMTOKEN | undefined {
-      return this.readProp<NMTOKEN | undefined>('height'); }
-    set 'height'(value: NMTOKEN | undefined) {
-        this.writeProp<NMTOKEN | undefined>('height', value); }
-    get 'width'(): NMTOKEN | undefined {
-      return this.readProp<NMTOKEN | undefined>('width'); }
-    set 'width'(value: NMTOKEN | undefined) {
-        this.writeProp<NMTOKEN | undefined>('width', value); }
-  }, makeLocalization, makeFilters, makeVariableContent, makeClass, makeReferenceContent);
+  return makeAll(constructor, makeLocalization, makeFilters, makeVariableContent, makeClass, makeReferenceContent, makeSize);
 }
 
 @makeComponent(makeImage, 'image', isValidImageField, ImageFields, ['alt'])
