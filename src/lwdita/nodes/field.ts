@@ -34,6 +34,7 @@ export function makeField<ValueType, T extends { new(...args: any[]): BaseNode }
 
 export type BooleanFieldNode = FieldNode<boolean>;
 export const isValidBooleanFieldField = isValidFieldField(val => typeof val === 'boolean');
+export const isValidCDATAFieldField = isValidFieldField();
 
-export const makeBooleanField = <T extends { new(...args: any[]): BaseNode }>(constructor: T): T =>
-  makeField<boolean, T>(constructor);
+export const makeBooleanField = <T extends { new(...args: any[]): BaseNode }>(constructor: T): T => makeField<boolean, T>(constructor);
+export const makeCDATAField = <T extends { new(...args: any[]): BaseNode }>(constructor: T): T => makeField<CDATA, T>(constructor);
