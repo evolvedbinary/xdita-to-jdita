@@ -55,3 +55,8 @@ export function areFieldsValid(fields: string[], value: any, ...validations: ((f
     }
     return true;
 }
+
+export interface XMLNode<T extends string = string> {
+    name: T;
+    attributes: Attributes;
+}

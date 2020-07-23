@@ -19,14 +19,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 import * as saxes from "saxes";
-import { BaseNode } from "./lwdita/nodes/base";
-import { DocumentNode } from "./lwdita/nodes/document";
-import { TextNode, TopicNode, TitleNode, PhNode, ShortDescNode, DtNode, PNode, ImageNode, FigNode } from "./lwdita";
-import { DlNode } from "./lwdita/nodes/dl";
-import { DlEntryNode } from "./lwdita/nodes/dl-entry";
-import { DdNode } from "./lwdita/nodes/dd";
-import { BodyNode } from "./lwdita/nodes/body";
-import { AltNode } from "./lwdita/nodes/alt";
+import { BaseNode, DocumentNode } from "./lwdita";
+import { createNode } from "./lwdita/factory";
 
 class UnknownNode extends BaseNode {
   static nodeName = 'unknown';
@@ -73,7 +67,7 @@ function findByName(name: string): BaseNode | undefined {
 }
 
 parser.on("text", function (text) {
-  last().add(new TextNode(text), false);
+  last().add(createNode(text), false);
   console.log(indent + '*text');
   if (findByName('unknown')) {
     unknownNodes.push('*text');
@@ -83,30 +77,16 @@ parser.on("text", function (text) {
 parser.on("opentag", function (node: saxes.SaxesTagNS) {
   console.log(indent + '+' + node.local);
   indent = indent + '| ';
-  let obj;
-  switch(node.local) {
-    case 'topic': obj = new TopicNode(node.attributes); break;
-    case 'title': obj = new TitleNode(node.attributes); break;
-    case 'ph': obj = new PhNode(node.attributes); break;
-    case 'shortdesc': obj = new ShortDescNode(node.attributes); break;
-    case 'dl': obj = new DlNode(node.attributes); break;
-    case 'dlentry': obj = new DlEntryNode(node.attributes); break;
-    case 'dt': obj = new DtNode(node.attributes); break;
-    case 'dd': obj = new DdNode(node.attributes); break;
-    case 'body': obj = new BodyNode(node.attributes); break;
-    case 'p': obj = new PNode(node.attributes); break;
-    case 'image': obj = new ImageNode(node.attributes); break;
-    case 'alt': obj = new AltNode(node.attributes); break;
-    case 'fig': obj = new FigNode(node.attributes); break;
-    default: 
-      push(new UnknownNode());
-      unknownNodes.push(node.local);
-      return;
-  }
-  last().add(obj, false);
-  push(obj);
-  if (findByName('unknown')) {
-    unknownNodes.push('*' + node.local);
+  try {
+    const obj = createNode(node);
+    last().add(obj, false);
+    push(obj);
+    if (findByName('unknown')) {
+      unknownNodes.push('*' + node.local);
+    }
+  } catch (e) {
+    push(new UnknownNode());
+    unknownNodes.push(node.local);
   }
 });
 
@@ -153,3 +133,6 @@ console.log(unknownNodes);
 console.log(JSON.stringify(doc.json, null, 2));
 // console.log(stack2);
     // parser.
+
+const t = createNode('asd');
+console.log(t.content);
