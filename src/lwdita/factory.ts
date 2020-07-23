@@ -50,38 +50,40 @@ export function createNode(node: XMLNode<'stentry'>): StEntryNode;
 export function createNode(node: XMLNode<'prolog'>): PrologNode;
 export function createNode(node: XMLNode<'data'>): DataNode;
 export function createNode(node: XMLNode<'note'>): NoteNode;
-export function createNode(node: XMLNode): BaseNode;
-export function createNode(node: XMLNode | string): BaseNode {
-    if (typeof node === 'string') {
-      return new TextNode(node);
-    }
+export function createNode<T extends BaseNode = BaseNode>(node: XMLNode): T;
+export function createNode<T extends BaseNode>(node: XMLNode | string): T {
+  let nodeObject: BaseNode;
+  if (typeof node === 'string') {
+    nodeObject = new TextNode(node);
+  } else {
     switch(node.name) {
-      case 'topic': return new TopicNode(node.attributes);
-      case 'title': return new TitleNode(node.attributes);
-      case 'ph': return new PhNode(node.attributes);
-      case 'shortdesc': return new ShortDescNode(node.attributes);
-      case 'dl': return new DlNode(node.attributes);
-      case 'dlentry': return new DlEntryNode(node.attributes);
-      case 'dt': return new DtNode(node.attributes);
-      case 'dd': return new DdNode(node.attributes);
-      case 'body': return new BodyNode(node.attributes);
-      case 'p': return new PNode(node.attributes);
-      case 'image': return new ImageNode(node.attributes);
-      case 'alt': return new AltNode(node.attributes);
-      case 'fig': return new FigNode(node.attributes);
-      case 'section': return new SectionNode(node.attributes);
-      case 'ol': return new OlNode(node.attributes);
-      case 'ul': return new UlNode(node.attributes);
-      case 'li': return new LiNode(node.attributes);
-      case 'simpletable': return new SimpleTableNode(node.attributes);
-      case 'sthead': return new StHeadNode(node.attributes);
-      case 'strow': return new StRowNode(node.attributes);
-      case 'stentry': return new StEntryNode(node.attributes);
-      case 'prolog': return new PrologNode(node.attributes);
-      case 'data': return new DataNode(node.attributes);
-      case 'note': return new NoteNode(node.attributes);
+      case 'topic': nodeObject = new TopicNode(node.attributes); break;
+      case 'title': nodeObject = new TitleNode(node.attributes); break;
+      case 'ph': nodeObject = new PhNode(node.attributes); break;
+      case 'shortdesc': nodeObject = new ShortDescNode(node.attributes); break;
+      case 'dl': nodeObject = new DlNode(node.attributes); break;
+      case 'dlentry': nodeObject = new DlEntryNode(node.attributes); break;
+      case 'dt': nodeObject = new DtNode(node.attributes); break;
+      case 'dd': nodeObject = new DdNode(node.attributes); break;
+      case 'body': nodeObject = new BodyNode(node.attributes); break;
+      case 'p': nodeObject = new PNode(node.attributes); break;
+      case 'image': nodeObject = new ImageNode(node.attributes); break;
+      case 'alt': nodeObject = new AltNode(node.attributes); break;
+      case 'fig': nodeObject = new FigNode(node.attributes); break;
+      case 'section': nodeObject = new SectionNode(node.attributes); break;
+      case 'ol': nodeObject = new OlNode(node.attributes); break;
+      case 'ul': nodeObject = new UlNode(node.attributes); break;
+      case 'li': nodeObject = new LiNode(node.attributes); break;
+      case 'simpletable': nodeObject = new SimpleTableNode(node.attributes); break;
+      case 'sthead': nodeObject = new StHeadNode(node.attributes); break;
+      case 'strow': nodeObject = new StRowNode(node.attributes); break;
+      case 'stentry': nodeObject = new StEntryNode(node.attributes); break;
+      case 'prolog': nodeObject = new PrologNode(node.attributes); break;
+      case 'data': nodeObject = new DataNode(node.attributes); break;
+      case 'note': nodeObject = new NoteNode(node.attributes); break;
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
-    
+  }
+  return nodeObject as T;
 }
