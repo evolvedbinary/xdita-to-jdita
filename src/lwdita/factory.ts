@@ -13,6 +13,7 @@ import { AltNode } from "./nodes/alt";
 import { FigNode } from "./nodes/fig";
 import { XMLNode } from "./utils";
 import { BaseNode, TextNode } from "./nodes";
+import { SectionNode } from "./nodes/section";
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -28,6 +29,7 @@ export function createNode(node: XMLNode<'p'>): PNode;
 export function createNode(node: XMLNode<'image'>): ImageNode;
 export function createNode(node: XMLNode<'alt'>): AltNode;
 export function createNode(node: XMLNode<'fig'>): FigNode;
+export function createNode(node: XMLNode<'section'>): FigNode;
 export function createNode(node: XMLNode): BaseNode;
 export function createNode(node: XMLNode | string): BaseNode {
     if (typeof node === 'string') {
@@ -47,6 +49,7 @@ export function createNode(node: XMLNode | string): BaseNode {
       case 'image': return new ImageNode(node.attributes);
       case 'alt': return new AltNode(node.attributes);
       case 'fig': return new FigNode(node.attributes);
+      case 'section': return new SectionNode(node.attributes);
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
