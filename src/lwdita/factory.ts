@@ -14,6 +14,9 @@ import { FigNode } from "./nodes/fig";
 import { XMLNode } from "./utils";
 import { BaseNode, TextNode } from "./nodes";
 import { SectionNode } from "./nodes/section";
+import { LiNode } from "./nodes/li";
+import { UlNode } from "./nodes/ul";
+import { OlNode } from "./nodes/ol";
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -30,6 +33,9 @@ export function createNode(node: XMLNode<'image'>): ImageNode;
 export function createNode(node: XMLNode<'alt'>): AltNode;
 export function createNode(node: XMLNode<'fig'>): FigNode;
 export function createNode(node: XMLNode<'section'>): FigNode;
+export function createNode(node: XMLNode<'ol'>): FigNode;
+export function createNode(node: XMLNode<'ul'>): FigNode;
+export function createNode(node: XMLNode<'li'>): FigNode;
 export function createNode(node: XMLNode): BaseNode;
 export function createNode(node: XMLNode | string): BaseNode {
     if (typeof node === 'string') {
@@ -50,6 +56,9 @@ export function createNode(node: XMLNode | string): BaseNode {
       case 'alt': return new AltNode(node.attributes);
       case 'fig': return new FigNode(node.attributes);
       case 'section': return new SectionNode(node.attributes);
+      case 'ol': return new OlNode(node.attributes);
+      case 'ul': return new UlNode(node.attributes);
+      case 'li': return new LiNode(node.attributes);
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
