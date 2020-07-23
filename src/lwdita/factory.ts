@@ -35,6 +35,7 @@ import { MediaLoopNode } from "./nodes/media-loop";
 import { MediaMutedNode } from "./nodes/media-muted";
 import { MediaSourceNode } from "./nodes/media-source";
 import { MediaTrackNode } from "./nodes/media-track";
+import { PreNode } from "./nodes/pre";
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -72,6 +73,7 @@ export function createNode(node: XMLNode<'media-muted'>): MediaMutedNode;
 export function createNode(node: XMLNode<'media-source'>): MediaSourceNode;
 export function createNode(node: XMLNode<'media-track'>): MediaTrackNode;
 export function createNode(node: XMLNode<'video-poster'>): VideoPosterNode;
+export function createNode(node: XMLNode<'pre'>): PreNode;
 export function createNode<T extends BaseNode = BaseNode>(node: XMLNode): T;
 export function createNode<T extends BaseNode>(node: XMLNode | string): T {
   let nodeObject: BaseNode;
@@ -114,6 +116,7 @@ export function createNode<T extends BaseNode>(node: XMLNode | string): T {
       case 'media-source': nodeObject = new MediaSourceNode(node.attributes); break;
       case 'media-track': nodeObject = new MediaTrackNode(node.attributes); break;
       case 'video-poster': nodeObject = new VideoPosterNode(node.attributes); break;
+      case 'pre': nodeObject = new PreNode(node.attributes); break;
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
