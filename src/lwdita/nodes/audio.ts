@@ -18,5 +18,5 @@ export function makeAudio<T extends { new(...args: any[]): BaseNode }>(construct
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeAudio, 'audio', isValidAudioField, AudioFields, ['desc', 'media-control', 'media-autoplay', 'media-loop', 'media-muted', 'media-source', 'media-track'])
+@makeComponent(makeAudio, 'audio', isValidAudioField, AudioFields, ['desc', 'media-controls', 'media-autoplay', 'media-loop', 'media-muted', 'media-source', 'media-track'])
 export class AudioNode extends BaseNode {}
