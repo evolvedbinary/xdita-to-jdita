@@ -25,6 +25,7 @@ import { PrologNode } from "./nodes/prolog";
 import { DataNode } from "./nodes/data";
 import { NoteNode } from "./nodes/note";
 import { DescNode } from "./nodes/desc";
+import { XRefNode } from "./nodes/xref";
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -52,6 +53,7 @@ export function createNode(node: XMLNode<'prolog'>): PrologNode;
 export function createNode(node: XMLNode<'data'>): DataNode;
 export function createNode(node: XMLNode<'note'>): NoteNode;
 export function createNode(node: XMLNode<'desc'>): DescNode;
+export function createNode(node: XMLNode<'xref'>): XRefNode;
 export function createNode<T extends BaseNode = BaseNode>(node: XMLNode): T;
 export function createNode<T extends BaseNode>(node: XMLNode | string): T {
   let nodeObject: BaseNode;
@@ -84,6 +86,7 @@ export function createNode<T extends BaseNode>(node: XMLNode | string): T {
       case 'data': nodeObject = new DataNode(node.attributes); break;
       case 'note': nodeObject = new NoteNode(node.attributes); break;
       case 'desc': nodeObject = new DescNode(node.attributes); break;
+      case 'xref': nodeObject = new XRefNode(node.attributes); break;
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
