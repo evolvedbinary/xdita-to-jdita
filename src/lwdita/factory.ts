@@ -37,15 +37,15 @@ export function createNode(node: XMLNode<'p'>): PNode;
 export function createNode(node: XMLNode<'image'>): ImageNode;
 export function createNode(node: XMLNode<'alt'>): AltNode;
 export function createNode(node: XMLNode<'fig'>): FigNode;
-export function createNode(node: XMLNode<'section'>): FigNode;
-export function createNode(node: XMLNode<'ol'>): FigNode;
-export function createNode(node: XMLNode<'ul'>): FigNode;
-export function createNode(node: XMLNode<'li'>): FigNode;
-export function createNode(node: XMLNode<'simpletable'>): FigNode;
-export function createNode(node: XMLNode<'sthead'>): FigNode;
-export function createNode(node: XMLNode<'strow'>): FigNode;
-export function createNode(node: XMLNode<'stentry'>): FigNode;
-export function createNode(node: XMLNode<'prolog'>): FigNode;
+export function createNode(node: XMLNode<'section'>): SectionNode;
+export function createNode(node: XMLNode<'ol'>): OlNode;
+export function createNode(node: XMLNode<'ul'>): UlNode;
+export function createNode(node: XMLNode<'li'>): LiNode;
+export function createNode(node: XMLNode<'simpletable'>): SimpleTableNode;
+export function createNode(node: XMLNode<'sthead'>): StHeadNode;
+export function createNode(node: XMLNode<'strow'>): StRowNode;
+export function createNode(node: XMLNode<'stentry'>): StEntryNode;
+export function createNode(node: XMLNode<'prolog'>): PrologNode;
 export function createNode(node: XMLNode): BaseNode;
 export function createNode(node: XMLNode | string): BaseNode {
     if (typeof node === 'string') {
