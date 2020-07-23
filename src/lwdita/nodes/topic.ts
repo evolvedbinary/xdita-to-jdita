@@ -2,7 +2,7 @@
 
 import { BaseNode } from "./base";
 import { ID, CDATA, isID, isCDATA, isOrUndefined, Attributes } from "../utils";
-import { TopicAttributes } from "../attributes/topic";
+import { TopicAttributes, isValidTopicField } from "../attributes/topic";
 
 export class TopicNode extends BaseNode implements TopicAttributes {
   static nodeName = 'topic';
@@ -20,20 +20,7 @@ export class TopicNode extends BaseNode implements TopicAttributes {
       'outputClass',
       'className',
   ];
-  static isValidField(field: string, value: any): boolean {
-      switch(field) {
-          case 'dir': return isOrUndefined(isCDATA, value);
-          case 'xml:lang': return isOrUndefined(isCDATA, value);
-          case 'translate': return isOrUndefined(isCDATA, value);
-          case 'id': return isID(value);
-          case 'xmlns:ditaarch': return isCDATA(value);
-          case 'ditaarch:DITAArchVersion': return isOrUndefined(isCDATA, value);
-          case 'domains': return isOrUndefined(isCDATA, value);
-          case 'outputClass': return isOrUndefined(isCDATA, value);
-          case 'className': return isOrUndefined(isCDATA, value);
-          default: return false;
-      }
-  }
+  static isValidField = isValidTopicField;
   constructor(attributes: Attributes){
       super();
       this._props = this.attributesToProps(attributes);

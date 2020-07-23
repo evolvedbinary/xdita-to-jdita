@@ -2,7 +2,7 @@
 
 import { CDATA, isOrUndefined, isCDATA, Attributes } from "../utils";
 import { BaseNode } from "./base";
-import { ShortDescAttributes, ShortDescFields } from "../attributes/shortdesc";
+import { ShortDescAttributes, ShortDescFields, isValidShortDescField } from "../attributes/shortdesc";
 
 export class ShortDescNode extends BaseNode implements ShortDescAttributes {
   static nodeName = 'shortdesc';
@@ -12,19 +12,7 @@ export class ShortDescNode extends BaseNode implements ShortDescAttributes {
       super();
       this._props = this.attributesToProps(attributes);
   }
-  isValidField(field: string, value: any): boolean {
-      switch(field) {
-          case 'props': return isOrUndefined(isCDATA, value);
-          case 'dir': return isOrUndefined(isCDATA, value);
-          case 'xml:lang': return isOrUndefined(isCDATA, value);
-          case 'translate': return isOrUndefined(isCDATA, value);
-          case 'id': return isOrUndefined(isCDATA, value);
-          case 'conref': return isOrUndefined(isCDATA, value);
-          case 'outputClass': return isOrUndefined(isCDATA, value);
-          case 'className': return isOrUndefined(isCDATA, value);
-          default: return false;
-      }
-  }
+  static isValidField = isValidShortDescField;
   get 'props'(): CDATA | undefined {
       return this.readProp<CDATA>('props'); }
   get 'dir'(): CDATA | undefined {

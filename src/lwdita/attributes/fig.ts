@@ -1,12 +1,14 @@
-import { DisplayAttributes, isDisplayAttributes, DisplayFields } from "./display";
-import { LocalizationAttributes, isLocalizationAttributes, LocalizationFields } from "./localization";
-import { VariableContentAttributes, isVariableContentAttributes, VariableContentFields } from "./variable-content";
-import { isClassAttributes, ClassAttributes, ClassFields } from "./class";
+import { DisplayAttributes, DisplayFields, isValidDisplayField } from "./display";
+import { LocalizationAttributes, LocalizationFields, isValidLocalizationField } from "./localization";
+import { VariableContentAttributes, VariableContentFields, isValidVariableContentField } from "./variable-content";
+import { ClassAttributes, ClassFields, isValidClassField } from "./class";
+import { areFieldsValid } from "../utils";
 
 export const FigFields = [...DisplayFields, ...LocalizationFields, ...VariableContentFields, ...ClassFields];
 export interface FigAttributes extends DisplayAttributes, LocalizationAttributes, VariableContentAttributes, ClassAttributes {}
+export const isValidFigField = (field: string, value: any): boolean => isValidDisplayField(field, value)
+  || isValidLocalizationField(field, value)
+  || isValidVariableContentField(field, value)
+  || isValidClassField(field, value);
 export const isFigAttributes = (value?: any): value is FigAttributes =>
-  isClassAttributes(value) &&
-  isVariableContentAttributes(value) &&
-  isLocalizationAttributes(value) &&
-  isDisplayAttributes(value);
+  typeof value === 'object' && areFieldsValid(FigFields, value, isValidFigField);

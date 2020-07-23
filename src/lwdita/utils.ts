@@ -25,8 +25,8 @@ export type DisplayExpanse = 'column' | 'page' | 'spread' | 'textline';
 export const isDisplayExpanse = (value?: any): value is DisplayExpanse =>  has(['column', 'page', 'spread', 'textline'], value);
 
 // TODO(AR) should these be union types, or should they be base interfaces which other interfaces like `ph` inherit from?
-export type RefrenceContentScope = 'local' | 'peer' | 'external';
-export const isReferenceContentScope = (value?: any): value is RefrenceContentScope =>
+export type ReferenceContentScope = 'local' | 'peer' | 'external';
+export const isReferenceContentScope = (value?: any): value is ReferenceContentScope =>
     has(['local', 'peer', 'external'], value);
 export const nodeGroups: Record<string, Array<string>> = {
     'common-inline': ['text', 'ph', 'image', 'data'],
@@ -39,3 +39,19 @@ export const nodeGroups: Record<string, Array<string>> = {
 }
 
 export type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;
+
+export function areFieldsValid(fields: string[], value: any, ...validations: ((field: string, value: any) => boolean)[]): boolean {
+    for (const field of fields) {
+        let valid = false;
+        for (const validation of validations) {
+            if (validation(field, value)) {
+                valid = true;
+                break;
+            }
+        }
+        if (!valid) {
+            return false;
+        }
+    }
+    return true;
+}

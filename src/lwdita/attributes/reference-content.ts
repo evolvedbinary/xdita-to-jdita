@@ -1,12 +1,20 @@
-import { CDATA, RefrenceContentScope, isCDATA, isOrUndefined, isReferenceContentScope } from "../utils";
+import { CDATA, ReferenceContentScope, isCDATA, isOrUndefined, isReferenceContentScope, areFieldsValid } from "../utils";
 
 export const ReferenceContentFields = ['href', 'format', 'scope'];
 export interface ReferenceContentAttributes {
   'href'?: CDATA;
   'format'?: CDATA;
-  'scope'?: RefrenceContentScope;
+  'scope'?: ReferenceContentScope;
 }
+
+export function isValidReferenceContentField(field: string, value: any): boolean {
+  switch(field) {
+    case 'href': return isOrUndefined(isCDATA, value);
+    case 'format': return isOrUndefined(isCDATA, value);
+    case 'scope': return isOrUndefined(isReferenceContentScope, value);
+    default: return false;
+  }
+}
+    
 export const isReferenceContentAttributes = (value?: any): value is ReferenceContentAttributes =>
-  isOrUndefined(isCDATA, value['href']) &&
-  isOrUndefined(isCDATA, value['format']) &&
-  isOrUndefined(isReferenceContentScope, value['scope']);
+  typeof value === 'object' && areFieldsValid(ReferenceContentFields, value, isValidReferenceContentField);

@@ -61,6 +61,7 @@ export abstract class BaseNode {
       }
       this._props[field] = value;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   static isValidField(field: string, value: any): boolean {
       return true;
   }

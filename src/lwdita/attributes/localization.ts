@@ -1,4 +1,4 @@
-import { CDATA, isCDATA, isOrUndefined } from "../utils";
+import { CDATA, isCDATA, isOrUndefined, areFieldsValid } from "../utils";
 
 export const LocalizationFields = ['dir', 'xml:lang', 'translate'];
 export interface LocalizationAttributes {
@@ -6,9 +6,15 @@ export interface LocalizationAttributes {
   'xml:lang'?: CDATA;
   'translate'?: CDATA;
 }
-export const isLocalizationAttributes = (value?: any): value is LocalizationAttributes =>
-  typeof value === 'object' &&
-  isOrUndefined(isCDATA, value['dir']) &&
-  isOrUndefined(isCDATA, value['xml:lang']) &&
-  isOrUndefined(isCDATA, value['translate']);
+
+export function isValidLocalizationField(field: string, value: any): boolean {
+  switch(field) {
+    case 'dir': return isOrUndefined(isCDATA, value);
+    case 'xml:lang': return isOrUndefined(isCDATA, value);
+    case 'translate': return isOrUndefined(isCDATA, value);
+    default: return false;
+  }
+}
   
+export const isLocalizationAttributes = (value?: any): value is LocalizationAttributes =>
+  typeof value === 'object' && areFieldsValid(LocalizationFields, value, isValidLocalizationField);

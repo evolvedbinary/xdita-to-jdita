@@ -1,27 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
+import { CDATA, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
-import { DtAttributes, DtFields } from "../attributes/dt";
+import { DtAttributes, DtFields, isValidDtField } from "../attributes/dt";
 
 export class DtNode extends BaseNode implements DtAttributes {
   static nodeName = 'dt';
   static childGroups = ['all-inline'];
   _props!: DtAttributes;
   static fields = DtFields;
-  static isValidField(field: string, value: any): boolean {
-      switch(field) {
-          case 'props': return isOrUndefined(isCDATA, value);
-          case 'dir': return isOrUndefined(isCDATA, value);
-          case 'xml:lang': return isOrUndefined(isCDATA, value);
-          case 'translate': return isOrUndefined(isCDATA, value);
-          case 'id': return isOrUndefined(isNMTOKEN, value);
-          case 'conref': return isOrUndefined(isCDATA, value);
-          case 'outputClass': return isOrUndefined(isCDATA, value);
-          case 'className': return isOrUndefined(isCDATA, value);
-          default: return false;
-      }
-  }
+  static isValidField = isValidDtField;
   constructor(attributes?: Attributes) {
       super();
       this._props = this.attributesToProps(attributes);

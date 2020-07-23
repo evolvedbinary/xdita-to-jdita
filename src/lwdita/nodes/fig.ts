@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { CDATA, isCDATA, isOrUndefined, Attributes, isDisplayScale, isDisplayFrame, isDisplayExpanse, DisplayScale, DisplayFrame, DisplayExpanse } from "../utils";
+import { CDATA, Attributes, DisplayScale, DisplayFrame, DisplayExpanse } from "../utils";
 import { BaseNode } from "./base";
-import { FigAttributes, FigFields } from "../attributes/fig";
+import { FigAttributes, FigFields, isValidFigField } from "../attributes/fig";
 
 export class FigNode extends BaseNode implements FigAttributes {
   static nodeName = 'fig';
@@ -10,20 +10,7 @@ export class FigNode extends BaseNode implements FigAttributes {
   static childGroups = ['fig-blocks'];
   _props!: FigAttributes;
   static fields = FigFields;
-  static isValidField(field: string, value: any): boolean {
-      switch(field) {
-          case 'scale': return isOrUndefined(isDisplayScale, value);
-          case 'frame': return isOrUndefined(isDisplayFrame, value);
-          case 'expanse': return isOrUndefined(isDisplayExpanse, value);
-          case 'dir': return isOrUndefined(isCDATA, value);
-          case 'xml:lang': return isOrUndefined(isCDATA, value);
-          case 'translate': return isOrUndefined(isCDATA, value);
-          case 'keyref': return isOrUndefined(isCDATA, value);
-          case 'outputClass': return isOrUndefined(isCDATA, value);
-          case 'className': return isOrUndefined(isCDATA, value);
-          default: return false;
-      }
-  }
+  static isValidField = isValidFigField;
   constructor(attributes?: Attributes) {
       super();
       this._props = this.attributesToProps(attributes);

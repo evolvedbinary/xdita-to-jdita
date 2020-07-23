@@ -2,26 +2,14 @@
 
 import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
-import { PAttributes, PFields } from "../attributes/p";
+import { PAttributes, PFields, isValidPField } from "../attributes/p";
 
 export class PNode extends BaseNode implements PAttributes {
   static nodeName = 'dt';
   static childGroups = ['all-inline'];
   _props!: PAttributes;
   static fields = PFields;
-  static isValidField(field: string, value: any): boolean {
-      switch(field) {
-          case 'props': return isOrUndefined(isCDATA, value);
-          case 'dir': return isOrUndefined(isCDATA, value);
-          case 'xml:lang': return isOrUndefined(isCDATA, value);
-          case 'translate': return isOrUndefined(isCDATA, value);
-          case 'id': return isOrUndefined(isNMTOKEN, value);
-          case 'conref': return isOrUndefined(isCDATA, value);
-          case 'outputClass': return isOrUndefined(isCDATA, value);
-          case 'className': return isOrUndefined(isCDATA, value);
-          default: return false;
-      }
-  }
+  static isValidField = isValidPField;
   constructor(attributes?: Attributes) {
       super();
       this._props = this.attributesToProps(attributes);

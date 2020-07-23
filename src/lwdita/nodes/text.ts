@@ -3,17 +3,13 @@
 import { BaseNode } from "./base";
 import { CDATA } from "../utils";
 import { TextAttributes, TextFields } from "../attributes/text";
+import { isValidTitleField } from "../attributes";
 
 export class TextNode extends BaseNode implements TextAttributes {
   static nodeName = 'text';
   _props!: TextAttributes;
   static fields = TextFields;
-  static isValidField(field: string, value: any): boolean {
-      switch(field) {
-          case 'content': return typeof value === 'string';
-          default: return false;
-      }
-  }
+  static isValidField = isValidTitleField;
   constructor(content: string) {
       super();
       this._props = this.attributesToProps({ content });

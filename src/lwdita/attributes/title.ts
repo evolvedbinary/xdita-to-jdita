@@ -1,7 +1,10 @@
-import { LocalizationAttributes, isLocalizationAttributes, LocalizationFields } from "./localization";
-import { ClassAttributes, isClassAttributes, ClassFields } from "./class";
+import { LocalizationAttributes, LocalizationFields, isValidLocalizationField } from "./localization";
+import { ClassAttributes, ClassFields, isValidClassField } from "./class";
+import { areFieldsValid } from "../utils";
 
 export const TitleFields = [...LocalizationFields, ...ClassFields];
 export interface TitleAttributes extends LocalizationAttributes, ClassAttributes {}
+export const isValidTitleField = (field: string, value: any): boolean => isValidLocalizationField(field, value)
+  || isValidClassField(field, value);
 export const isTitleAttributes = (value?: any): value is TitleAttributes =>
-  isClassAttributes(value) && isLocalizationAttributes(value);
+  typeof value === 'object' && areFieldsValid(TitleFields, value, isValidTitleField);

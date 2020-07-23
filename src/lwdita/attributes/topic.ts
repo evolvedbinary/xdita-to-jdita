@@ -1,6 +1,6 @@
-import { LocalizationAttributes, isLocalizationAttributes, LocalizationFields } from "./localization";
-import { ClassAttributes, isClassAttributes, ClassFields } from "./class";
-import { ID, CDATA, isID, isCDATA, isOrUndefined } from "../utils";
+import { LocalizationAttributes, LocalizationFields, isValidLocalizationField } from "./localization";
+import { ClassAttributes, ClassFields, isValidClassField } from "./class";
+import { ID, CDATA, isCDATA, isOrUndefined, areFieldsValid } from "../utils";
 
 export const TopicFields = [...LocalizationFields, ...ClassFields];
 export interface TopicAttributes extends LocalizationAttributes, ClassAttributes {
@@ -10,11 +10,16 @@ export interface TopicAttributes extends LocalizationAttributes, ClassAttributes
   // TODO: "&xdita-constraint; &included-domains;"
   'domains'?: CDATA;
 }
+export function isValidTopicField(field: string, value: any): boolean {
+  if (isValidLocalizationField(field, value) || isValidClassField(field, value)) {
+    return true;
+  }
+  switch(field) {
+    case 'dir': return isOrUndefined(isCDATA, value);
+    case 'xml:lang': return isOrUndefined(isCDATA, value);
+    case 'translate': return isOrUndefined(isCDATA, value);
+    default: return false;
+  }
+}
 export const isTopicAttributes = (value?: any): value is TopicAttributes =>
-  value &&
-  isID(value['id']) &&
-  isCDATA(value['xmlns:ditaarch']) &&
-  isOrUndefined(isCDATA, value['ditaarch:DITAArchVersion']) &&
-  isOrUndefined(isCDATA, value['domains']) &&
-  isClassAttributes(value) &&
-  isLocalizationAttributes(value);
+  typeof value === 'object' && areFieldsValid(TopicFields, value, isValidTopicField);

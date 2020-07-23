@@ -1,27 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { CDATA, isCDATA, isOrUndefined, isNMTOKEN, Attributes, NMTOKEN } from "../utils";
+import { CDATA, Attributes, NMTOKEN } from "../utils";
 import { BaseNode } from "./base";
-import { DlAttributes, DlFields } from "../attributes/dl";
+import { DlAttributes, DlFields, isValidDlField } from "../attributes/dl";
 
 export class DlNode extends BaseNode implements DlAttributes {
   static nodeName = 'dl';
   static childTypes = ['dlentry'];
   _props!: DlAttributes;
   static fields = DlFields;
-  static isValidField(field: string, value: any): boolean {
-      switch(field) {
-          case 'props': return isOrUndefined(isCDATA, value);
-          case 'dir': return isOrUndefined(isCDATA, value);
-          case 'xml:lang': return isOrUndefined(isCDATA, value);
-          case 'translate': return isOrUndefined(isCDATA, value);
-          case 'id': return isOrUndefined(isNMTOKEN, value);
-          case 'conref': return isOrUndefined(isCDATA, value);
-          case 'outputClass': return isOrUndefined(isCDATA, value);
-          case 'className': return isOrUndefined(isCDATA, value);
-          default: return false;
-      }
-  }
+  static isValidField = isValidDlField;
   constructor(attributes?: Attributes) {
       super();
       this._props = this.attributesToProps(attributes);

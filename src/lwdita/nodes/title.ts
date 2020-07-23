@@ -2,7 +2,7 @@
 
 import { CDATA, isCDATA, isOrUndefined, Attributes } from "../utils";
 import { BaseNode } from "./base";
-import { TitleAttributes, TitleFields } from "../attributes/title";
+import { TitleAttributes, TitleFields, isValidTitleField } from "../attributes/title";
 
 export class TitleNode extends BaseNode implements TitleAttributes {
   static nodeName = 'title';
@@ -10,16 +10,7 @@ export class TitleNode extends BaseNode implements TitleAttributes {
   static childGroups = ['common-inline'];
   _props!: TitleAttributes;
   static fields = TitleFields;
-  static isValidField(field: string, value: any): boolean {
-      switch(field) {
-          case 'dir': return isOrUndefined(isCDATA, value);
-          case 'xml:lang': return isOrUndefined(isCDATA, value);
-          case 'translate': return isOrUndefined(isCDATA, value);
-          case 'outputClass': return isOrUndefined(isCDATA, value);
-          case 'className': return isOrUndefined(isCDATA, value);
-          default: return false;
-      }
-  }
+  static isValidField = isValidTitleField;
   constructor(attributes?: Attributes) {
       super();
       this._props = this.attributesToProps(attributes);

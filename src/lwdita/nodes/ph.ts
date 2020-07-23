@@ -2,25 +2,14 @@
 
 import { CDATA, isCDATA, isOrUndefined, Attributes } from "../utils";
 import { BaseNode } from "./base";
-import { PhAttributes, PhFields } from "../attributes/ph";
+import { PhAttributes, PhFields, isValidPhField } from "../attributes/ph";
 
 export class PhNode extends BaseNode implements PhAttributes {
   static nodeName = 'ph';
   static childGroups = ['all-inline'];
   _props!: PhAttributes;
   static fields = PhFields;
-  static isValidField(field: string, value: any): boolean {
-      switch(field) {
-          case 'props': return isOrUndefined(isCDATA, value);
-          case 'dir': return isOrUndefined(isCDATA, value);
-          case 'xml:lang': return isOrUndefined(isCDATA, value);
-          case 'translate': return isOrUndefined(isCDATA, value);
-          case 'keyref': return isOrUndefined(isCDATA, value);
-          case 'outputClass': return isOrUndefined(isCDATA, value);
-          case 'className': return isOrUndefined(isCDATA, value);
-          default: return false;
-      }
-  }
+  static isValidField = isValidPhField;
   constructor(attributes?: Attributes) {
       super();
       this._props = this.attributesToProps(attributes);
