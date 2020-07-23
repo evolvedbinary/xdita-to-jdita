@@ -27,6 +27,7 @@ import { NoteNode } from "./nodes/note";
 import { DescNode } from "./nodes/desc";
 import { XRefNode } from "./nodes/xref";
 import { AudioNode } from "./nodes/audio";
+import { VideoNode } from "./nodes/video";
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -56,6 +57,7 @@ export function createNode(node: XMLNode<'note'>): NoteNode;
 export function createNode(node: XMLNode<'desc'>): DescNode;
 export function createNode(node: XMLNode<'xref'>): XRefNode;
 export function createNode(node: XMLNode<'audio'>): AudioNode;
+export function createNode(node: XMLNode<'video'>): VideoNode;
 export function createNode<T extends BaseNode = BaseNode>(node: XMLNode): T;
 export function createNode<T extends BaseNode>(node: XMLNode | string): T {
   let nodeObject: BaseNode;
@@ -90,6 +92,7 @@ export function createNode<T extends BaseNode>(node: XMLNode | string): T {
       case 'desc': nodeObject = new DescNode(node.attributes); break;
       case 'xref': nodeObject = new XRefNode(node.attributes); break;
       case 'audio': nodeObject = new AudioNode(node.attributes); break;
+      case 'video': nodeObject = new VideoNode(node.attributes); break;
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
