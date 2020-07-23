@@ -21,6 +21,7 @@ import { SimpleTableNode } from "./nodes/simple-table";
 import { StHeadNode } from "./nodes/sthead";
 import { StRowNode } from "./nodes/strow";
 import { StEntryNode } from "./nodes/stentry";
+import { PrologNode } from "./nodes/prolog";
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -44,6 +45,7 @@ export function createNode(node: XMLNode<'simpletable'>): FigNode;
 export function createNode(node: XMLNode<'sthead'>): FigNode;
 export function createNode(node: XMLNode<'strow'>): FigNode;
 export function createNode(node: XMLNode<'stentry'>): FigNode;
+export function createNode(node: XMLNode<'prolog'>): FigNode;
 export function createNode(node: XMLNode): BaseNode;
 export function createNode(node: XMLNode | string): BaseNode {
     if (typeof node === 'string') {
@@ -71,6 +73,7 @@ export function createNode(node: XMLNode | string): BaseNode {
       case 'sthead': return new StHeadNode(node.attributes);
       case 'strow': return new StRowNode(node.attributes);
       case 'stentry': return new StEntryNode(node.attributes);
+      case 'prolog': return new PrologNode(node.attributes);
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
