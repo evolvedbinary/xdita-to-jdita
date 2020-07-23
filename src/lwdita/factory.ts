@@ -22,6 +22,7 @@ import { StHeadNode } from "./nodes/sthead";
 import { StRowNode } from "./nodes/strow";
 import { StEntryNode } from "./nodes/stentry";
 import { PrologNode } from "./nodes/prolog";
+import { DataNode } from "./nodes/data";
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -46,6 +47,7 @@ export function createNode(node: XMLNode<'sthead'>): StHeadNode;
 export function createNode(node: XMLNode<'strow'>): StRowNode;
 export function createNode(node: XMLNode<'stentry'>): StEntryNode;
 export function createNode(node: XMLNode<'prolog'>): PrologNode;
+export function createNode(node: XMLNode<'data'>): DataNode;
 export function createNode(node: XMLNode): BaseNode;
 export function createNode(node: XMLNode | string): BaseNode {
     if (typeof node === 'string') {
@@ -74,6 +76,7 @@ export function createNode(node: XMLNode | string): BaseNode {
       case 'strow': return new StRowNode(node.attributes);
       case 'stentry': return new StEntryNode(node.attributes);
       case 'prolog': return new PrologNode(node.attributes);
+      case 'data': return new DataNode(node.attributes);
       default: 
         throw new Error('unkonwn node "' + node.name + '"');
     }
