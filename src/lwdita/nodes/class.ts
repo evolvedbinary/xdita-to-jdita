@@ -1,16 +1,16 @@
 import { CDATA, isOrUndefined, isCDATA, areFieldsValid } from "../utils";
 import { BaseNode } from "./base";
 
-export const ClassFields = ['outputClass', 'className'];
+export const ClassFields = ['outputClass', 'class'];
 export interface ClassNode {
   'outputClass'?: CDATA;
-  'className'?: CDATA;
+  'class'?: CDATA;
 }
 
 export function isValidClassField(field: string, value: any): boolean {
   switch(field) {
     case 'outputClass': return isOrUndefined(isCDATA, value);
-    case 'className': return isOrUndefined(isCDATA, value);
+    case 'class': return isOrUndefined(isCDATA, value);
     default: return false;
   }
 }
@@ -24,9 +24,9 @@ export function makeClass<T extends { new(...args: any[]): BaseNode }>(construct
       return this.readProp<CDATA | undefined>('outputClass'); }
     set 'outputClass'(value: CDATA | undefined) {
         this.writeProp<CDATA | undefined>('outputClass', value); }
-    get 'className'(): CDATA | undefined {
-      return this.readProp<CDATA | undefined>('className'); }
-    set 'className'(value: CDATA | undefined) {
-        this.writeProp<CDATA | undefined>('className', value); }
+    get 'class'(): CDATA | undefined {
+      return this.readProp<CDATA | undefined>('class'); }
+    set 'class'(value: CDATA | undefined) {
+        this.writeProp<CDATA | undefined>('class', value); }
   }
 }
