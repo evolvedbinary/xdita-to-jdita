@@ -9,6 +9,11 @@ export abstract class BaseNode {
   static childGroups: Array<string> = [];
   protected _children?: BaseNode[];
   protected _props!: Record<string, any>;
+  constructor (attributes?: Attributes) {
+    if (attributes) {
+        this._props = this.static.attributesToProps(attributes);
+    }
+  }
   protected get static(): typeof BaseNode {
       return this.constructor as any;
   }
@@ -38,9 +43,9 @@ export abstract class BaseNode {
   isNode(name: string): boolean {
       return name === this.static.nodeName;
   }
-  protected attributesToProps<T = Record<string, any>>(attributes: Attributes = {}): T {
+  static attributesToProps<T = Record<string, any>>(attributes: Attributes = {}): T {
       const result: Record<string, any> = {};
-      this.static.fields.forEach(field => {
+      this.fields.forEach(field => {
           const attr = attributes[field];
           result[field] = typeof attr === 'string' ? attr : attr?.value;
       });

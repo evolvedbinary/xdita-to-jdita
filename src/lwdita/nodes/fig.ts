@@ -19,9 +19,4 @@ export function makeFig<T extends { new(...args: any[]): BaseNode }>(constructor
 }
 
 @makeComponent(makeFig, 'fig', isValidFigField, FigFields, ['image', 'xref'], ['fig-blocks'])
-export class FigNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class FigNode extends BaseNode {}

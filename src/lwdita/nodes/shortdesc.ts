@@ -17,9 +17,4 @@ export function makeShortDesc<T extends { new(...args: any[]): BaseNode }>(const
 }
 
 @makeComponent(makeShortDesc, 'shortdesc', isValidShortDescField, ShortDescFields, [], ['all-inline'])
-export class ShortDescNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class ShortDescNode extends BaseNode {}

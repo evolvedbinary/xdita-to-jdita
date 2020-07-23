@@ -31,9 +31,4 @@ export function makeNote<T extends { new(...args: any[]): BaseNode }>(constructo
 }
 
 @makeComponent(makeNote, 'note', isValidNoteField, NoteFields, ['li'])
-export class NoteNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class NoteNode extends BaseNode {}

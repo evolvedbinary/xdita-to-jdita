@@ -19,9 +19,4 @@ export function makeStHead<T extends { new(...args: any[]): BaseNode }>(construc
 }
 
 @makeComponent(makeStHead, 'sthead', isValidStHeadField, StHeadFields, ['stentry'])
-export class StHeadNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class StHeadNode extends BaseNode {}

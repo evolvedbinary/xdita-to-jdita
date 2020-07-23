@@ -21,9 +21,4 @@ export function makeXRef<T extends { new(...args: any[]): BaseNode }>(constructo
 }
 
 @makeComponent(makeXRef, 'xref', isValidXRefField, XRefFields, [], ['common-inline'])
-export class XRefNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class XRefNode extends BaseNode {}

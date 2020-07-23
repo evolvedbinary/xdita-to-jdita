@@ -1,5 +1,5 @@
 import { BaseNode, makeComponent } from "./base";
-import { isOrUndefined } from "../utils";
+import { isOrUndefined, Attributes } from "../utils";
 
 export const TextFields = ['content'];
 export interface TextNode {
@@ -27,7 +27,6 @@ export function makeText<T extends { new(...args: any[]): BaseNode }>(constructo
 @makeComponent(makeText, 'text', isValidTextField, TextFields)
 export class TextNode extends BaseNode {
   constructor(content: string) {
-      super();
-      this._props = this.attributesToProps({ content });
+    super({ content });
   }
 }

@@ -19,9 +19,4 @@ export function makePh<T extends { new(...args: any[]): BaseNode }>(constructor:
 }
 
 @makeComponent(makePh, 'ph', isValidPhField, PhFields, [], ['all-inline'])
-export class PhNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class PhNode extends BaseNode {}

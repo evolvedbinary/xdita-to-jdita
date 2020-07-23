@@ -19,9 +19,4 @@ export function makeStEntry<T extends { new(...args: any[]): BaseNode }>(constru
 }
 
 @makeComponent(makeStEntry, 'stentry', isValidStEntryField, StEntryFields, [], ['simple-blocks'])
-export class StEntryNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class StEntryNode extends BaseNode {}

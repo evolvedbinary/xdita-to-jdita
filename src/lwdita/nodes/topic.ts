@@ -47,9 +47,4 @@ export function makeTopic<T extends { new(...args: any[]): BaseNode }>(construct
 }
 
 @makeComponent(makeTopic, 'topic', isValidTopicField, TopicFields, ['title', 'shortdesc', 'prolog', 'body'])
-export class TopicNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-    super();
-    this._props = this.attributesToProps(attributes);
-  }
-}
+export class TopicNode extends BaseNode {}

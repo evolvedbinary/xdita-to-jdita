@@ -38,9 +38,4 @@ export function makeData<T extends { new(...args: any[]): BaseNode }>(constructo
 }
 
 @makeComponent(makeData, 'data', isValidDataField, DataFields, ['text', 'data'])
-export class DataNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class DataNode extends BaseNode {}

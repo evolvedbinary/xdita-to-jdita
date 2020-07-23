@@ -19,9 +19,4 @@ export function makeSimpleTable<T extends { new(...args: any[]): BaseNode }>(con
 }
 
 @makeComponent(makeSimpleTable, 'simpletable', isValidSimpleTableField, SimpleTableFields, ['sthead', 'strow'])
-export class SimpleTableNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class SimpleTableNode extends BaseNode {}

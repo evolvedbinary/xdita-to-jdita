@@ -15,9 +15,4 @@ export function makeBody<T extends { new(...args: any[]): BaseNode }>(constructo
 }
 
 @makeComponent(makeBody, 'body', isValidBodyField, BodyFields, ['section', 'fn'], ['list-blocks'])
-export class BodyNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class BodyNode extends BaseNode {}

@@ -17,9 +17,4 @@ export function makeDesc<T extends { new(...args: any[]): BaseNode }>(constructo
 }
 
 @makeComponent(makeDesc, 'desc', isValidDescField, DescFields, [], ['common-inline'])
-export class DescNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class DescNode extends BaseNode {}

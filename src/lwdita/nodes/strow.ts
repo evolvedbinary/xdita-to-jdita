@@ -19,9 +19,4 @@ export function makeStRow<T extends { new(...args: any[]): BaseNode }>(construct
 }
 
 @makeComponent(makeStRow, 'strow', isValidStRowField, StRowFields, ['stentry'])
-export class StRowNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class StRowNode extends BaseNode {}

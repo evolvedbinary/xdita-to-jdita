@@ -7,7 +7,4 @@ export class DocumentNode extends BaseNode {
   static childTypes = ['topic'];
   static fields = [];
   static isValidField = (): boolean => true;
-  constructor() {
-      super();
-  }
 }

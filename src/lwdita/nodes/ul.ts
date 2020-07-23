@@ -19,9 +19,4 @@ export function makeUl<T extends { new(...args: any[]): BaseNode }>(constructor:
 }
 
 @makeComponent(makeUl, 'ul', isValidUlField, UlFields, ['li'])
-export class UlNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class UlNode extends BaseNode {}

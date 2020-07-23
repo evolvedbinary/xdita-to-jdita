@@ -19,9 +19,4 @@ export function makeAlt<T extends { new(...args: any[]): BaseNode }>(constructor
 }
 
 @makeComponent(makeAlt, 'alt', isValidAltField, AltFields, [], ['all-inline'])
-export class AltNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class AltNode extends BaseNode {}

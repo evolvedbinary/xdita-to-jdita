@@ -49,9 +49,4 @@ export function makeImage<T extends { new(...args: any[]): BaseNode }>(construct
 }
 
 @makeComponent(makeImage, 'image', isValidImageField, ImageFields, ['alt'])
-export class ImageNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class ImageNode extends BaseNode {}

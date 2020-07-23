@@ -19,9 +19,4 @@ export function makeDt<T extends { new(...args: any[]): BaseNode }>(constructor:
 }
 
 @makeComponent(makeDt, 'dt', isValidDtField, DtFields, [], ['all-inline'])
-export class DtNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class DtNode extends BaseNode {}

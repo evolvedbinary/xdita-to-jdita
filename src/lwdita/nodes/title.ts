@@ -15,9 +15,4 @@ export function makeTitle<T extends { new(...args: any[]): BaseNode }>(construct
 }
 
 @makeComponent(makeTitle, 'title', isValidTitleField, TitleFields, [], ['common-inline'])
-export class TitleNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class TitleNode extends BaseNode {}

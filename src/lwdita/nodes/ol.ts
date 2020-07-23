@@ -19,9 +19,4 @@ export function makeOl<T extends { new(...args: any[]): BaseNode }>(constructor:
 }
 
 @makeComponent(makeOl, 'ol', isValidOlField, OlFields, ['li'])
-export class OlNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class OlNode extends BaseNode {}

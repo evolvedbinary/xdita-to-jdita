@@ -19,9 +19,4 @@ export function makeDlEntry<T extends { new(...args: any[]): BaseNode }>(constru
 }
 
 @makeComponent(makeDlEntry, 'dlentry', isValidDlEntryField, DlEntryFields, ['dt', 'dd'])
-export class DlEntryNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class DlEntryNode extends BaseNode {}

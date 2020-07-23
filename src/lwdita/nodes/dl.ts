@@ -19,9 +19,4 @@ export function makeDl<T extends { new(...args: any[]): BaseNode }>(constructor:
 }
 
 @makeComponent(makeDl, 'dl', isValidDlField, DlFields, ['dlentry'])
-export class DlNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class DlNode extends BaseNode {}

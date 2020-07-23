@@ -19,9 +19,4 @@ export function makeLi<T extends { new(...args: any[]): BaseNode }>(constructor:
 }
 
 @makeComponent(makeLi, 'li', isValidLiField, LiFields, [], ['all-blocks'])
-export class LiNode extends BaseNode {
-  constructor(attributes?: Attributes) {
-      super();
-      this._props = this.attributesToProps(attributes);
-  }
-}
+export class LiNode extends BaseNode {}
