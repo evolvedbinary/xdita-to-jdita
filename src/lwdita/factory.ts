@@ -11,7 +11,7 @@ import { PNode } from "./nodes/p";
 import { ImageNode } from "./nodes/image";
 import { AltNode } from "./nodes/alt";
 import { FigNode } from "./nodes/fig";
-import { XMLNode } from "./utils";
+import { XMLNode, Attributes } from "./utils";
 import { BaseNode, TextNode } from "./nodes";
 import { SectionNode } from "./nodes/section";
 import { LiNode } from "./nodes/li";
@@ -37,6 +37,54 @@ import { MediaSourceNode } from "./nodes/media-source";
 import { MediaTrackNode } from "./nodes/media-track";
 import { PreNode } from "./nodes/pre";
 import { FnNode } from "./nodes/fn";
+
+class UnknownNodeError extends Error {
+  name = 'unknown-node';
+}
+
+export function getNodeClass(name: string): { new(attributes: Attributes): BaseNode } {
+  switch (name) {
+    case 'topic': return TopicNode;
+    case 'title': return TitleNode;
+    case 'ph': return PhNode;
+    case 'shortdesc': return ShortDescNode;
+    case 'dl': return DlNode;
+    case 'dlentry': return DlEntryNode;
+    case 'dt': return DtNode;
+    case 'dd': return DdNode;
+    case 'body': return BodyNode;
+    case 'p': return PNode;
+    case 'image': return ImageNode;
+    case 'alt': return AltNode;
+    case 'fig': return FigNode;
+    case 'section': return SectionNode;
+    case 'ol': return OlNode;
+    case 'ul': return UlNode;
+    case 'li': return LiNode;
+    case 'simpletable': return SimpleTableNode;
+    case 'sthead': return StHeadNode;
+    case 'strow': return StRowNode;
+    case 'stentry': return StEntryNode;
+    case 'prolog': return PrologNode;
+    case 'data': return DataNode;
+    case 'note': return NoteNode;
+    case 'desc': return DescNode;
+    case 'xref': return XRefNode;
+    case 'audio': return AudioNode;
+    case 'video': return VideoNode;
+    case 'media-controls': return MediaControlsNode;
+    case 'media-autoplay': return MediaAutoplayNode;
+    case 'media-loop': return MediaLoopNode;
+    case 'media-muted': return MediaMutedNode;
+    case 'media-source': return MediaSourceNode;
+    case 'media-track': return MediaTrackNode;
+    case 'video-poster': return VideoPosterNode;
+    case 'pre': return PreNode;
+    case 'fn': return FnNode;
+    default:
+      throw new UnknownNodeError('unkonwn node "' + name + '"');
+  }
+}
 
 export function createNode(content: string): TextNode;
 export function createNode(node: XMLNode<'topic'>): TopicNode;
@@ -82,47 +130,8 @@ export function createNode<T extends BaseNode>(node: XMLNode | string): T {
   if (typeof node === 'string') {
     nodeObject = new TextNode(node);
   } else {
-    switch (node.name) {
-      case 'topic': nodeObject = new TopicNode(node.attributes); break;
-      case 'title': nodeObject = new TitleNode(node.attributes); break;
-      case 'ph': nodeObject = new PhNode(node.attributes); break;
-      case 'shortdesc': nodeObject = new ShortDescNode(node.attributes); break;
-      case 'dl': nodeObject = new DlNode(node.attributes); break;
-      case 'dlentry': nodeObject = new DlEntryNode(node.attributes); break;
-      case 'dt': nodeObject = new DtNode(node.attributes); break;
-      case 'dd': nodeObject = new DdNode(node.attributes); break;
-      case 'body': nodeObject = new BodyNode(node.attributes); break;
-      case 'p': nodeObject = new PNode(node.attributes); break;
-      case 'image': nodeObject = new ImageNode(node.attributes); break;
-      case 'alt': nodeObject = new AltNode(node.attributes); break;
-      case 'fig': nodeObject = new FigNode(node.attributes); break;
-      case 'section': nodeObject = new SectionNode(node.attributes); break;
-      case 'ol': nodeObject = new OlNode(node.attributes); break;
-      case 'ul': nodeObject = new UlNode(node.attributes); break;
-      case 'li': nodeObject = new LiNode(node.attributes); break;
-      case 'simpletable': nodeObject = new SimpleTableNode(node.attributes); break;
-      case 'sthead': nodeObject = new StHeadNode(node.attributes); break;
-      case 'strow': nodeObject = new StRowNode(node.attributes); break;
-      case 'stentry': nodeObject = new StEntryNode(node.attributes); break;
-      case 'prolog': nodeObject = new PrologNode(node.attributes); break;
-      case 'data': nodeObject = new DataNode(node.attributes); break;
-      case 'note': nodeObject = new NoteNode(node.attributes); break;
-      case 'desc': nodeObject = new DescNode(node.attributes); break;
-      case 'xref': nodeObject = new XRefNode(node.attributes); break;
-      case 'audio': nodeObject = new AudioNode(node.attributes); break;
-      case 'video': nodeObject = new VideoNode(node.attributes); break;
-      case 'media-controls': nodeObject = new MediaControlsNode(node.attributes); break;
-      case 'media-autoplay': nodeObject = new MediaAutoplayNode(node.attributes); break;
-      case 'media-loop': nodeObject = new MediaLoopNode(node.attributes); break;
-      case 'media-muted': nodeObject = new MediaMutedNode(node.attributes); break;
-      case 'media-source': nodeObject = new MediaSourceNode(node.attributes); break;
-      case 'media-track': nodeObject = new MediaTrackNode(node.attributes); break;
-      case 'video-poster': nodeObject = new VideoPosterNode(node.attributes); break;
-      case 'pre': nodeObject = new PreNode(node.attributes); break;
-      case 'fn': nodeObject = new FnNode(node.attributes); break;
-      default:
-        throw new Error('unkonwn node "' + node.name + '"');
-    }
+    const classType = getNodeClass(node.name);
+    return new classType(node.attributes) as T;
   }
   return nodeObject as T;
 }
