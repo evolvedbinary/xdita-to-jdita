@@ -74,7 +74,7 @@ export abstract class BaseNode {
     }
 }
 
-export type Constructor = { new(...args: []): BaseNode };
+export type Constructor = { new(attributes: Attributes): BaseNode };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeAll<T extends { new(...args: any[]): BaseNode }>(constructor: T, ...decorators: ((constructor: T) => T)[]): T {

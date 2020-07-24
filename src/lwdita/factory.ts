@@ -12,7 +12,7 @@ import { ImageNode } from "./nodes/image";
 import { AltNode } from "./nodes/alt";
 import { FigNode } from "./nodes/fig";
 import { XMLNode, Attributes } from "./utils";
-import { BaseNode, TextNode } from "./nodes";
+import { BaseNode, TextNode, Constructor } from "./nodes";
 import { SectionNode } from "./nodes/section";
 import { LiNode } from "./nodes/li";
 import { UlNode } from "./nodes/ul";
@@ -42,7 +42,7 @@ class UnknownNodeError extends Error {
   name = 'unknown-node';
 }
 
-export function getNodeClass(name: string): { new(attributes: Attributes): BaseNode } {
+export function getNodeClass(name: string): Constructor {
   switch (name) {
     case 'topic': return TopicNode;
     case 'title': return TitleNode;
