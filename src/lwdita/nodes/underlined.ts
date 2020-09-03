@@ -22,7 +22,7 @@ export function makeUnderlined<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeVariableContent, makeClass);
 }
 
-@makeComponent(makeUnderlined, 'ul', isValidUnderlinedField, UnderlinedFields, [], ['all-inline'])
+@makeComponent(makeUnderlined, 'u', isValidUnderlinedField, UnderlinedFields, [], ['all-inline'])
 export class UnderlinedNode extends BaseNode {
   static domNodeName = 'u';
 }

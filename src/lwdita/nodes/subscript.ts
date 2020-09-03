@@ -22,7 +22,7 @@ export function makeSubscript<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeVariableContent, makeClass);
 }
 
-@makeComponent(makeSubscript, 'ul', isValidSubscriptField, SubscriptFields, [], ['all-inline'])
+@makeComponent(makeSubscript, 'sub', isValidSubscriptField, SubscriptFields, [], ['all-inline'])
 export class SubscriptNode extends BaseNode {
   static domNodeName = 'sub';
 }
