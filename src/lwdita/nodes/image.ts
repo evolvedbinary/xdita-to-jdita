@@ -6,6 +6,8 @@ import { areFieldsValid, BasicValue } from "../utils";
 import { ClassNode, isClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
 import { SizeFields, SizeNode, isSizeNode, isValidSizeField, makeSize } from "./size";
+import { AltNode } from "./alt";
+import { TextNode } from "./text";
 
 export const ImageFields = [...FiltersFields, ...LocalizationFields, ...VariableContentFields, ...ReferenceContentFields, ...ClassFields, ...SizeFields];
 
@@ -34,4 +36,22 @@ export function makeImage<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeImage, 'image', isValidImageField, ImageFields, ['alt'])
-export class ImageNode extends BaseNode { }
+export class ImageNode extends BaseNode {
+  get pmJson(): Record<string, BasicValue> {
+    if (this.children
+      && this.children[0] instanceof AltNode
+      && this.children[0]?.children
+      && this.children[0].children[0] instanceof TextNode
+      ) {
+      const attrs = { ...this._props, alt: (this.children[0].children[0] as TextNode).content };
+      return {
+        type: this.static.nodeType.replace(/-/g, '_'),
+        attrs: attrs,
+      };
+    }
+    return super.pmJson;
+  }
+  static get pmSchemaChildren(): string[] {
+    return [];
+  }
+}

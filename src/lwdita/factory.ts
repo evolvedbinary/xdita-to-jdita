@@ -11,7 +11,7 @@ import { PNode } from "./nodes/p";
 import { ImageNode } from "./nodes/image";
 import { AltNode } from "./nodes/alt";
 import { FigNode } from "./nodes/fig";
-import { XMLNode, Attributes } from "./utils";
+import { XMLNode } from "./utils";
 import { BaseNode, TextNode, Constructor } from "./nodes";
 import { SectionNode } from "./nodes/section";
 import { LiNode } from "./nodes/li";
@@ -38,7 +38,7 @@ import { MediaTrackNode } from "./nodes/media-track";
 import { PreNode } from "./nodes/pre";
 import { FnNode } from "./nodes/fn";
 
-class UnknownNodeError extends Error {
+export class UnknownNodeError extends Error {
   name = 'unknown-node';
 }
 
@@ -84,6 +84,10 @@ export function getNodeClass(name: string): Constructor {
     default:
       throw new UnknownNodeError('unkonwn node "' + name + '"');
   }
+}
+
+export function getNodeClassType(name: string): typeof BaseNode {
+  return getNodeClass(name) as unknown as typeof BaseNode;
 }
 
 export function createNode(content: string): TextNode;

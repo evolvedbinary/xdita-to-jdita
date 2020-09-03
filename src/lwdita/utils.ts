@@ -39,12 +39,12 @@ export const isReferenceContentScope = (value?: BasicValue): value is ReferenceC
 
 export const nodeGroups: Record<string, Array<string>> = {
     'common-inline': ['text', 'ph', 'image', 'data'],
-    'all-inline'   : ['text', 'ph', 'image', 'xref', 'data'],
+    'all-inline': ['text', 'ph', 'image', 'xref', 'data'],
     'simple-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'fn', 'note', 'data'],
-    'fn-blocks'    : ['p', 'ul', 'ol', 'dl', 'data'],
-    'all-blocks'   : ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'fn', 'note', 'data'],
-    'list-blocks'  : ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'note', 'data'],
-    'fig-blocks'   : ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'data'],
+    'fn-blocks': ['p', 'ul', 'ol', 'dl', 'data'],
+    'all-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'fn', 'note', 'data'],
+    'list-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'note', 'data'],
+    'fig-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'data'],
 }
 
 export type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;

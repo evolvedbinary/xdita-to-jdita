@@ -1,7 +1,10 @@
 import { has, nodeGroups, Attributes, BasicValue } from "../utils";
+import { SchemaNode, SchemaNodes } from "../serializer";
 
 export abstract class BaseNode {
     static nodeName = 'node';
+    static domNodeName = '';
+    static inline?: boolean;
     static fields: Array<string>;
     static childTypes: Array<string> = [];
     static childGroups: Array<string> = [];
@@ -31,8 +34,16 @@ export abstract class BaseNode {
         return true;
     }
 
-    protected get static(): typeof BaseNode {
+    static get nodeType(): string {
+        return this.nodeName;
+    }
+
+    public get static(): typeof BaseNode {
         return this.constructor as typeof BaseNode;
+    }
+
+    get children(): BaseNode[] | undefined {
+        return this._children;
     }
 
     get json(): Record<string, BasicValue> {
@@ -41,6 +52,36 @@ export abstract class BaseNode {
             ...this._props,
             children: this._children?.map(child => child.json),
         };
+    }
+    get pmJson(): Record<string, BasicValue> {
+        return {
+            type: this.static.nodeType.replace(/-/g, '_'),
+            attrs: this._props,
+            content: this._children?.map(child => child.pmJson),
+        };
+    }
+    // schema
+    static get pmSchemaChildren(): string[] {
+        return this.childGroups
+        .map(group => nodeGroups[group])
+        .reduce((array, group) => [...array, ...group], this.childTypes);
+    }
+    static pmSchema(next: (nodeName: string) => void): SchemaNode {
+        const children = this.pmSchemaChildren;
+        const result: SchemaNode = {
+            attrs: this.fields.reduce((attrs, field) => {
+                attrs[field] = { default: '' };
+                return attrs;
+            }, {} as Record<string, { default: string }>),
+        };
+        if (children.length) {
+            result.content = '(' + children.map(child => (child === 'text' ? 'text_node' : child.replace(/-/g, '_'))).join('|') + ')*';
+        }
+        if (this.inline) {
+            result.inline = true;
+        }
+        children.forEach(next);
+        return result;
     }
     add(child: BaseNode, breakOnError = true): void {
         if (!this._children) {
