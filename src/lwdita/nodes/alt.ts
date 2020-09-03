@@ -21,5 +21,5 @@ export function makeAlt<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeVariableContent, makeClass);
 }
 
-@makeComponent(makeAlt, 'alt', isValidAltField, AltFields, [], ['all-inline'])
+@makeComponent(makeAlt, 'alt', isValidAltField, AltFields, ['text'], ['ph', 'data'])
 export class AltNode extends BaseNode { }

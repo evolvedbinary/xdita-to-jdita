@@ -22,7 +22,7 @@ export function makePre<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makePre, 'pre', isValidPreField, PreFields, ['text', 'ph', 'xref', 'data'])
+@makeComponent(makePre, 'pre', isValidPreField, PreFields, ['text', 'xref', 'data'], ['ph'])
 export class PreNode extends BaseNode {
   static domNodeName = 'pre';
 }

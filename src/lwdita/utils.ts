@@ -36,10 +36,11 @@ export const isNoteType = (value?: BasicValue): value is NoteType => has(['cauti
 export type ReferenceContentScope = 'local' | 'peer' | 'external';
 export const isReferenceContentScope = (value?: BasicValue): value is ReferenceContentScope =>
     has(['local', 'peer', 'external'], value);
-
+const phGroup = ['ph', 'b', 'i', 'u', 'sub', 'sup'];
 export const nodeGroups: Record<string, Array<string>> = {
-    'common-inline': ['text', 'ph', 'image', 'data'],
-    'all-inline': ['text', 'ph', 'image', 'xref', 'data'],
+    'ph': phGroup,
+    'common-inline': ['text', ...phGroup, 'image', 'data'],
+    'all-inline': ['text', ...phGroup, 'image', 'xref', 'data'],
     'simple-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'fn', 'note', 'data'],
     'fn-blocks': ['p', 'ul', 'ol', 'dl', 'data'],
     'all-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'fn', 'note', 'data'],
