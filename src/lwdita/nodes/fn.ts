@@ -24,6 +24,5 @@ export function makeFn<T extends Constructor>(constructor: T): T {
 
 @makeComponent(makeFn, 'fn', isValidFnField, FnFields, ['text', 'ph', 'xref', 'data'])
 export class FnNode extends BaseNode {
-  // TODO: span[data-class=fn]
-  static domNodeName = '';
+  static domNodeName = 'span';
 }
