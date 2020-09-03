@@ -70,7 +70,7 @@ export class VideoNode extends BaseNode {
     return {
       type: this.static.nodeType.replace(/-/g, '_'),
       attrs: attrs,
-      content,
+      content: content.map(source => source.pmJson),
     };
   }
 }
