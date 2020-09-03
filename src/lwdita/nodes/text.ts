@@ -32,11 +32,8 @@ export class TextNode extends BaseNode {
   }
   get pmJson(): Record<string, BasicValue> {
     return {
-      type: 'text_node',
-      content: [{
-        type: 'text',
-        text: this.content,
-      }],
+      type: 'text',
+      text: this.content,
     };
   }
 }
