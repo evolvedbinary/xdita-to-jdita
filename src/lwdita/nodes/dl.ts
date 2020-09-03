@@ -22,4 +22,6 @@ export function makeDl<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeDl, 'dl', isValidDlField, DlFields, ['dlentry'])
-export class DlNode extends BaseNode { }
+export class DlNode extends BaseNode {
+  static domNodeName = 'dl';
+}

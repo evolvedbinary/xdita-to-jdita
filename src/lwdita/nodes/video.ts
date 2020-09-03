@@ -32,6 +32,7 @@ export function makeVideo<T extends Constructor>(constructor: T): T {
 
 @makeComponent(makeVideo, 'video', isValidVideoField, VideoFields, ['desc', 'video-poster', 'media-controls', 'media-autoplay', 'media-loop', 'media-muted', 'media-source', 'media-track'])
 export class VideoNode extends BaseNode {
+  static domNodeName = 'video';
   get pmJson(): Record<string, BasicValue> {
     const attrs = { ...this._props };
     const content: BaseNode[] = [];
@@ -71,6 +72,5 @@ export class VideoNode extends BaseNode {
       attrs: attrs,
       content,
     };
-    return super.pmJson;
   }
 }

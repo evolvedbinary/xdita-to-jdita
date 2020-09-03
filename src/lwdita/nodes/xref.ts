@@ -24,4 +24,6 @@ export function makeXRef<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeXRef, 'xref', isValidXRefField, XRefFields, [], ['common-inline'])
-export class XRefNode extends BaseNode { }
+export class XRefNode extends BaseNode {
+  static domNodeName = 'a';
+}

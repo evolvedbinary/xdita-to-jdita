@@ -22,4 +22,6 @@ export function makeStHead<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeStHead, 'sthead', isValidStHeadField, StHeadFields, ['stentry'])
-export class StHeadNode extends BaseNode { }
+export class StHeadNode extends BaseNode {
+  static domNodeName = 'thead';
+}

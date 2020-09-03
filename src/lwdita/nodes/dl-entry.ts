@@ -22,4 +22,7 @@ export function makeDlEntry<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeDlEntry, 'dlentry', isValidDlEntryField, DlEntryFields, ['dt', 'dd'])
-export class DlEntryNode extends BaseNode { }
+export class DlEntryNode extends BaseNode {
+  // TODO: to be removed, make changes to 'dl'
+  static domNodeName = '';
+}

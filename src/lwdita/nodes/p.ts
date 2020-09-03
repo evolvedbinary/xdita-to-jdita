@@ -22,4 +22,6 @@ export function makeP<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeP, 'p', isValidPField, PFields, [], ['all-inline'])
-export class PNode extends BaseNode { }
+export class PNode extends BaseNode {
+  static domNodeName = 'p';
+}

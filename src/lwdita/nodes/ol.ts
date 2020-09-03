@@ -22,4 +22,6 @@ export function makeOl<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeOl, 'ol', isValidOlField, OlFields, ['li'])
-export class OlNode extends BaseNode { }
+export class OlNode extends BaseNode {
+  static domNodeName = 'ol';
+}

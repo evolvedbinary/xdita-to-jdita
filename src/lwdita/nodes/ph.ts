@@ -22,4 +22,7 @@ export function makePh<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makePh, 'ph', isValidPhField, PhFields, [], ['all-inline'])
-export class PhNode extends BaseNode { }
+export class PhNode extends BaseNode {
+  // TODO: span[data-class=ph]
+  static domNodeName = '';
+}

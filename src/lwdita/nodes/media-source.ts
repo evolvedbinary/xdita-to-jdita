@@ -20,4 +20,6 @@ export function makeMediaSource<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeMediaSource, 'media-source', isValidMediaSourceField, MediaSourceFields)
-export class MediaSourceNode extends BaseNode { }
+export class MediaSourceNode extends BaseNode {
+  static domNodeName = 'source';
+}

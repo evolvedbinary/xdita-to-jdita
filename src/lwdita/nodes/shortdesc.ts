@@ -20,4 +20,7 @@ export function makeShortDesc<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeShortDesc, 'shortdesc', isValidShortDescField, ShortDescFields, [], ['all-inline'])
-export class ShortDescNode extends BaseNode { }
+export class ShortDescNode extends BaseNode {
+  // TODO: p:first-child
+  static domNodeName = '';
+}

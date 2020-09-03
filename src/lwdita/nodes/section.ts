@@ -22,4 +22,6 @@ export function makeSection<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeSection, 'section', isValidSectionField, SectionFields, ['title'], ['all-blocks'])
-export class SectionNode extends BaseNode { }
+export class SectionNode extends BaseNode {
+  static domNodeName = 'section';
+}

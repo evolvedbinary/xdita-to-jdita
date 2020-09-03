@@ -69,6 +69,7 @@ export abstract class BaseNode {
     static pmSchema(next: (nodeName: string) => void): SchemaNode {
         const children = this.pmSchemaChildren;
         const result: SchemaNode = {
+            domNodeName: this.domNodeName || 'jdita-node-' + this.nodeName,
             attrs: this.fields.reduce((attrs, field) => {
                 attrs[field] = { default: '' };
                 return attrs;

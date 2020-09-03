@@ -36,4 +36,7 @@ export function makeNote<T extends { new(...args: any[]): BaseNode }>(constructo
 }
 
 @makeComponent(makeNote, 'note', isValidNoteField, NoteFields, ['li'])
-export class NoteNode extends BaseNode { }
+export class NoteNode extends BaseNode {
+  // TODO: div[data-class=note]
+  static domNodeName = '';
+}

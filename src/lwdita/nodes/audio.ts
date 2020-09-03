@@ -22,4 +22,6 @@ export function makeAudio<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeAudio, 'audio', isValidAudioField, AudioFields, ['desc', 'media-controls', 'media-autoplay', 'media-loop', 'media-muted', 'media-source', 'media-track'])
-export class AudioNode extends BaseNode { }
+export class AudioNode extends BaseNode {
+  static domNodeName = 'audio';
+}

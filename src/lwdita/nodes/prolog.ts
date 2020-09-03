@@ -34,4 +34,7 @@ export function makeProlog<T extends { new(...args: any[]): BaseNode }>(construc
 }
 
 @makeComponent(makeProlog, 'prolog', isValidPrologField, PrologFields, ['data'])
-export class PrologNode extends BaseNode { }
+export class PrologNode extends BaseNode {
+  // TODO: head > meta
+  static domNodeName = '';
+}

@@ -23,4 +23,6 @@ export function makePre<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makePre, 'pre', isValidPreField, PreFields, ['text', 'ph', 'xref', 'data'])
-export class PreNode extends BaseNode { }
+export class PreNode extends BaseNode {
+  static domNodeName = 'pre';
+}

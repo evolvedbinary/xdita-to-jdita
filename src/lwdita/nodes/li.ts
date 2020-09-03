@@ -22,4 +22,6 @@ export function makeLi<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeLi, 'li', isValidLiField, LiFields, [], ['all-blocks'])
-export class LiNode extends BaseNode { }
+export class LiNode extends BaseNode {
+  static domNodeName = 'li';
+}

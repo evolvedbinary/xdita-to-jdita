@@ -22,4 +22,6 @@ export function makeDd<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeDd, 'dd', isValidDdField, DdFields, [], ['all-inline'])
-export class DdNode extends BaseNode { }
+export class DdNode extends BaseNode {
+  static domNodeName = 'dd';
+}

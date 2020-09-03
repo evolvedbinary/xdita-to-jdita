@@ -18,4 +18,6 @@ export function makeBody<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeBody, 'body', isValidBodyField, BodyFields, ['section', 'fn'], ['list-blocks'])
-export class BodyNode extends BaseNode { }
+export class BodyNode extends BaseNode {
+  static domNodeName = 'div';
+}

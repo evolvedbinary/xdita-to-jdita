@@ -15,4 +15,6 @@ export function makeTitle<T extends Constructor>(constructor: T): T  {
 }
 
 @makeComponent(makeTitle, 'title', isValidTitleField, TitleFields, [], ['common-inline'])
-export class TitleNode extends BaseNode {}
+export class TitleNode extends BaseNode {
+  static domNodeName = 'h1';
+}

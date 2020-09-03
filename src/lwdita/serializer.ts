@@ -6,6 +6,7 @@ export interface SchemaNode {
   inline?: boolean;
   content?: string;
   group?: string;
+  domNodeName?: string;
   attrs?: Record<string, { default: string }>;
 }
 export interface SchemaNodes {
@@ -16,7 +17,10 @@ export function generateSchemaNodes(): SchemaNodes {
   const done: string[] = [];
   const schema: SchemaNodes = {
     text: {},
-    'text_node': { content: 'text*' },
+    'text_node': {
+      domNodeName: 'span',
+      content: 'text*',
+    },
   };
 
   function browse(node: string | typeof BaseNode): void {

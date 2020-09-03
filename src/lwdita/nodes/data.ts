@@ -26,4 +26,6 @@ export function makeData<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeData, 'data', isValidDataField, DataFields, ['text', 'data'])
-export class DataNode extends BaseNode { }
+export class DataNode extends BaseNode {
+  static domNodeName = 'data';
+}

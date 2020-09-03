@@ -22,4 +22,6 @@ export function makeStRow<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeStRow, 'strow', isValidStRowField, StRowFields, ['stentry'])
-export class StRowNode extends BaseNode { }
+export class StRowNode extends BaseNode {
+  static domNodeName = 'tr';
+}
