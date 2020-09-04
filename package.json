@@ -4,13 +4,13 @@
   "description": "Converts LwDITA XDITA format into JSON (a.k.a JDITA)",
   "main": "build/xdita-to-jdita.js",
   "scripts": {
-    "lint": "eslint src/lwdita --ext .ts",
-    "lint:fix": "eslint src/lwdita --ext .ts --fix",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
     "start:dev": "nodemon",
     "build": "rimraf ./build && tsc",
     "start": "npm run build && node build/xdita-to-jdita.js",
     "test": "mocha",
-    "coverage": "nyc yarn mocha"
+    "coverage": "rimraf coverage && nyc yarn mocha"
   },
   "repository": {
     "type": "git",
