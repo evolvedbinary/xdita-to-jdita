@@ -12,15 +12,15 @@ For development, you will only need Node.js and a node package manager, like Yar
 You can add JDita to your project using `npm` or `yarn`
 
 ```bash
-npm install --save xdita-to-json
+npm install --save jdita
 ```
 or
 ```bash
-yarn add xdita-to-json
+yarn add jdita
 ```
 
 ```javascript
-const { xditaToJson } = require("xdita-to-jdita");
+const { xditaToJson } = require("jdita");
 
 const xml = `
 <?xml version="1.0" encoding="UTF-8"?>
