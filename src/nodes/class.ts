@@ -1,15 +1,15 @@
 import { CDATA, isOrUndefined, isCDATA, areFieldsValid, BasicValue } from "../utils";
 import { BaseNode } from "./base";
 
-export const ClassFields = ['outputClass', 'class'];
+export const ClassFields = ['outputclass', 'class'];
 export interface ClassNode {
-  'outputClass'?: CDATA;
+  'outputclass'?: CDATA;
   'class'?: CDATA;
 }
 
 export function isValidClassField(field: string, value: BasicValue): boolean {
   switch (field) {
-    case 'outputClass': return isOrUndefined(isCDATA, value);
+    case 'outputclass': return isOrUndefined(isCDATA, value);
     case 'class': return isOrUndefined(isCDATA, value);
     default: return false;
   }
@@ -21,11 +21,11 @@ export const isClassNode = (value?: {}): value is ClassNode =>
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function makeClass<T extends { new(...args: any[]): BaseNode }>(constructor: T): T {
   return class extends constructor implements ClassNode {
-    get 'outputClass'(): CDATA | undefined {
-      return this.readProp<CDATA | undefined>('outputClass');
+    get 'outputclass'(): CDATA | undefined {
+      return this.readProp<CDATA | undefined>('outputclass');
     }
-    set 'outputClass'(value: CDATA | undefined) {
-      this.writeProp<CDATA | undefined>('outputClass', value);
+    set 'outputclass'(value: CDATA | undefined) {
+      this.writeProp<CDATA | undefined>('outputclass', value);
     }
     get 'class'(): CDATA | undefined {
       return this.readProp<CDATA | undefined>('class');
