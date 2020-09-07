@@ -1,27 +1,27 @@
 import { DisplayNode, DisplayFields, isValidDisplayField, makeDisplay } from "./display";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
-import { VariableContentNode, VariableContentFields, isValidVariableContentField, makeVariableContent } from "./variable-content";
 import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { areFieldsValid, BasicValue } from "../utils";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
+import { FiltersFields, FiltersNode, isValidFiltersField, makeFilters } from "./filters";
 
-export const FigFields = [...DisplayFields, ...LocalizationFields, ...VariableContentFields, ...ClassFields];
+export const FigFields = [...DisplayFields, ...LocalizationFields, ...FiltersFields, ...ClassFields];
 
-export interface FigNode extends DisplayNode, LocalizationNode, VariableContentNode, ClassNode { }
+export interface FigNode extends DisplayNode, LocalizationNode, FiltersNode, ClassNode { }
 
 export const isValidFigField = (field: string, value: BasicValue): boolean => isValidDisplayField(field, value)
   || isValidLocalizationField(field, value)
-  || isValidVariableContentField(field, value)
+  || isValidFiltersField(field, value)
   || isValidClassField(field, value);
 
 export const isFigNode = (value?: {}): value is FigNode =>
   typeof value === 'object' && areFieldsValid(FigFields, value, isValidFigField);
 
 export function makeFig<T extends Constructor>(constructor: T): T {
-  return makeAll(constructor, makeLocalization, makeDisplay, makeVariableContent, makeClass);
+  return makeAll(constructor, makeLocalization, makeDisplay, makeFilters, makeClass);
 }
 
-@makeComponent(makeFig, 'fig', isValidFigField, FigFields, ['image', 'xref'], ['fig-blocks'])
+@makeComponent(makeFig, 'fig', isValidFigField, FigFields, ['title', 'desc', 'image', 'xref'], ['fig-blocks'])
 export class FigNode extends BaseNode {
   static domNodeName = 'figure';
 }

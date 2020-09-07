@@ -21,7 +21,7 @@ export function makeLi<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeLi, 'li', isValidLiField, LiFields, [], ['all-blocks'])
+@makeComponent(makeLi, 'li', isValidLiField, LiFields, [], ['list-blocks'])
 export class LiNode extends BaseNode {
   static domNodeName = 'li';
 }

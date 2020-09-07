@@ -1,7 +1,7 @@
 import { FiltersNode, isFiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
 import { LocalizationNode, isLocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { VariableContentNode, isVariableContentNode, VariableContentFields, isValidVariableContentField, makeVariableContent } from "./variable-content";
-import { ReferenceContentNode, isReferenceContentNode, ReferenceContentFields, makeReferenceContent } from "./reference-content";
+import { ReferenceContentNode, isReferenceContentNode, ReferenceContentFields, makeReferenceContent, isValidReferenceContentField } from "./reference-content";
 import { areFieldsValid, BasicValue } from "../utils";
 import { ClassNode, isClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
@@ -24,6 +24,7 @@ export const isImageNodes = (value?: {}): value is ImageNode =>
 
 export const isValidImageField = (field: string, value: BasicValue): boolean => isValidLocalizationField(field, value)
   || isValidClassField(field, value)
+  || isValidReferenceContentField(field, value)
   || isValidFiltersField(field, value)
   || isValidVariableContentField(field, value)
   || isValidSizeField(field, value);
@@ -37,6 +38,7 @@ export function makeImage<T extends Constructor>(constructor: T): T {
 
 @makeComponent(makeImage, 'image', isValidImageField, ImageFields, ['alt'])
 export class ImageNode extends BaseNode {
+  static domNodeName = 'img';
   get pmJson(): Record<string, BasicValue> {
     if (this.children
       && this.children[0] instanceof AltNode

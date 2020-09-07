@@ -2,20 +2,23 @@ import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { ReuseNode, ReuseFields, isValidReuseField, makeReuse } from "./reuse";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
-import { areFieldsValid, isCDATA, CDATA, BasicValue } from "../utils";
+import { areFieldsValid, isCDATA, CDATA, BasicValue, isOrUndefined } from "../utils";
 import { makeComponent, BaseNode, makeAll } from "./base";
 
-export const NoteFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields];
+export const NoteFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields, 'type'];
 export interface NoteNode extends FiltersNode, LocalizationNode, ReuseNode, ClassNode {
   type: CDATA;
 }
 
 export function isValidNoteField(field: string, value: BasicValue): boolean {
-  if (isValidFiltersField(field, value) || isValidLocalizationField(field, value) || isValidReuseField(field, value) || isValidClassField(field, value)) {
+  if (isValidFiltersField(field, value)
+    || isValidLocalizationField(field, value)
+    || isValidReuseField(field, value)
+    || isValidClassField(field, value)) {
     return true;
   }
   switch (field) {
-    case 'type': return isCDATA(value);
+    case 'type': return isOrUndefined(isCDATA, value);
     default: return false;
   }
 }
@@ -35,7 +38,7 @@ export function makeNote<T extends { new(...args: any[]): BaseNode }>(constructo
   }, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeNote, 'note', isValidNoteField, NoteFields, ['li'])
+@makeComponent(makeNote, 'note', isValidNoteField, NoteFields, [], ['simple-blocks'])
 export class NoteNode extends BaseNode {
   static domNodeName = 'div';
 }

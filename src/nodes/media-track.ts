@@ -1,22 +1,36 @@
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid, BasicValue, isOrUndefined, isCDATA, CDATA } from "../utils";
 import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
 import { FieldFields, FieldNode, isValidBooleanFieldField, makeBooleanField } from "./field";
 import { ClassFields, ClassNode, isValidClassField, makeClass } from "./class";
 
-export const MediaTrackFields = [...LocalizationFields, ...FieldFields, ...ClassFields];
+export const MediaTrackFields = [...LocalizationFields, ...FieldFields, ...ClassFields, 'type'];
 
 export interface MediaTrackNode extends LocalizationNode, FieldNode<boolean>, ClassNode { }
 
-export const isValidMediaTrackField = (field: string, value: BasicValue): boolean => isValidLocalizationField(field, value)
+export const isValidMediaTrackField = (field: string, value: BasicValue): boolean => {
+  if (isValidLocalizationField(field, value)
   || isValidBooleanFieldField(field, value)
-  || isValidClassField(field, value);
+  || isValidClassField(field, value)) {
+    return true;
+  }
+  switch (field) {
+    case 'type': return isOrUndefined(isCDATA, value);
+    default: return false;
+  }
+}
 
 export const isMediaTrackNode = (value?: {}): value is MediaTrackNode =>
   typeof value === 'object' && areFieldsValid(MediaTrackFields, value, isValidMediaTrackField);
 
-export function makeMediaTrack<T extends Constructor>(constructor: T): T {
-  return makeAll(constructor, makeLocalization, makeBooleanField, makeClass);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function makeMediaTrack<T extends { new(...args: any[]): BaseNode }>(constructor: T): T {
+  return makeAll(class extends constructor {
+    get 'type'(): CDATA {
+      return this.readProp<CDATA>('type'); }
+    set 'type'(value: CDATA) {
+        this.writeProp<CDATA>('type', value); }
+  }, makeLocalization, makeBooleanField, makeClass);
 }
 
 @makeComponent(makeMediaTrack, 'media-track', isValidMediaTrackField, MediaTrackFields)

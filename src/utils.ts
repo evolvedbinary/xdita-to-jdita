@@ -37,15 +37,17 @@ export type ReferenceContentScope = 'local' | 'peer' | 'external';
 export const isReferenceContentScope = (value?: BasicValue): value is ReferenceContentScope =>
     has(['local', 'peer', 'external'], value);
 const phGroup = ['ph', 'b', 'i', 'u', 'sub', 'sup'];
+const dataGroup = ['data'];
 export const nodeGroups: Record<string, Array<string>> = {
     'ph': phGroup,
-    'common-inline': ['text', ...phGroup, 'image', 'data'],
-    'all-inline': ['text', ...phGroup, 'image', 'xref', 'data'],
-    'simple-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'fn', 'note', 'data'],
-    'fn-blocks': ['p', 'ul', 'ol', 'dl', 'data'],
-    'all-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'fn', 'note', 'data'],
-    'list-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'note', 'data'],
-    'fig-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'data'],
+    'data': dataGroup,
+    'common-inline': ['text', ...phGroup, 'image', ...dataGroup],
+    'all-inline': ['text', ...phGroup, 'image', 'xref', ...dataGroup],
+    'simple-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'fn', 'note', ...dataGroup],
+    'fn-blocks': ['p', 'ul', 'ol', 'dl', ...dataGroup],
+    'all-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'fn', 'note', ...dataGroup],
+    'list-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', 'fig', 'note', ...dataGroup],
+    'fig-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', ...dataGroup],
 }
 
 export type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;

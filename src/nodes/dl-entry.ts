@@ -1,24 +1,24 @@
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
-import { VariableContentNode, VariableContentFields, isValidVariableContentField, makeVariableContent } from "./variable-content";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { areFieldsValid, BasicValue } from "../utils";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
+import { ReuseNode, isValidReuseField, ReuseFields, makeReuse } from "./reuse";
 
-export const DlEntryFields = [...FiltersFields, ...LocalizationFields, ...VariableContentFields, ...ClassFields];
+export const DlEntryFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields];
 
-export interface DlEntryNode extends FiltersNode, LocalizationNode, VariableContentNode, ClassNode { }
+export interface DlEntryNode extends FiltersNode, LocalizationNode, ReuseNode, ClassNode { }
 
 export const isValidDlEntryField = (field: string, value: BasicValue): boolean => isValidFiltersField(field, value)
   || isValidLocalizationField(field, value)
-  || isValidVariableContentField(field, value)
+  || isValidReuseField(field, value)
   || isValidClassField(field, value);
 
 export const isDlEntryNode = (value?: {}): value is DlEntryNode =>
   typeof value === 'object' && areFieldsValid(DlEntryFields, value, isValidDlEntryField);
 
 export function makeDlEntry<T extends Constructor>(constructor: T): T {
-  return makeAll(constructor, makeLocalization, makeFilters, makeVariableContent, makeClass);
+  return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
 @makeComponent(makeDlEntry, 'dlentry', isValidDlEntryField, DlEntryFields, ['dt', 'dd'])

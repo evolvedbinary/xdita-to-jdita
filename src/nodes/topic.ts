@@ -3,7 +3,7 @@ import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { ID, CDATA, isCDATA, isOrUndefined, areFieldsValid, BasicValue } from "../utils";
 import { BaseNode, makeComponent, makeAll } from "./base";
 
-export const TopicFields = [...LocalizationFields, ...ClassFields];
+export const TopicFields = [...LocalizationFields, ...ClassFields, 'id', 'xmlns:ditaarch', 'ditaarch:DITAArchVersion', 'domains'];
 export interface TopicNode extends LocalizationNode, ClassNode {
   'id': ID;
   'xmlns:ditaarch': CDATA;
@@ -16,9 +16,10 @@ export function isValidTopicField(field: string, value: BasicValue): boolean {
     return true;
   }
   switch(field) {
-    case 'dir': return isOrUndefined(isCDATA, value);
-    case 'xml:lang': return isOrUndefined(isCDATA, value);
-    case 'translate': return isOrUndefined(isCDATA, value);
+    case 'id': return isOrUndefined(isCDATA, value);
+    case 'xmlns:ditaarch': return isOrUndefined(isCDATA, value);
+    case 'domains': return isOrUndefined(isCDATA, value);
+    case 'ditaarch:DITAArchVersion': return isOrUndefined(isCDATA, value);
     default: return false;
   }
 }

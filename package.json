@@ -10,6 +10,7 @@
     "build": "rimraf ./build && tsc",
     "start": "npm run build && node build/xdita-to-jdita.js",
     "test": "mocha",
+    "test:watch": "mocha -w",
     "coverage": "rimraf coverage && nyc yarn mocha"
   },
   "repository": {
