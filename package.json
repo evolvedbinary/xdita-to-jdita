@@ -1,6 +1,6 @@
 {
   "name": "jdita",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Converts LwDITA XDITA format into JSON (a.k.a JDITA)",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -35,7 +35,7 @@
     "test": "./test"
   },
   "files": [
-    "build"
+    "lib"
   ],
   "dependencies": {
     "saxes": "^5.0.1"
