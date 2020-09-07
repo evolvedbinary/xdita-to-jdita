@@ -2,13 +2,14 @@
   "name": "xdita-to-jdita",
   "version": "0.0.1",
   "description": "Converts LwDITA XDITA format into JSON (a.k.a JDITA)",
-  "main": "build/xdita-to-jdita.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
     "start:dev": "nodemon",
     "build": "rimraf ./build && tsc",
-    "start": "npm run build && node build/xdita-to-jdita.js",
+    "start": "ts-node ./src/example.ts",
     "test": "mocha",
     "test:watch": "mocha -w",
     "coverage": "rimraf coverage && nyc yarn mocha"
@@ -33,6 +34,9 @@
     "src": "./src",
     "test": "./test"
   },
+  "files": [
+    "build"
+  ],
   "dependencies": {
     "saxes": "^5.0.1",
     "ts-javascript-state-machine": "^3.1.3"

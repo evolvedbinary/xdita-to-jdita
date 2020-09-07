@@ -2,5 +2,5 @@
     "watch": ["src"],
     "ext": ".ts",
     "ignore": [],
-    "exec": "ts-node ./src/xdita-to-jdita.ts"
+    "exec": "ts-node ./src/example.ts"
   }

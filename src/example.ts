@@ -1,4 +1,4 @@
-import { xditaToJdita, xditaToJson } from "./converter"
+import { xditaToJson } from "./converter";
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD LIGHTWEIGHT DITA Topic//EN" "lw-topic.dtd">
@@ -63,4 +63,6 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>
   </body>
 </topic>
 `
-xditaToJson(xml).then(result => console.log('got:', JSON.stringify(result, null, 2))).catch(e => console.log('errored:', e));
+xditaToJson(xml)
+  .then(result => console.log(JSON.stringify(result, null, 2)))
+  .catch(e => console.log('Failed to convert:', e));
