@@ -101,13 +101,13 @@ export abstract class BaseNode {
     }
     readProp<T = BasicValue>(field: string): T {
         if (this.static.fields.indexOf(field) < 0) {
-            throw new Error('unkown property "' + field + '"');
+            throw new Error('unknown property "' + field + '"');
         }
         return this._props[field] as T;
     }
     writeProp<T = BasicValue>(field: string, value: T): void {
         if (this.static.fields.indexOf(field) < 0) {
-            throw new Error('unkown property "' + field + '"');
+            throw new Error('unknown property "' + field + '"');
         }
         if (!this.static.isValidField(field, value)) {
             throw new Error('wrong property  type "' + typeof (value) + '" for field"' + field + '"');
