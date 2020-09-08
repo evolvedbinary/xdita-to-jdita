@@ -48,7 +48,7 @@ export function makeTopic<T extends { new(...args: any[]): BaseNode }>(construct
   }, makeLocalization, makeClass,);
 }
 
-@makeComponent(makeTopic, 'topic', isValidTopicField, TopicFields, ['title', 'shortdesc', 'prolog', 'body'])
+@makeComponent(makeTopic, 'topic', isValidTopicField, TopicFields, ['title', 'shortdesc?', 'prolog?', 'body?'])
 export class TopicNode extends BaseNode {
   static domNodeName = 'article';
 }

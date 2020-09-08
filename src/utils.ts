@@ -50,6 +50,47 @@ export const nodeGroups: Record<string, Array<string>> = {
     'fig-blocks': ['p', 'ul', 'ol', 'dl', 'pre', 'audio', 'video', 'simpletable', ...dataGroup],
 }
 
+export interface ChildType {
+    name: string;
+    required?: boolean;
+    single?: boolean;
+    isGroup?: boolean;
+}
+
+export function stringToChildType(value: string): ChildType {
+    // console.log('============= rule:', value);
+    const last = value.slice(-1);
+    const result: ChildType = has(['+', '*', '?'], last)
+    ? {
+        name: value.slice(0, -1),
+        single: last === '?',
+        required: last === '+',
+    } : {
+        name: value,
+        single: true,
+        required: true,
+    };
+    if (result.name[0] === '%') {
+        result.name = result.name.substr(1);
+        result.isGroup = true;
+    }
+    // console.log('============= result:', result);
+    return result;
+}
+
+export function stringsToChildTypes(value: string[]): ChildType[] {
+    return value.map(stringToChildType);
+}
+
+export function nodeNameAccepted(value: string, nodeType: string | ChildType): boolean {
+    if (typeof nodeType === 'string') {
+        nodeType = stringToChildType(nodeType);
+    }
+    return !nodeType.isGroup
+        ? nodeType.name === value
+        : has(nodeGroups[nodeType.name], value);
+}
+
 export type Attributes = Record<string, SaxesAttributeNS> | Record<string, string>;
 
 export function areFieldsValid(fields: string[], value: Record<string, BasicValue>, ...validations: ((field: string, value: BasicValue) => boolean)[]): boolean {

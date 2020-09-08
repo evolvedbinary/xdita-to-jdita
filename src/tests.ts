@@ -1,5 +1,6 @@
 import { assert, expect } from 'chai';
 import { BaseNode, Constructor, TextNode, DocumentNode } from './nodes';
+import { stringsToChildTypes } from './utils';
 
 export function doNodeTest(
   classType: typeof BaseNode,
@@ -28,8 +29,8 @@ export function doNodeTest(
       expect(validator(node)).to.be.true;
     });
     it('should be accept correct children', () => {
-      assert.sameMembers(children, classType.childTypes);
-      assert.sameMembers(groups, classType.childGroups);
+      assert.sameMembers(stringsToChildTypes(children), classType.childTypes);
+      assert.sameMembers(stringsToChildTypes(groups), classType.childGroups);
     });
     it('should fail setting a wrong property', () => {
       const node = new (classType as unknown as Constructor)({});
