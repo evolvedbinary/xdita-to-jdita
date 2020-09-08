@@ -22,7 +22,7 @@ export function makeSuperscript<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeVariableContent, makeClass);
 }
 
-@makeComponent(makeSuperscript, 'sup', isValidSuperscriptField, SuperscriptFields, [], ['all-inline'])
+@makeComponent(makeSuperscript, 'sup', isValidSuperscriptField, SuperscriptFields, ['%all-inline*'])
 export class SuperscriptNode extends BaseNode {
   static domNodeName = 'sup';
 }

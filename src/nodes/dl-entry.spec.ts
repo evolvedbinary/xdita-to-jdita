@@ -2,5 +2,4 @@ import { doNodeTest } from "../tests";
 import { DlEntryNode, isDlEntryNode } from "./dl-entry";
 doNodeTest(DlEntryNode, 'dlentry', 'dlentry', '', isDlEntryNode,
   ['dir', 'xml:lang', 'translate', 'props', 'id', 'conref', 'outputclass', 'class'],
-  ['dt', 'dd'],
-  []);
+  ['dt', 'dd']);

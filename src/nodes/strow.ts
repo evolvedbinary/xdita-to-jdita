@@ -21,7 +21,7 @@ export function makeStRow<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeStRow, 'strow', isValidStRowField, StRowFields, ['stentry'])
+@makeComponent(makeStRow, 'strow', isValidStRowField, StRowFields, ['stentry*'])
 export class StRowNode extends BaseNode {
   static domNodeName = 'tr';
 }

@@ -21,7 +21,7 @@ export function makePh<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeVariableContent, makeClass);
 }
 
-@makeComponent(makePh, 'ph', isValidPhField, PhFields, [], ['all-inline'])
+@makeComponent(makePh, 'ph', isValidPhField, PhFields, ['%all-inline*'])
 export class PhNode extends BaseNode {
   static domNodeName = 'span';
 }

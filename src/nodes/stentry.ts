@@ -21,7 +21,7 @@ export function makeStEntry<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeStEntry, 'stentry', isValidStEntryField, StEntryFields, [], ['simple-blocks'])
+@makeComponent(makeStEntry, 'stentry', isValidStEntryField, StEntryFields, ['%simple-blocks*'])
 export class StEntryNode extends BaseNode {
   // TODO: td/th
   static domNodeName = 'td';

@@ -9,8 +9,7 @@ export function doNodeTest(
   domNodeName: string,
   validator: (value?: {}) => boolean,
   fields: string[],
-  children: string[],
-  groups: string[]): void {
+  children: string[] = []): void {
   describe('Node: ' + nodeName, () => {
     it('should have correct fields', () => {
       assert.sameMembers(classType.fields, fields);
@@ -29,8 +28,8 @@ export function doNodeTest(
       expect(validator(node)).to.be.true;
     });
     it('should be accept correct children', () => {
-      assert.sameMembers(stringsToChildTypes(children), classType.childTypes);
-      assert.sameMembers(stringsToChildTypes(groups), classType.childGroups);
+      assert.sameDeepMembers(stringsToChildTypes(children), classType.childTypes);
+      // assert.sameMembers(stringsToChildTypes(groups), classType.childGroups);
     });
     it('should fail setting a wrong property', () => {
       const node = new (classType as unknown as Constructor)({});

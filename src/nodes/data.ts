@@ -24,8 +24,8 @@ export const isDataNode = (value?: {}): value is DataNode =>
 export function makeData<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReferenceContent, makeClass, makeVariableContent, makeCDATAField);
 }
-
-@makeComponent(makeData, 'data', isValidDataField, DataFields, ['text'], ['data'])
+// TODO: "or" instead of "order"
+@makeComponent(makeData, 'data', isValidDataField, DataFields, ['text*', '%data*'])
 export class DataNode extends BaseNode {
   static domNodeName = 'data';
 }

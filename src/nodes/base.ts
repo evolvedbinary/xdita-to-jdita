@@ -1,5 +1,5 @@
-import { has, nodeGroups, Attributes, BasicValue, ChildType, stringToChildType, stringsToChildTypes, nodeNameAccepted } from "../utils";
-import { SchemaNode, SchemaNodes } from "../serializer";
+import { Attributes, BasicValue, ChildType, stringsToChildTypes, nodeNameAccepted } from "../utils";
+import { SchemaNode } from "../serializer";
 
 export abstract class BaseNode {
     static nodeName = 'node';
@@ -7,7 +7,6 @@ export abstract class BaseNode {
     static inline?: boolean;
     static fields: Array<string>;
     static childTypes: Array<ChildType> = [];
-    static childGroups: Array<ChildType> = [];
     protected _children?: BaseNode[];
     protected _props!: Record<string, BasicValue>;
 
@@ -58,9 +57,10 @@ export abstract class BaseNode {
     }
     // schema
     static get pmSchemaChildren(): string[] {
-        return this.childGroups
-        .map(group => nodeGroups[group.name])
-        .reduce((array, group) => [...array, ...group], this.childTypes.map(({ name }) => name));
+        return [];
+        // return this.childGroups
+        // .map(group => nodeGroups[group.name])
+        // .reduce((array, group) => [...array, ...group], this.childTypes.map(({ name }) => name));
     }
     static pmSchema(next: (nodeName: string) => void): SchemaNode {
         const children = this.pmSchemaChildren;
@@ -81,32 +81,23 @@ export abstract class BaseNode {
         return result;
     }
     canAdd(child: BaseNode): boolean {
-        // console.log('****************** checking...');
         const childNodeName = child.static.nodeName;
         const iChild = this.static.childTypes.findIndex(type => nodeNameAccepted(childNodeName, type));
-        // console.log('****************** types:', this.static.childTypes);
-        // console.log('****************** childNodeName:', childNodeName);
-        // console.log('****************** iChild:', iChild);
         if (iChild < 0) {
-            // console.log('****************** not a child');
             return false;
         }
         const last = this._children?.length && this._children[this._children.length - 1].static.nodeName;
-        // console.log('****************** last added child:', last);
         if (last === childNodeName) {
-            // console.log('****************** same type as last');
             if (this.static.childTypes[iChild].single) {
                 return false;
             }
             return true;
         } else {
             const iLast = last ? this.static.childTypes.findIndex(type => nodeNameAccepted(last, type)) : -1;
-            // console.log('****************** not same type as last');
             if (iLast > iChild) {
                 return false;
             }
             const typesBetween = this.static.childTypes.slice(iLast + 1, iChild);
-            // console.log('****************** typesBetween:', typesBetween);
             if (typesBetween.find(({ required }) => required)) {
                 return false;
             }
@@ -159,14 +150,12 @@ export function makeComponent<T extends { new(...args: any[]): BaseNode }>(
     fieldValidator: (field: string, value: BasicValue) => boolean,
     fields: Array<string>,
     childTypes: Array<string> = [],
-    childGroups: Array<string> = [],
 
 ) {
     return (constructor: T): T => decorator(class extends constructor {
         static nodeName = nodeName;
         static fields = fields;
         static childTypes = stringsToChildTypes(childTypes);
-        static childGroups = childGroups;
         static isValidField = fieldValidator;
     });
 }

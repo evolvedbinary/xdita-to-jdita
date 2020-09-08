@@ -30,7 +30,7 @@ export function makeVideo<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass, makeSize);
 }
 
-@makeComponent(makeVideo, 'video', isValidVideoField, VideoFields, ['desc', 'video-poster', 'media-controls', 'media-autoplay', 'media-loop', 'media-muted', 'media-source', 'media-track'])
+@makeComponent(makeVideo, 'video', isValidVideoField, VideoFields, ['desc?', 'video-poster?', 'media-controls?', 'media-autoplay?', 'media-loop?', 'media-muted?', 'media-source*', 'media-track*'])
 export class VideoNode extends BaseNode {
   static domNodeName = 'video';
   get pmJson(): Record<string, BasicValue> {

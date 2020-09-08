@@ -21,7 +21,7 @@ export function makeUl<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeUl, 'ul', isValidUlField, UlFields, ['li'])
+@makeComponent(makeUl, 'ul', isValidUlField, UlFields, ['li+'])
 export class UlNode extends BaseNode {
   static domNodeName = 'ul';
 }

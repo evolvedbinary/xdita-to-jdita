@@ -22,7 +22,7 @@ export function makeItalic<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeVariableContent, makeClass);
 }
 
-@makeComponent(makeItalic, 'i', isValidItalicField, ItalicFields, [], ['all-inline'])
+@makeComponent(makeItalic, 'i', isValidItalicField, ItalicFields, ['%all-inline*'])
 export class ItalicNode extends BaseNode {
   static domNodeName = 'i';
 }

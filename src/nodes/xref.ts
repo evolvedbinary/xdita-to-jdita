@@ -23,7 +23,7 @@ export function makeXRef<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeClass, makeReferenceContent, makeVariableContent);
 }
 
-@makeComponent(makeXRef, 'xref', isValidXRefField, XRefFields, [], ['common-inline'])
+@makeComponent(makeXRef, 'xref', isValidXRefField, XRefFields, ['%common-inline*'])
 export class XRefNode extends BaseNode {
   static domNodeName = 'a';
 }

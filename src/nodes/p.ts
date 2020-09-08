@@ -21,7 +21,7 @@ export function makeP<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeP, 'p', isValidPField, PFields, [], ['all-inline'])
+@makeComponent(makeP, 'p', isValidPField, PFields, ['%all-inline*'])
 export class PNode extends BaseNode {
   static domNodeName = 'p';
 }

@@ -17,7 +17,7 @@ export function makeBody<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeClass);
 }
 
-@makeComponent(makeBody, 'body', isValidBodyField, BodyFields, ['section', 'fn'], ['list-blocks'])
+@makeComponent(makeBody, 'body', isValidBodyField, BodyFields, ['%list-blocks*', 'section*', 'fn*'])
 export class BodyNode extends BaseNode {
   static domNodeName = 'div';
 }

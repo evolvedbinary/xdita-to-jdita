@@ -41,7 +41,7 @@ export function makeFn<T extends { new(...args: any[]): BaseNode }>(constructor:
   }, makeLocalization, makeFilters, makeFnReuse, makeClass);
 }
 
-@makeComponent(makeFn, 'fn', isValidFnField, FnFields, [], ['fn-blocks'])
+@makeComponent(makeFn, 'fn', isValidFnField, FnFields, ['%fn-blocks*'])
 export class FnNode extends BaseNode {
   static domNodeName = 'span';
 }

@@ -58,7 +58,6 @@ export interface ChildType {
 }
 
 export function stringToChildType(value: string): ChildType {
-    // console.log('============= rule:', value);
     const last = value.slice(-1);
     const result: ChildType = has(['+', '*', '?'], last)
     ? {
@@ -74,7 +73,6 @@ export function stringToChildType(value: string): ChildType {
         result.name = result.name.substr(1);
         result.isGroup = true;
     }
-    // console.log('============= result:', result);
     return result;
 }
 

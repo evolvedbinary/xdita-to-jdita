@@ -1,6 +1,6 @@
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { areFieldsValid, BasicValue, isOrUndefined, isCDATA, CDATA } from "../utils";
-import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
+import { makeComponent, BaseNode, makeAll } from "./base";
 import { FieldFields, FieldNode, isValidBooleanFieldField, makeBooleanField } from "./field";
 import { ClassFields, ClassNode, isValidClassField, makeClass } from "./class";
 

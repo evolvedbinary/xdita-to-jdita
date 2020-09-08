@@ -21,7 +21,7 @@ export function makeStHead<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeStHead, 'sthead', isValidStHeadField, StHeadFields, ['stentry'])
+@makeComponent(makeStHead, 'sthead', isValidStHeadField, StHeadFields, ['stentry+'])
 export class StHeadNode extends BaseNode {
   static domNodeName = 'thead';
 }

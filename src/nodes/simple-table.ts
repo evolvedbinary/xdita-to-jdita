@@ -21,7 +21,7 @@ export function makeSimpleTable<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeSimpleTable, 'simpletable', isValidSimpleTableField, SimpleTableFields, ['sthead', 'strow'])
+@makeComponent(makeSimpleTable, 'simpletable', isValidSimpleTableField, SimpleTableFields, ['sthead?', 'strow+'])
 export class SimpleTableNode extends BaseNode {
   static domNodeName = 'table';
 }

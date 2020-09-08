@@ -19,7 +19,7 @@ export function makeDesc<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeClass);
 }
 
-@makeComponent(makeDesc, 'desc', isValidDescField, DescFields, [], ['common-inline'])
+@makeComponent(makeDesc, 'desc', isValidDescField, DescFields, ['%common-inline*'])
 export class DescNode extends BaseNode {
   // TODO: caption/figcaption
   static domNodeName = 'caption';

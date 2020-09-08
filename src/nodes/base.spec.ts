@@ -1,4 +1,4 @@
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import { BaseNode } from './base';
 import { stringsToChildTypes } from '../utils';
 

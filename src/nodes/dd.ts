@@ -21,7 +21,7 @@ export function makeDd<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeDd, 'dd', isValidDdField, DdFields, [], ['all-inline'])
+@makeComponent(makeDd, 'dd', isValidDdField, DdFields, ['%list-blocks*'])
 export class DdNode extends BaseNode {
   static domNodeName = 'dd';
 }

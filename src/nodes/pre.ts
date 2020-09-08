@@ -3,7 +3,7 @@ import { ReuseNode, ReuseFields, isValidReuseField, makeReuse } from "./reuse";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
 import { areFieldsValid, BasicValue, isOrUndefined, isCDATA, CDATA } from "../utils";
-import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
+import { makeComponent, BaseNode, makeAll } from "./base";
 
 export const PreFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields, 'xml:space'];
 
@@ -36,7 +36,8 @@ export function makePre<T extends { new(...args: any[]): BaseNode }>(constructor
   }, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makePre, 'pre', isValidPreField, PreFields, ['text', 'xref'], ['ph', 'data'])
+// TODO: "or" instead of "order"
+@makeComponent(makePre, 'pre', isValidPreField, PreFields, ['text*', '%ph*', 'xref*', '%data*'])
 export class PreNode extends BaseNode {
   static domNodeName = 'pre';
 }

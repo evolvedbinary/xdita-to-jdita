@@ -21,7 +21,7 @@ export function makeDl<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeDl, 'dl', isValidDlField, DlFields, ['dlentry'])
+@makeComponent(makeDl, 'dl', isValidDlField, DlFields, ['dlentry+'])
 export class DlNode extends BaseNode {
   static domNodeName = 'dl';
 }

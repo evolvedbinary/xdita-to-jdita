@@ -38,7 +38,7 @@ export function makeNote<T extends { new(...args: any[]): BaseNode }>(constructo
   }, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-@makeComponent(makeNote, 'note', isValidNoteField, NoteFields, [], ['simple-blocks'])
+@makeComponent(makeNote, 'note', isValidNoteField, NoteFields, ['%simple-blocks*'])
 export class NoteNode extends BaseNode {
   static domNodeName = 'div';
 }

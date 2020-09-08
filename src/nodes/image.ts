@@ -36,7 +36,7 @@ export function makeImage<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeVariableContent, makeClass, makeReferenceContent, makeSize);
 }
 
-@makeComponent(makeImage, 'image', isValidImageField, ImageFields, ['alt'])
+@makeComponent(makeImage, 'image', isValidImageField, ImageFields, ['alt?'])
 export class ImageNode extends BaseNode {
   static domNodeName = 'img';
   get pmJson(): Record<string, BasicValue> {

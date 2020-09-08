@@ -19,7 +19,7 @@ export function makeShortDesc<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeClass);
 }
 
-@makeComponent(makeShortDesc, 'shortdesc', isValidShortDescField, ShortDescFields, [], ['all-inline'])
+@makeComponent(makeShortDesc, 'shortdesc', isValidShortDescField, ShortDescFields, ['%all-inline*'])
 export class ShortDescNode extends BaseNode {
   static domNodeName = 'p';
 }

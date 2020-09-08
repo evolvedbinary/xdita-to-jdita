@@ -22,7 +22,7 @@ export function makeBold<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeVariableContent, makeClass);
 }
 
-@makeComponent(makeBold, 'b', isValidBoldField, BoldFields, [], ['all-inline'])
+@makeComponent(makeBold, 'b', isValidBoldField, BoldFields, ['%all-inline*'])
 export class BoldNode extends BaseNode {
   static domNodeName = 'b';
 }
