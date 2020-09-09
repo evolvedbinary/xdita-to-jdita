@@ -2,8 +2,9 @@ import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { ReuseNode, ReuseFields, isValidReuseField, makeReuse } from "./reuse";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
+import { BasicValue } from "../classes";
 
 export const PFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields];
 

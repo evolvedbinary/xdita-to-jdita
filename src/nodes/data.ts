@@ -2,10 +2,11 @@ import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { ReferenceContentNode, ReferenceContentFields, isValidReferenceContentField, makeReferenceContent } from "./reference-content";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
 import { VariableContentFields, VariableContentNode, isValidVariableContentField, makeVariableContent } from "./variable-content";
 import { FieldFields, FieldNode, isValidCDATAFieldField, makeCDATAField } from "./field";
+import { BasicValue } from "../classes";
 
 export const DataFields = [...FiltersFields, ...LocalizationFields, ...ReferenceContentFields, ...ClassFields, ...VariableContentFields, ...FieldFields];
 

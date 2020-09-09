@@ -2,8 +2,9 @@ import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { ReuseNode, ReuseFields, isValidReuseField, makeReuse } from "./reuse";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
-import { areFieldsValid, isCDATA, CDATA, BasicValue, isOrUndefined } from "../utils";
+import { areFieldsValid, isOrUndefined } from "../utils";
 import { makeComponent, BaseNode, makeAll } from "./base";
+import { BasicValue, CDATA, isCDATA } from "../classes";
 
 export const NoteFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields, 'type'];
 export interface NoteNode extends FiltersNode, LocalizationNode, ReuseNode, ClassNode {

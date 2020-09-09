@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { BaseNode } from './base';
 import { stringToChildTypes } from '../utils';
+import { NonAcceptedChildError } from '../classes';
 
 
 describe('Base Node children (nodes)', () => {
@@ -22,7 +23,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[1..1] should accept only one child', () => {
       class ParentNode extends BaseNode {
@@ -35,7 +36,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[0..n] should accept more than one child', () => {
       class ParentNode extends BaseNode {
@@ -79,7 +80,7 @@ describe('Base Node children (nodes)', () => {
       const parentNode = new ParentNode();
       expect(() => {
         parentNode.add(new ChildNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[0..n] should skip first child', () => {
       class ParentNode extends BaseNode {
@@ -99,7 +100,7 @@ describe('Base Node children (nodes)', () => {
       const parentNode = new ParentNode();
       expect(() => {
         parentNode.add(new ChildNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
   });
   describe('Any order', () => {
@@ -116,7 +117,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child2 twice
       parentNode = new ParentNode();
       expect(() => {
@@ -124,7 +125,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new Child2Node());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child then child2
       parentNode = new ParentNode();
       expect(() => {
@@ -132,7 +133,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new Child2Node());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child2 then child
       parentNode = new ParentNode();
       expect(() => {
@@ -140,7 +141,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[1..1] should accept only one child', () => {
       class ParentNode extends BaseNode {
@@ -155,7 +156,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child2 twice
       parentNode = new ParentNode();
       expect(() => {
@@ -163,7 +164,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new Child2Node());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child then child2
       parentNode = new ParentNode();
       expect(() => {
@@ -171,7 +172,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new Child2Node());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child2 then child
       parentNode = new ParentNode();
       expect(() => {
@@ -179,7 +180,7 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[0..n] should accept many children', () => {
       class ParentNode extends BaseNode {
@@ -265,7 +266,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildInlineNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[1..1] should accept only one child', () => {
       class ParentNode extends BaseNode {
@@ -278,7 +279,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildInlineNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[0..n] should accept more than one child', () => {
       class ParentNode extends BaseNode {
@@ -322,7 +323,7 @@ describe('Base Node children (groups)', () => {
       const parentNode = new ParentNode();
       expect(() => {
         parentNode.add(new ChildInlineNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[0..n] should skip first child', () => {
       class ParentNode extends BaseNode {
@@ -342,7 +343,7 @@ describe('Base Node children (groups)', () => {
       const parentNode = new ParentNode();
       expect(() => {
         parentNode.add(new ChildInlineNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
   });
   describe('Any order', () => {
@@ -359,7 +360,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildInlineNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child2 twice
       parentNode = new ParentNode();
       expect(() => {
@@ -367,7 +368,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildBlockNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child then child2
       parentNode = new ParentNode();
       expect(() => {
@@ -375,7 +376,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildBlockNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child2 then child
       parentNode = new ParentNode();
       expect(() => {
@@ -383,7 +384,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildInlineNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[1..1] should accept only one child', () => {
       class ParentNode extends BaseNode {
@@ -398,7 +399,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildInlineNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child2 twice
       parentNode = new ParentNode();
       expect(() => {
@@ -406,7 +407,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildBlockNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child then child2
       parentNode = new ParentNode();
       expect(() => {
@@ -414,7 +415,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildBlockNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
       // child2 then child
       parentNode = new ParentNode();
       expect(() => {
@@ -422,7 +423,7 @@ describe('Base Node children (groups)', () => {
       }).to.not.throw();
       expect(() => {
         parentNode.add(new ChildInlineNode());
-      }).to.throw();
+      }).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('[0..n] should accept many children', () => {
       class ParentNode extends BaseNode {

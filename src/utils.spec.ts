@@ -1,5 +1,6 @@
 import { expect, assert } from 'chai';
-import { ChildType, stringToChildTypes, splitTypenames } from './utils';
+import { stringToChildTypes, splitTypenames } from './utils';
+import { ChildType } from './classes';
 
 describe('Childtype from string', () => {
   it('[0..1] should return the correct ChildType', () => {

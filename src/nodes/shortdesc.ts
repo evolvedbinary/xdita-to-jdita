@@ -1,8 +1,9 @@
 import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
+import { BasicValue } from "../classes";
 
 export const ShortDescFields = [...FiltersFields, ...LocalizationFields, ...ClassFields];
 

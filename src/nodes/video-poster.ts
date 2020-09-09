@@ -1,8 +1,9 @@
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
 import { FieldFields, FieldNode, isValidBooleanFieldField, makeBooleanField } from "./field";
 import { ClassFields, ClassNode, isValidClassField, makeClass } from "./class";
+import { BasicValue } from "../classes";
 
 export const VideoPosterFields = [...LocalizationFields, ...FieldFields, ...ClassFields];
 

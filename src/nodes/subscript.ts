@@ -2,9 +2,10 @@ import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { ReuseNode } from "./reuse";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode } from "./filters";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
 import { VariableContentFields, isValidVariableContentField, makeVariableContent } from "./variable-content";
+import { BasicValue } from "../classes";
 
 // TODO:  "+ topic/ph hi-d/sub "
 export const SubscriptFields = [...LocalizationFields, ...VariableContentFields, ...ClassFields];

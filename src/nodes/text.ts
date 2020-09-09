@@ -1,5 +1,6 @@
 import { BaseNode, makeComponent } from "./base";
-import { isOrUndefined, BasicValue } from "../utils";
+import { isOrUndefined } from "../utils";
+import { BasicValue } from "../classes";
 
 export const TextFields = ['content'];
 export interface TextNode {

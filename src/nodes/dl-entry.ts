@@ -1,9 +1,10 @@
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
 import { ReuseNode, isValidReuseField, ReuseFields, makeReuse } from "./reuse";
+import { BasicValue } from "../classes";
 
 export const DlEntryFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields];
 

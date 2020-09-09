@@ -1,9 +1,10 @@
 import { DisplayNode, DisplayFields, isValidDisplayField, makeDisplay } from "./display";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
 import { FiltersFields, FiltersNode, isValidFiltersField, makeFilters } from "./filters";
+import { BasicValue } from "../classes";
 
 export const FigFields = [...DisplayFields, ...LocalizationFields, ...FiltersFields, ...ClassFields];
 

@@ -1,5 +1,6 @@
-import { Attributes, BasicValue, ChildType, acceptsNodeName, ChildTypes, isChildTypeRequired, stringToChildTypes, childTypesArray, isChildTypeSingle, OrArray } from "../utils";
+import { acceptsNodeName, isChildTypeRequired, stringToChildTypes, childTypesArray, isChildTypeSingle } from "../utils";
 import { SchemaNode } from "../serializer";
+import { ChildTypes, ChildType, OrArray, BasicValue, Attributes, NonAcceptedChildError, WrongAttributeTypeError, UnknownAttributeError } from "../classes";
 
 export abstract class BaseNode {
     static nodeName = 'node';
@@ -121,7 +122,7 @@ export abstract class BaseNode {
         }
         if (!this.canAdd(child)) {
             if (breakOnError) {
-                throw new Error(`"${child.static.nodeName}" node can't be a child of "${this.static.nodeName}" node`);
+                throw new NonAcceptedChildError(`"${child.static.nodeName}" node can't be a child of "${this.static.nodeName}" node`);
             }
             return;
         }
@@ -132,16 +133,16 @@ export abstract class BaseNode {
     }
     readProp<T = BasicValue>(field: string): T {
         if (this.static.fields.indexOf(field) < 0) {
-            throw new Error('unknown property "' + field + '"');
+            throw new UnknownAttributeError('unknown attribute "' + field + '"');
         }
         return this._props[field] as T;
     }
     writeProp<T = BasicValue>(field: string, value: T): void {
         if (this.static.fields.indexOf(field) < 0) {
-            throw new Error('unknown property "' + field + '"');
+            throw new UnknownAttributeError('unknown attribute "' + field + '"');
         }
         if (!this.static.isValidField(field, value)) {
-            throw new Error('wrong property  type "' + typeof (value) + '" for field"' + field + '"');
+            throw new WrongAttributeTypeError('wrong attribute type "' + typeof (value) + '" for field"' + field + '"');
         }
         this._props[field] = value;
     }

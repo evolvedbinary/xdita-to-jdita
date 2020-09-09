@@ -1,7 +1,8 @@
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
+import { BasicValue } from "../classes";
 
 export const TitleFields = [...LocalizationFields, ...ClassFields];
 export interface TitleNode extends LocalizationNode, ClassNode {}

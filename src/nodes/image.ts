@@ -2,12 +2,13 @@ import { FiltersNode, isFiltersNode, FiltersFields, isValidFiltersField, makeFil
 import { LocalizationNode, isLocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { VariableContentNode, isVariableContentNode, VariableContentFields, isValidVariableContentField, makeVariableContent } from "./variable-content";
 import { ReferenceContentNode, isReferenceContentNode, ReferenceContentFields, makeReferenceContent, isValidReferenceContentField } from "./reference-content";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { ClassNode, isClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
 import { SizeFields, SizeNode, isSizeNode, isValidSizeField, makeSize } from "./size";
 import { AltNode } from "./alt";
 import { TextNode } from "./text";
+import { BasicValue } from "../classes";
 
 export const ImageFields = [...FiltersFields, ...LocalizationFields, ...VariableContentFields, ...ReferenceContentFields, ...ClassFields, ...SizeFields];
 

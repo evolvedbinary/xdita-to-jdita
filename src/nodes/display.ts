@@ -1,5 +1,6 @@
-import { DisplayScale, DisplayFrame, DisplayExpanse, isOrUndefined, isDisplayScale, isDisplayFrame, isDisplayExpanse, areFieldsValid, BasicValue } from "../utils";
+import { isOrUndefined, areFieldsValid } from "../utils";
 import { BaseNode } from "./base";
+import { DisplayScale, DisplayFrame, DisplayExpanse, BasicValue, isDisplayScale, isDisplayFrame, isDisplayExpanse } from "../classes";
 
 export const DisplayFields = ['scale', 'frame', 'expanse'];
 export interface DisplayNode {

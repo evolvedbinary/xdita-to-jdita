@@ -2,8 +2,9 @@ import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLoc
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
 import { VariableContentNode, VariableContentFields, isValidVariableContentField, makeVariableContent } from "./variable-content";
 import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
-import { areFieldsValid, BasicValue } from "../utils";
+import { areFieldsValid } from "../utils";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
+import { BasicValue } from "../classes";
 
 export const AltFields = [...LocalizationFields, ...FiltersFields, ...VariableContentFields, ...ClassFields];
 

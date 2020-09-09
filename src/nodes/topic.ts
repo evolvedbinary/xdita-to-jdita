@@ -1,7 +1,8 @@
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
-import { ID, CDATA, isCDATA, isOrUndefined, areFieldsValid, BasicValue } from "../utils";
+import { isOrUndefined, areFieldsValid } from "../utils";
 import { BaseNode, makeComponent, makeAll } from "./base";
+import { BasicValue, isCDATA, CDATA, ID } from "../classes";
 
 export const TopicFields = [...LocalizationFields, ...ClassFields, 'id', 'xmlns:ditaarch', 'ditaarch:DITAArchVersion', 'domains'];
 export interface TopicNode extends LocalizationNode, ClassNode {

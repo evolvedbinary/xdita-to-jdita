@@ -1,5 +1,6 @@
-import { CDATA, isOrUndefined, isCDATA, areFieldsValid, BasicValue } from "../utils";
+import { isOrUndefined, areFieldsValid } from "../utils";
 import { BaseNode } from "./base";
+import { CDATA, BasicValue, isCDATA } from "../classes";
 
 export const ClassFields = ['outputclass', 'class'];
 export interface ClassNode {

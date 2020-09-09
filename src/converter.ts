@@ -1,7 +1,7 @@
 import * as saxes from "saxes";
 import { BaseNode, DocumentNode } from "./nodes";
 import { createNode } from "./factory";
-import { BasicValue } from "./utils";
+import { BasicValue } from "./classes";
 
 export async function xditaToJdita(xml: string, abortOnError = true): Promise<DocumentNode> {
   return new Promise((resolve, reject) => {

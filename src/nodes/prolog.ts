@@ -1,7 +1,8 @@
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
-import { areFieldsValid, CDATA, isOrUndefined, isCDATA, BasicValue } from "../utils";
+import { areFieldsValid, isOrUndefined } from "../utils";
 import { makeComponent, BaseNode, makeAll } from "./base";
+import { BasicValue, isCDATA, CDATA } from "../classes";
 
 export const PrologFields = [...FiltersFields, ...LocalizationFields, 'class'];
 export interface PrologNode extends FiltersNode, LocalizationNode {

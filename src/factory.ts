@@ -11,7 +11,6 @@ import { PNode } from "./nodes/p";
 import { ImageNode } from "./nodes/image";
 import { AltNode } from "./nodes/alt";
 import { FigNode } from "./nodes/fig";
-import { XMLNode } from "./utils";
 import { BaseNode, TextNode, Constructor } from "./nodes";
 import { SectionNode } from "./nodes/section";
 import { LiNode } from "./nodes/li";
@@ -42,10 +41,7 @@ import { ItalicNode } from "./nodes/italic";
 import { UnderlinedNode } from "./nodes/underlined";
 import { SubscriptNode } from "./nodes/subscript";
 import { SuperscriptNode } from "./nodes/superscript";
-
-export class UnknownNodeError extends Error {
-  name = 'unknown-node';
-}
+import { UnknownNodeError, XMLNode } from "./classes";
 
 export function getNodeClass(name: string): Constructor {
   switch (name) {

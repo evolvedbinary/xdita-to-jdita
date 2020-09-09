@@ -2,8 +2,9 @@ import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { FnReuseNode, FnReuseFields, isValidFnReuseField, makeFnReuse } from "./fn-reuse";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
-import { areFieldsValid, BasicValue, isOrUndefined, isCDATA, CDATA, ID } from "../utils";
+import { areFieldsValid, isOrUndefined } from "../utils";
 import { makeComponent, BaseNode, makeAll } from "./base";
+import { BasicValue, isCDATA, ID, CDATA } from "../classes";
 
 export const FnFields = [...FiltersFields, ...LocalizationFields, ...FnReuseFields, ...ClassFields, 'id', 'callout'];
 

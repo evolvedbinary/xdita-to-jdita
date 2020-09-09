@@ -1,5 +1,6 @@
-import { NMTOKEN, isOrUndefined, isNMTOKEN, areFieldsValid, BasicValue } from "../utils";
+import { isOrUndefined, areFieldsValid } from "../utils";
 import { BaseNode } from "./base";
+import { BasicValue, isNMTOKEN, NMTOKEN } from "../classes";
 
 export const SizeFields = ['width', 'height'];
 export interface SizeNode {

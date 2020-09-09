@@ -1,5 +1,6 @@
-import { NMTOKEN, CDATA, isOrUndefined, isCDATA, isNMTOKEN, areFieldsValid, BasicValue } from "../utils";
+import { isOrUndefined, areFieldsValid } from "../utils";
 import { BaseNode } from "./base";
+import { NMTOKEN, CDATA, BasicValue, isNMTOKEN, isCDATA } from "../classes";
 
 export const ReuseFields = ['id', 'conref'];
 export interface ReuseNode {

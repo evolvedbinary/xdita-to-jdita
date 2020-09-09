@@ -1,6 +1,7 @@
 import { assert, expect } from 'chai';
 import { BaseNode, Constructor, TextNode, DocumentNode } from './nodes';
-import { stringToChildTypes, OrArray } from './utils';
+import { stringToChildTypes } from './utils';
+import { OrArray, UnknownAttributeError, NonAcceptedChildError, WrongAttributeTypeError } from './classes';
 
 export function doNodeTest(
   classType: typeof BaseNode,
@@ -9,7 +10,11 @@ export function doNodeTest(
   domNodeName: string,
   validator: (value?: {}) => boolean,
   fields: string[],
-  children: OrArray<string> = []): void {
+  children: OrArray<string> = [],
+  attribute = 'dir',
+  value = 'test',
+  wrongValue = false,
+): void {
   describe('Node: ' + nodeName, () => {
     it('should have correct fields', () => {
       assert.sameMembers(classType.fields, fields);
@@ -30,23 +35,31 @@ export function doNodeTest(
     it('should be accept correct children', () => {
       assert.deepEqual(stringToChildTypes(children), classType.childTypes);
     });
-    it('should fail setting a wrong property', () => {
+    it('should be able to set properties', () => {
       const node = new (classType as unknown as Constructor)({});
-      expect(() => node.writeProp('property', 'value')).to.throw(Error, 'unknown property');
+      expect(() => node.writeProp(attribute, value)).to.not.throw();
     });
-    it('should fail reading a wrong property', () => {
+    it('should fail setting wrong attribute value', () => {
       const node = new (classType as unknown as Constructor)({});
-      expect(() => node.readProp('property')).to.throw(Error, 'unknown property');
+      expect(() => node.writeProp(attribute, wrongValue)).to.throw(WrongAttributeTypeError, 'wrong attribute type');
+    });
+    it('should fail setting a wrong attribute', () => {
+      const node = new (classType as unknown as Constructor)({});
+      expect(() => node.writeProp('attribute', 'value')).to.throw(UnknownAttributeError, 'unknown attribute');
+    });
+    it('should fail reading a wrong attribute', () => {
+      const node = new (classType as unknown as Constructor)({});
+      expect(() => node.readProp('attribute')).to.throw(UnknownAttributeError, 'unknown attribute');
     });
     it('should fail creating under wrong parent', () => {
       const parentNode = new TextNode('');
       const node = new (classType as unknown as Constructor)({});
-      expect(() => parentNode.add(node)).to.throw(Error, 'can\'t be a child');
+      expect(() => parentNode.add(node)).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
     it('should fail having wrong child', () => {
       const node = new (classType as unknown as Constructor)({});
       const childNode = new DocumentNode();
-      expect(() => node.add(childNode)).to.throw(Error, 'can\'t be a child');
+      expect(() => node.add(childNode)).to.throw(NonAcceptedChildError, 'can\'t be a child');
     });
   });
 }

@@ -1,6 +1,7 @@
-import { CDATA, isOrUndefined, isCDATA, areFieldsValid, BasicValue } from "../utils";
+import { isOrUndefined, areFieldsValid } from "../utils";
 import { FiltersAddsNode, FiltersAddsFields } from "./filters-adds";
 import { BaseNode } from "./base";
+import { BasicValue, isCDATA, CDATA } from "../classes";
 
 export const FiltersFields = [...FiltersAddsFields, 'props'];
 export interface FiltersNode extends FiltersAddsNode {

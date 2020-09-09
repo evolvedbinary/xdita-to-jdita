@@ -1,8 +1,9 @@
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
-import { areFieldsValid, BasicValue, isOrUndefined, isCDATA, CDATA } from "../utils";
+import { areFieldsValid, isOrUndefined } from "../utils";
 import { makeComponent, BaseNode, makeAll } from "./base";
 import { FieldFields, FieldNode, isValidBooleanFieldField, makeBooleanField } from "./field";
 import { ClassFields, ClassNode, isValidClassField, makeClass } from "./class";
+import { BasicValue, isCDATA, CDATA } from "../classes";
 
 export const MediaTrackFields = [...LocalizationFields, ...FieldFields, ...ClassFields, 'type'];
 

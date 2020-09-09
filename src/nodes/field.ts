@@ -1,5 +1,6 @@
-import { CDATA, isOrUndefined, isCDATA, areFieldsValid, BasicValue } from "../utils";
+import { isOrUndefined, areFieldsValid } from "../utils";
 import { BaseNode, Constructor } from "./base";
+import { CDATA, BasicValue, isCDATA } from "../classes";
 
 export const FieldFields = ['name', 'value'];
 export interface FieldNode<T = CDATA> {

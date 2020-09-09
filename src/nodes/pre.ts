@@ -2,8 +2,9 @@ import { ClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { ReuseNode, ReuseFields, isValidReuseField, makeReuse } from "./reuse";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { FiltersNode, FiltersFields, isValidFiltersField, makeFilters } from "./filters";
-import { areFieldsValid, BasicValue, isOrUndefined, isCDATA, CDATA } from "../utils";
+import { areFieldsValid, isOrUndefined } from "../utils";
 import { makeComponent, BaseNode, makeAll } from "./base";
+import { BasicValue, isCDATA, CDATA } from "../classes";
 
 export const PreFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields, 'xml:space'];
 
