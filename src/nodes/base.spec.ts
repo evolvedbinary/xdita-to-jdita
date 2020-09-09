@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+import { expect, assert } from 'chai';
 import { BaseNode } from './base';
 import { stringToChildTypes } from '../utils';
 import { NonAcceptedChildError } from '../classes';
@@ -486,6 +486,145 @@ describe('Base Node children (groups)', () => {
         parentNode.add(new ChildBlockNode());
         parentNode.add(new ChildInlineNode());
       }).to.not.throw();
+    });
+  });
+});
+
+describe('JDita', () => {
+  it('Empty node', () => {
+    class Node extends BaseNode {
+      static nodeName = 'node';
+    }
+    const node = new Node();
+    assert.deepEqual(node.json, {
+        nodeName: 'node',
+        attributes: undefined,
+        children: undefined,
+    });
+  });
+  it('Empty node with attributes', () => {
+    class Node extends BaseNode {
+      static nodeName = 'node';
+      static fields = ['field1', 'field2'];
+    }
+    const node = new Node({});
+    assert.deepEqual(node.json, {
+        nodeName: 'node',
+        attributes: {
+          field1: undefined,
+          field2: undefined,
+        },
+        children: undefined,
+    });
+  });
+  it('Empty node with attributesand values', () => {
+    class Node extends BaseNode {
+      static nodeName = 'node';
+      static fields = ['field1', 'field2'];
+    }
+    const node = new Node({
+      field1: 'value1',
+      field2: 'value2',
+    });
+    assert.deepEqual(node.json, {
+        nodeName: 'node',
+        attributes: {
+          field1: 'value1',
+          field2: 'value2',
+        },
+        children: undefined,
+    });
+  });
+  it('Empty node with a child node', () => {
+    class ParentNode extends BaseNode {
+      static nodeName = 'parent';
+      static fields = ['parent-field1', 'parent-field2'];
+      static childTypes = stringToChildTypes(['node*']);
+    }
+    class Node extends BaseNode {
+      static nodeName = 'node';
+      static fields = ['field1', 'field2'];
+    }
+    const parentNode = new ParentNode({
+      'parent-field1': 'parent-value1',
+      'parent-field2': 'parent-value2',
+    });
+    parentNode.add(new Node({
+      field1: 'value1',
+      field2: 'value2',
+    }));
+    assert.deepEqual(parentNode.json, {
+      nodeName: 'parent',
+      attributes: {
+        'parent-field1': 'parent-value1',
+        'parent-field2': 'parent-value2',
+      },
+      children: [{
+        nodeName: 'node',
+        attributes: {
+          field1: 'value1',
+          field2: 'value2',
+        },
+        children: undefined,
+      }],
+    });
+  });
+  it('Empty node with children of children', () => {
+    class ParentNode extends BaseNode {
+      static nodeName = 'parent';
+      static fields = ['parent-field1', 'parent-field2'];
+      static childTypes = stringToChildTypes(['node*']);
+    }
+    class Node extends BaseNode {
+      static nodeName = 'node';
+      static fields = ['field1', 'field2'];
+      static childTypes = stringToChildTypes(['node*']);
+    }
+    const parentNode = new ParentNode({
+      'parent-field1': 'parent-value1',
+      'parent-field2': 'parent-value2',
+    });
+    const node = new Node({
+      field1: 'value1',
+      field2: 'value2',
+    });
+    parentNode.add(node);
+    node.add(new Node({
+      field1: 'sub value1',
+      field2: 'sub value2',
+    }));
+    node.add(new Node({
+      field1: 'sub value3',
+      field2: 'sub value4',
+    }));
+    assert.deepEqual(parentNode.json, {
+      nodeName: 'parent',
+      attributes: {
+        'parent-field1': 'parent-value1',
+        'parent-field2': 'parent-value2',
+      },
+      children: [{
+        nodeName: 'node',
+        attributes: {
+          field1: 'value1',
+          field2: 'value2',
+        },
+        children: [{
+          nodeName: 'node',
+          attributes: {
+            field1: 'sub value1',
+            field2: 'sub value2',
+          },
+          children: undefined,
+        }, {
+          nodeName: 'node',
+          attributes: {
+            field1: 'sub value3',
+            field2: 'sub value4',
+          },
+          children: undefined,
+        }],
+      }],
     });
   });
 });

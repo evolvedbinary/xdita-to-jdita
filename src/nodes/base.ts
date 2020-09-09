@@ -45,7 +45,7 @@ export abstract class BaseNode {
     get json(): Record<string, BasicValue> {
         return {
             nodeName: this.static.nodeName,
-            ...this._props,
+            attributes: this._props,
             children: this._children?.map(child => child.json),
         };
     }
