@@ -1,4 +1,4 @@
-import { Attributes, BasicValue, ChildType, stringsToChildTypes, nodeNameAccepted } from "../utils";
+import { Attributes, BasicValue, ChildType, acceptsNodeName, ChildTypes, isChildTypeRequired, stringToChildTypes, childTypesArray, isChildTypeSingle } from "../utils";
 import { SchemaNode } from "../serializer";
 
 export abstract class BaseNode {
@@ -6,7 +6,7 @@ export abstract class BaseNode {
     static domNodeName = '';
     static inline?: boolean;
     static fields: Array<string>;
-    static childTypes: Array<ChildType> = [];
+    static childTypes: ChildTypes;
     protected _children?: BaseNode[];
     protected _props!: Record<string, BasicValue>;
 
@@ -82,27 +82,38 @@ export abstract class BaseNode {
     }
     canAdd(child: BaseNode): boolean {
         const childNodeName = child.static.nodeName;
-        const iChild = this.static.childTypes.findIndex(type => nodeNameAccepted(childNodeName, type));
-        if (iChild < 0) {
+        const childTypes = childTypesArray(this.static.childTypes)
+        let childType: ChildType | undefined;
+        let iChild = -1;
+        childTypes.some((type, i) => {
+            childType = acceptsNodeName(childNodeName, type);
+            if (childType) {
+                iChild = i;
+                return true;
+            }
+        });
+        if (!childType) {
             return false;
         }
-        const last = this._children?.length && this._children[this._children.length - 1].static.nodeName;
-        if (last === childNodeName) {
-            if (this.static.childTypes[iChild].single) {
-                return false;
-            }
-            return true;
-        } else {
-            const iLast = last ? this.static.childTypes.findIndex(type => nodeNameAccepted(last, type)) : -1;
+        const last = this._children?.length ? this._children[this._children.length - 1].static.nodeName : '';
+        let iLast = -1;
+        if (last) {
+            iLast = childTypes.findIndex(type => acceptsNodeName(last, type));
             if (iLast > iChild) {
                 return false;
             }
-            const typesBetween = this.static.childTypes.slice(iLast + 1, iChild);
-            if (typesBetween.find(({ required }) => required)) {
-                return false;
+            if (iLast === iChild) {
+                if (isChildTypeSingle(childTypes[iChild])) {
+                    return false;
+                }
+                return true;
             }
-            return true;
         }
+        const typesBetween = childTypes.slice(iLast + 1, iChild);
+        if (typesBetween.find(isChildTypeRequired)) {
+            return false;
+        }
+        return true;
     }
         add(child: BaseNode, breakOnError = true): void {
         if (!this._children) {
@@ -155,7 +166,7 @@ export function makeComponent<T extends { new(...args: any[]): BaseNode }>(
     return (constructor: T): T => decorator(class extends constructor {
         static nodeName = nodeName;
         static fields = fields;
-        static childTypes = stringsToChildTypes(childTypes);
+        static childTypes = stringToChildTypes(childTypes);
         static isValidField = fieldValidator;
     });
 }

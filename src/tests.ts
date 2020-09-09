@@ -1,6 +1,6 @@
 import { assert, expect } from 'chai';
 import { BaseNode, Constructor, TextNode, DocumentNode } from './nodes';
-import { stringsToChildTypes } from './utils';
+import { stringToChildTypes, OrArray } from './utils';
 
 export function doNodeTest(
   classType: typeof BaseNode,
@@ -9,7 +9,7 @@ export function doNodeTest(
   domNodeName: string,
   validator: (value?: {}) => boolean,
   fields: string[],
-  children: string[] = []): void {
+  children: OrArray<string> = []): void {
   describe('Node: ' + nodeName, () => {
     it('should have correct fields', () => {
       assert.sameMembers(classType.fields, fields);
@@ -28,8 +28,7 @@ export function doNodeTest(
       expect(validator(node)).to.be.true;
     });
     it('should be accept correct children', () => {
-      assert.sameDeepMembers(stringsToChildTypes(children), classType.childTypes);
-      // assert.sameMembers(stringsToChildTypes(groups), classType.childGroups);
+      assert.deepEqual(stringToChildTypes(children), classType.childTypes);
     });
     it('should fail setting a wrong property', () => {
       const node = new (classType as unknown as Constructor)({});
