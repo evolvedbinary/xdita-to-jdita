@@ -36,8 +36,7 @@ export function makePre<T extends { new(...args: any[]): BaseNode }>(constructor
   }, makeLocalization, makeFilters, makeReuse, makeClass);
 }
 
-// TODO: "or" instead of "order"
-@makeComponent(makePre, 'pre', isValidPreField, PreFields, ['text*', '%ph*', 'xref*', '%data*'])
+@makeComponent(makePre, 'pre', isValidPreField, PreFields, [['text*', '%ph*', 'xref*', '%data*']])
 export class PreNode extends BaseNode {
   static domNodeName = 'pre';
 }

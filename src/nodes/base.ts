@@ -1,4 +1,4 @@
-import { Attributes, BasicValue, ChildType, acceptsNodeName, ChildTypes, isChildTypeRequired, stringToChildTypes, childTypesArray, isChildTypeSingle } from "../utils";
+import { Attributes, BasicValue, ChildType, acceptsNodeName, ChildTypes, isChildTypeRequired, stringToChildTypes, childTypesArray, isChildTypeSingle, OrArray } from "../utils";
 import { SchemaNode } from "../serializer";
 
 export abstract class BaseNode {
@@ -160,7 +160,7 @@ export function makeComponent<T extends { new(...args: any[]): BaseNode }>(
     nodeName: string,
     fieldValidator: (field: string, value: BasicValue) => boolean,
     fields: Array<string>,
-    childTypes: Array<string> = [],
+    childTypes: OrArray<string> = [],
 
 ) {
     return (constructor: T): T => decorator(class extends constructor {

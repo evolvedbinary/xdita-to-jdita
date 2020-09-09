@@ -20,8 +20,7 @@ export const isFigNode = (value?: {}): value is FigNode =>
 export function makeFig<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeDisplay, makeFilters, makeClass);
 }
-// TODO: "or" instead of "order"
-@makeComponent(makeFig, 'fig', isValidFigField, FigFields, ['title?', 'desc?', '%fig-blocks*', 'image*', 'xref*'])
+@makeComponent(makeFig, 'fig', isValidFigField, FigFields, ['title?', 'desc?', ['%fig-blocks*', 'image*', 'xref*']])
 export class FigNode extends BaseNode {
   static domNodeName = 'figure';
 }

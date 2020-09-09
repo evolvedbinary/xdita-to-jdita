@@ -20,6 +20,5 @@ export const isAltNode = (value?: {}): value is AltNode =>
 export function makeAlt<T extends Constructor>(constructor: T): T {
   return makeAll(constructor, makeLocalization, makeFilters, makeVariableContent, makeClass);
 }
-// TODO: "or" instead of "order"
-@makeComponent(makeAlt, 'alt', isValidAltField, AltFields, ['text*', '%ph*', '%data*'])
+@makeComponent(makeAlt, 'alt', isValidAltField, AltFields, [['text*', '%ph*', '%data*']])
 export class AltNode extends BaseNode { }
