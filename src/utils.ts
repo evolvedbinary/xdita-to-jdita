@@ -56,6 +56,9 @@ export function childTypesToString(type: ChildTypes, topLevel = true): string {
 
 export function stringToChildTypes(value: OrArray<string>): ChildTypes {
     if (typeof value === 'string') {
+        if (value === '') {
+            return [];
+        }
         if (value.indexOf('|') < 0) {
             const last = value.slice(-1);
             const result: ChildType = has(['+', '*', '?'], last)
@@ -79,7 +82,7 @@ export function stringToChildTypes(value: OrArray<string>): ChildTypes {
             return stringToChildTypes(splitTypenames(value));
         }
     } else {
-        return value.map(stringToChildTypes);
+        return value.map(stringToChildTypes).filter(type => !Array.isArray(type) || type.length > 0);
     }
 }
 

@@ -3,6 +3,9 @@ import { stringToChildTypes, splitTypenames, childTypesToString } from './utils'
 import { ChildType } from './classes';
 
 describe('Childtype from string', () => {
+  it('should return an empty ChildType', () => {
+    assert.deepEqual([], stringToChildTypes(''));
+  });
   it('[0..1] should return the correct ChildType', () => {
     assert.deepEqual({
       name: 'child',
@@ -147,6 +150,9 @@ describe('String from Childtype', () => {
   });
   it('should return the correct string (mixed)', () => {
     assert.equal(childTypesToString(stringToChildTypes(['(ph|b|i|u|sub|sup)?', 'child+', 'a*|b'])), '(ph?|b?|i?|u?|sub?|sup?)|child+|(a*|b)');
+  });
+  it('should return the correct string (empty)', () => {
+    assert.equal(childTypesToString(stringToChildTypes('')), '');
   });
 });
 describe('Childtypes from strings', () => {
