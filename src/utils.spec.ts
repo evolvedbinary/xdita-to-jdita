@@ -1,5 +1,5 @@
 import { expect, assert } from 'chai';
-import { stringToChildTypes, splitTypenames } from './utils';
+import { stringToChildTypes, splitTypenames, childTypesToString } from './utils';
 import { ChildType } from './classes';
 
 describe('Childtype from string', () => {
@@ -66,6 +66,87 @@ describe('Childtype from string', () => {
       required: true,
       isGroup: true,
     } as ChildType, stringToChildTypes('%child+'));
+  });
+});
+describe('String from Childtype', () => {
+  it('[0..1] should return the correct string', () => {
+    assert.equal(childTypesToString({
+      name: 'child',
+      single: true,
+      required: false,
+      isGroup: false,
+    }), 'child?');
+  });
+  it('[1..1] should return the correct string', () => {
+    assert.equal(childTypesToString({
+      name: 'child',
+      single: true,
+      required: true,
+      isGroup: false,
+    }), 'child');
+  });
+  it('[0..n] should return the correct string', () => {
+    assert.equal(childTypesToString({
+      name: 'child',
+      single: false,
+      required: false,
+      isGroup: false,
+    }), 'child*');
+  });
+  it('[1..n] should return the correct string', () => {
+    assert.equal(childTypesToString({
+      name: 'child',
+      single: false,
+      required: true,
+      isGroup: false,
+    }), 'child+');
+  });
+  it('[0..1] should return the correct string (group with one node)', () => {
+    assert.equal(childTypesToString({
+      name: 'data',
+      single: true,
+      required: false,
+      isGroup: true,
+    }), 'data?');
+  });
+  it('[1..1] should return the correct string (group with one node)', () => {
+    assert.equal(childTypesToString({
+      name: 'data',
+      single: true,
+      required: true,
+      isGroup: true,
+    }), 'data');
+  });
+  it('[0..n] should return the correct string (group with one node)', () => {
+    assert.equal(childTypesToString({
+      name: 'data',
+      single: false,
+      required: false,
+      isGroup: true,
+    }), 'data*');
+  });
+  it('[1..n] should return the correct string (group with one node)', () => {
+    assert.equal(childTypesToString({
+      name: 'data',
+      single: false,
+      required: true,
+      isGroup: true,
+    }), 'data+');
+  });
+  it('[0..1] should return the correct string (group with multiple nodes)', () => {
+    assert.equal(childTypesToString(stringToChildTypes('(ph|b|i|u|sub|sup)?')), 'ph?|b?|i?|u?|sub?|sup?');
+  });
+  it('[1..1] should return the correct string (group with multiple nodes)', () => {
+    assert.equal(childTypesToString(stringToChildTypes('ph|b|i|u|sub|sup')), 'ph|b|i|u|sub|sup');
+  });
+  it('[0..n] should return the correct string (group with multiple nodes)', () => {
+    assert.equal(childTypesToString(stringToChildTypes('(ph|b|i|u|sub|sup)*')), 'ph*|b*|i*|u*|sub*|sup*');
+  });
+  it('[1..n] should return the correct string (group with multiple nodes)', () => {
+    assert.equal(childTypesToString(stringToChildTypes('(ph|b|i|u|sub|sup)+')), 'ph+|b+|i+|u+|sub+|sup+');
+  });
+  it('should return the correct string (mixed)', () => {
+    assert.equal(childTypesToString(stringToChildTypes(['(ph|b|i|u|sub|sup)?', 'child+', 'a*|b'])), '(ph?|b?|i?|u?|sub?|sup?)|child+|(a*|b)');
   });
 });
 describe('Childtypes from strings', () => {

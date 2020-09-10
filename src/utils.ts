@@ -34,6 +34,26 @@ export function splitTypenames(value: string): string[] {
         : value.slice(1, -1).split('|');
 }
 
+function childTypeToString(type: ChildType): string {
+    return (type.isGroup
+        ? nodeGroups[type.name].length === 1
+            ? nodeGroups[type.name].join('|')
+            : '(' + nodeGroups[type.name].join('|') + ')'
+        : type.name
+    ) + (type.single
+        ? type.required ? '' : '?'
+        : type.required ? '+' : '*');
+}
+
+export function childTypesToString(type: ChildTypes, topLevel = true): string {
+    if (Array.isArray(type)) {
+        const types = type.map(subType => childTypesToString(subType, false)).join('|');
+        return topLevel || type.length === 1 ? types : '(' + types + ')';
+    } else {
+        return childTypeToString(type)
+    }
+}
+
 export function stringToChildTypes(value: OrArray<string>): ChildTypes {
     if (typeof value === 'string') {
         if (value.indexOf('|') < 0) {
