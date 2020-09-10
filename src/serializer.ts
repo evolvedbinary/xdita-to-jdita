@@ -1,6 +1,7 @@
 import { BaseNode, DocumentNode } from "./nodes";
 import { has } from "./utils";
-import { getNodeClassType, UnknownNodeError } from "./factory";
+import { getNodeClassType } from "./factory";
+import { UnknownNodeError } from "./classes";
 
 export interface SchemaNode {
   inline?: boolean;

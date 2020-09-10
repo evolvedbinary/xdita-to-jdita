@@ -1,7 +1,7 @@
 import * as saxes from "saxes";
 import { BaseNode, DocumentNode } from "./nodes";
 import { createNode } from "./factory";
-import { BasicValue } from "./classes";
+import { JDita } from "./classes";
 
 export async function xditaToJdita(xml: string, abortOnError = true): Promise<DocumentNode> {
   return new Promise((resolve, reject) => {
@@ -47,6 +47,6 @@ export async function xditaToJdita(xml: string, abortOnError = true): Promise<Do
   });
 }
 
-export async function xditaToJson(xml: string, abortOnError = true): Promise<Record<string, BasicValue>> {
+export async function xditaToJson(xml: string, abortOnError = true): Promise<JDita> {
   return xditaToJdita(xml, abortOnError).then(doc => doc.json);
 }

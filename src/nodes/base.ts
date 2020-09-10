@@ -1,6 +1,6 @@
 import { acceptsNodeName, isChildTypeRequired, stringToChildTypes, childTypesArray, isChildTypeSingle } from "../utils";
 import { SchemaNode } from "../serializer";
-import { ChildTypes, ChildType, OrArray, BasicValue, Attributes, NonAcceptedChildError, WrongAttributeTypeError, UnknownAttributeError } from "../classes";
+import { ChildTypes, ChildType, OrArray, BasicValue, Attributes, NonAcceptedChildError, WrongAttributeTypeError, UnknownAttributeError, JDita } from "../classes";
 
 export abstract class BaseNode {
     static nodeName = 'node';
@@ -42,7 +42,7 @@ export abstract class BaseNode {
         return this._children;
     }
 
-    get json(): Record<string, BasicValue> {
+    get json(): JDita {
         return {
             nodeName: this.static.nodeName,
             attributes: this._props,

@@ -1,5 +1,12 @@
 import { SaxesAttributeNS } from "saxes";
 
+export interface JDita {
+  nodeName: string;
+  attributes?: Record<string, BasicValue>;
+  content?: string;
+  children?: JDita[];
+}
+
 export type DefinedBasicValue = number | boolean | string | Array<BasicValue> | {} | {
   [key: string]: BasicValue;
   [key: number]: BasicValue;

@@ -1,6 +1,6 @@
 import { BaseNode, makeComponent } from "./base";
 import { isOrUndefined } from "../utils";
-import { BasicValue } from "../classes";
+import { BasicValue, JDita } from "../classes";
 
 export const TextFields = ['content'];
 export interface TextNode {
@@ -30,6 +30,12 @@ export function makeText<T extends { new(...args: any[]): BaseNode }>(constructo
 export class TextNode extends BaseNode {
   constructor(content: string) {
     super({ content });
+  }
+  get json(): JDita {
+    return {
+      nodeName: this.static.nodeName,
+      content: this._props['content'] as string,
+  };
   }
   get pmJson(): Record<string, BasicValue> {
     return {
