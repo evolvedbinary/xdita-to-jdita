@@ -1,6 +1,6 @@
 {
   "name": "jdita",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Converts LwDITA XDITA format into JSON (a.k.a JDITA)",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",

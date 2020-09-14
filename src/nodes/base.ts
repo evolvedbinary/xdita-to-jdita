@@ -6,7 +6,7 @@ export abstract class BaseNode {
     static inline?: boolean;
     static fields: Array<string>;
     static childTypes: ChildTypes[];
-    protected _children?: BaseNode[];
+    public children?: BaseNode[];
     protected _props!: Record<string, BasicValue>;
 
     constructor(attributes?: Attributes) {
@@ -36,7 +36,7 @@ export abstract class BaseNode {
         return {
             nodeName: this.static.nodeName,
             attributes: this._props,
-            children: this._children?.map(child => child.json),
+            children: this.children?.map(child => child.json),
         };
     }
     canAdd(child: BaseNode): boolean {
@@ -53,7 +53,7 @@ export abstract class BaseNode {
         if (!childType) {
             return false;
         }
-        const last = this._children?.length ? this._children[this._children.length - 1].static.nodeName : '';
+        const last = this.children?.length ? this.children[this.children.length - 1].static.nodeName : '';
         let iLast = -1;
         if (last) {
             iLast = this.static.childTypes.findIndex(type => acceptsNodeName(last, type));
@@ -74,8 +74,8 @@ export abstract class BaseNode {
         return true;
     }
         add(child: BaseNode, breakOnError = true): void {
-        if (!this._children) {
-            this._children = [];
+        if (!this.children) {
+            this.children = [];
         }
         if (!this.canAdd(child)) {
             if (breakOnError) {
@@ -83,7 +83,7 @@ export abstract class BaseNode {
             }
             return;
         }
-        this._children.push(child)
+        this.children.push(child)
     }
     readProp<T = BasicValue>(field: string): T {
         if (this.static.fields.indexOf(field) < 0) {
