@@ -1,10 +1,8 @@
 import { acceptsNodeName, isChildTypeRequired, stringToChildTypes, childTypesArray, isChildTypeSingle } from "../utils";
-import { SchemaNode } from "../serializer";
 import { ChildTypes, ChildType, OrArray, BasicValue, Attributes, NonAcceptedChildError, WrongAttributeTypeError, UnknownAttributeError, JDita } from "../classes";
 
 export abstract class BaseNode {
     static nodeName = 'node';
-    static domNodeName = '';
     static inline?: boolean;
     static fields: Array<string>;
     static childTypes: ChildTypes;
@@ -30,10 +28,6 @@ export abstract class BaseNode {
         return true;
     }
 
-    static get nodeType(): string {
-        return this.nodeName;
-    }
-
     public get static(): typeof BaseNode {
         return this.constructor as typeof BaseNode;
     }
@@ -48,38 +42,6 @@ export abstract class BaseNode {
             attributes: this._props,
             children: this._children?.map(child => child.json),
         };
-    }
-    get pmJson(): Record<string, BasicValue> {
-        return {
-            type: this.static.nodeType.replace(/-/g, '_'),
-            attrs: this._props,
-            content: this._children?.map(child => child.pmJson),
-        };
-    }
-    // schema
-    static get pmSchemaChildren(): string[] {
-        return [];
-        // return this.childGroups
-        // .map(group => nodeGroups[group.name])
-        // .reduce((array, group) => [...array, ...group], this.childTypes.map(({ name }) => name));
-    }
-    static pmSchema(next: (nodeName: string) => void): SchemaNode {
-        const children = this.pmSchemaChildren;
-        const result: SchemaNode = {
-            domNodeName: this.domNodeName || 'jdita-node-' + this.nodeName,
-            attrs: this.fields.reduce((attrs, field) => {
-                attrs[field] = { default: '' };
-                return attrs;
-            }, {} as Record<string, { default: string }>),
-        };
-        if (children.length) {
-            result.content = '(' + children.map(child => (child === 'text' ? 'text_node' : child.replace(/-/g, '_'))).join('|') + ')*';
-        }
-        if (this.inline) {
-            result.inline = true;
-        }
-        children.forEach(next);
-        return result;
     }
     canAdd(child: BaseNode): boolean {
         const childNodeName = child.static.nodeName;

@@ -35,12 +35,6 @@ export class TextNode extends BaseNode {
     return {
       nodeName: this.static.nodeName,
       content: this._props['content'] as string,
-  };
-  }
-  get pmJson(): Record<string, BasicValue> {
-    return {
-      type: 'text',
-      text: this.content,
     };
   }
 }

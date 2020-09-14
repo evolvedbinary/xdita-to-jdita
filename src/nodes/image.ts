@@ -38,23 +38,4 @@ export function makeImage<T extends Constructor>(constructor: T): T {
 }
 
 @makeComponent(makeImage, 'image', isValidImageField, ImageFields, ['alt?'])
-export class ImageNode extends BaseNode {
-  static domNodeName = 'img';
-  get pmJson(): Record<string, BasicValue> {
-    if (this.children
-      && this.children[0] instanceof AltNode
-      && this.children[0]?.children
-      && this.children[0].children[0] instanceof TextNode
-      ) {
-      const attrs = { ...this._props, alt: (this.children[0].children[0] as TextNode).content };
-      return {
-        type: this.static.nodeType.replace(/-/g, '_'),
-        attrs: attrs,
-      };
-    }
-    return super.pmJson;
-  }
-  static get pmSchemaChildren(): string[] {
-    return [];
-  }
-}
+export class ImageNode extends BaseNode {}

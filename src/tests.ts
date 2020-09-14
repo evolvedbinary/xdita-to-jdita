@@ -6,8 +6,6 @@ import { OrArray, UnknownAttributeError, NonAcceptedChildError, WrongAttributeTy
 export function doNodeTest(
   classType: typeof BaseNode,
   nodeName: string,
-  nodeType: string,
-  domNodeName: string,
   validator: (value?: {}) => boolean,
   fields: string[],
   children: OrArray<string> = [],
@@ -21,12 +19,6 @@ export function doNodeTest(
     });
     it('should have correct node name', () => {
       assert.equal(classType.nodeName, nodeName);
-    });
-    it('should have correct node type', () => {
-      assert.equal(classType.nodeType, nodeType);
-    });
-    it('should have correct HDita node name', () => {
-      assert.equal(classType.domNodeName, domNodeName);
     });
     it('should be a correct node', () => {
       const node = new (classType as unknown as Constructor)({});
