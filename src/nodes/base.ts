@@ -5,7 +5,7 @@ export abstract class BaseNode {
     static nodeName = 'node';
     static inline?: boolean;
     static fields: Array<string>;
-    static childTypes: ChildTypes;
+    static childTypes: ChildTypes[];
     protected _children?: BaseNode[];
     protected _props!: Record<string, BasicValue>;
 
@@ -32,10 +32,6 @@ export abstract class BaseNode {
         return this.constructor as typeof BaseNode;
     }
 
-    get children(): BaseNode[] | undefined {
-        return this._children;
-    }
-
     get json(): JDita {
         return {
             nodeName: this.static.nodeName,
@@ -45,10 +41,9 @@ export abstract class BaseNode {
     }
     canAdd(child: BaseNode): boolean {
         const childNodeName = child.static.nodeName;
-        const childTypes = childTypesArray(this.static.childTypes)
         let childType: ChildType | undefined;
         let iChild = -1;
-        childTypes.some((type, i) => {
+        this.static.childTypes.some((type, i) => {
             childType = acceptsNodeName(childNodeName, type);
             if (childType) {
                 iChild = i;
@@ -61,18 +56,18 @@ export abstract class BaseNode {
         const last = this._children?.length ? this._children[this._children.length - 1].static.nodeName : '';
         let iLast = -1;
         if (last) {
-            iLast = childTypes.findIndex(type => acceptsNodeName(last, type));
+            iLast = this.static.childTypes.findIndex(type => acceptsNodeName(last, type));
             if (iLast > iChild) {
                 return false;
             }
             if (iLast === iChild) {
-                if (isChildTypeSingle(childTypes[iChild])) {
+                if (isChildTypeSingle(this.static.childTypes[iChild])) {
                     return false;
                 }
                 return true;
             }
         }
-        const typesBetween = childTypes.slice(iLast + 1, iChild);
+        const typesBetween = this.static.childTypes.slice(iLast + 1, iChild);
         if (typesBetween.find(isChildTypeRequired)) {
             return false;
         }
@@ -89,9 +84,6 @@ export abstract class BaseNode {
             return;
         }
         this._children.push(child)
-    }
-    isNode(name: string): boolean {
-        return name === this.static.nodeName;
     }
     readProp<T = BasicValue>(field: string): T {
         if (this.static.fields.indexOf(field) < 0) {

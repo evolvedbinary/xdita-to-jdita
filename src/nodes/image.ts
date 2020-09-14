@@ -6,8 +6,6 @@ import { areFieldsValid } from "../utils";
 import { ClassNode, isClassNode, ClassFields, isValidClassField, makeClass } from "./class";
 import { BaseNode, makeComponent, makeAll, Constructor } from "./base";
 import { SizeFields, SizeNode, isSizeNode, isValidSizeField, makeSize } from "./size";
-import { AltNode } from "./alt";
-import { TextNode } from "./text";
 import { BasicValue } from "../classes";
 
 export const ImageFields = [...FiltersFields, ...LocalizationFields, ...VariableContentFields, ...ReferenceContentFields, ...ClassFields, ...SizeFields];

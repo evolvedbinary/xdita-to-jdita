@@ -6,7 +6,4 @@ export class DocumentNode extends BaseNode {
   static childTypes = stringToChildTypes(['topic']);
   static fields = [];
   static isValidField = (): boolean => true;
-  static get nodeType(): string {
-    return 'doc';
-  }
 }

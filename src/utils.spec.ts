@@ -1,74 +1,78 @@
 import { expect, assert } from 'chai';
 import { stringToChildTypes, splitTypenames, childTypesToString } from './utils';
-import { ChildType } from './classes';
+import { ChildTypes } from './classes';
+
+// TODO: add a test for getting child types from: (X+|Y*|Z*)
+// TODO: add a test for getting string from child type of group '%XYZ*' => (X|Y|Z)*
+// TODO: add tests to check required/single for strings
 
 describe('Childtype from string', () => {
   it('should return an empty ChildType', () => {
     assert.deepEqual([], stringToChildTypes(''));
   });
   it('[0..1] should return the correct ChildType', () => {
-    assert.deepEqual({
+    assert.deepEqual([{
       name: 'child',
       single: true,
       required: false,
       isGroup: false,
-    } as ChildType, stringToChildTypes('child?'));
+    }] as ChildTypes, stringToChildTypes('child?'));
   });
   it('[1..1] should return the correct ChildType', () => {
-    assert.deepEqual({
+    assert.deepEqual([{
       name: 'child',
       single: true,
       required: true,
       isGroup: false,
-    } as ChildType, stringToChildTypes('child'));
+    }] as ChildTypes, stringToChildTypes('child'));
   });
   it('[0..n] should return the correct ChildType', () => {
-    assert.deepEqual({
+    assert.deepEqual([{
       name: 'child',
       single: false,
       required: false,
       isGroup: false,
-    } as ChildType, stringToChildTypes('child*'));
+    }] as ChildTypes, stringToChildTypes('child*'));
   });
   it('[1..n] should return the correct ChildType', () => {
-    assert.deepEqual({
+    assert.deepEqual([{
       name: 'child',
       single: false,
       required: true,
       isGroup: false,
-    } as ChildType, stringToChildTypes('child+'));
+    }] as ChildTypes, stringToChildTypes('child+'));
   });
   it('[0..1] should return the correct ChildType (group)', () => {
-    assert.deepEqual({
+    assert.deepEqual([{
       name: 'child',
       single: true,
       required: false,
       isGroup: true,
-    } as ChildType, stringToChildTypes('%child?'));
+    }] as ChildTypes, stringToChildTypes('%child?'));
   });
   it('[1..1] should return the correct ChildType (group)', () => {
-    assert.deepEqual({
+    assert.deepEqual([{
       name: 'child',
       single: true,
       required: true,
       isGroup: true,
-    } as ChildType, stringToChildTypes('%child'));
+    }] as ChildTypes, stringToChildTypes('%child'));
   });
   it('[0..n] should return the correct ChildType (group)', () => {
-    assert.deepEqual({
+    assert.deepEqual([{
       name: 'child',
       single: false,
       required: false,
       isGroup: true,
-    } as ChildType, stringToChildTypes('%child*'));
+    }] as ChildTypes, stringToChildTypes('%child*'));
   });
   it('[1..n] should return the correct ChildType (group)', () => {
-    assert.deepEqual({
+    assert.deepEqual([{
       name: 'child',
       single: false,
       required: true,
       isGroup: true,
-    } as ChildType, stringToChildTypes('%child+'));
+    }] as ChildTypes, stringToChildTypes('%child+'));
   });
 });
 describe('String from Childtype', () => {
@@ -163,12 +167,12 @@ describe('Childtypes from strings', () => {
     assert.deepEqual(splitTypenames('(child1|child2)+'), ['child1+', 'child2+']);
   });
   it('should return the correct ChildTypes', () => {
-    assert.deepEqual(stringToChildTypes(['child1?', 'child2+']), [stringToChildTypes('child1?'), stringToChildTypes('child2+')]);
+    assert.deepEqual(stringToChildTypes(['child1?', 'child2+']), [stringToChildTypes('child1?', false), stringToChildTypes('child2+', false)]);
   });
   it('should return the ChildTypes with any order', () => {
-    assert.deepEqual(stringToChildTypes([['child1?', 'child2+']]), [[stringToChildTypes('child1?'), stringToChildTypes('child2+')]]);
+    assert.deepEqual(stringToChildTypes([['child1?', 'child2+']]), [[stringToChildTypes('child1?', false), stringToChildTypes('child2+', false)]]);
   });
   it('should return the ChildTypes with any order', () => {
-    assert.deepEqual(stringToChildTypes(['child1?|child2+']), [[stringToChildTypes('child1?'), stringToChildTypes('child2+')]]);
+    assert.deepEqual(stringToChildTypes(['child1?|child2+']), [[stringToChildTypes('child1?', false), stringToChildTypes('child2+', false)]]);
   });
 });

@@ -3,6 +3,8 @@ import { BaseNode, DocumentNode } from "./nodes";
 import { createNode } from "./factory";
 import { JDita } from "./classes";
 
+// TODO: add tests
+
 export async function xditaToJdita(xml: string, abortOnError = true): Promise<DocumentNode> {
   return new Promise((resolve, reject) => {
     const errors: Error[] = [];

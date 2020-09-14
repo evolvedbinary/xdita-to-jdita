@@ -4,12 +4,6 @@ import { ReuseNode, ReuseFields, isValidReuseField, makeReuse } from "./reuse";
 import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLocalization } from "./localization";
 import { areFieldsValid } from "../utils";
 import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
-import { MediaAutoplayNode } from "./media-autoplay";
-import { MediaControlsNode } from "./media-controls";
-import { MediaLoopNode } from "./media-loop";
-import { MediaMutedNode } from "./media-muted";
-import { MediaTrackNode } from "./media-track";
-import { MediaSourceNode } from "./media-source";
 import { BasicValue } from "../classes";
 
 export const AudioFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields];

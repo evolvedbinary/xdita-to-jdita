@@ -43,6 +43,8 @@ import { SubscriptNode } from "./nodes/subscript";
 import { SuperscriptNode } from "./nodes/superscript";
 import { UnknownNodeError, XMLNode } from "./classes";
 
+// TODO: add tests
+
 export function getNodeClass(name: string): Constructor {
   switch (name) {
     case 'alt': return AltNode;

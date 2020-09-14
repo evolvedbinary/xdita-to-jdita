@@ -5,13 +5,6 @@ import { LocalizationNode, LocalizationFields, isValidLocalizationField, makeLoc
 import { areFieldsValid } from "../utils";
 import { makeComponent, BaseNode, makeAll, Constructor } from "./base";
 import { SizeNode, SizeFields, isValidSizeField, makeSize } from "./size";
-import { VideoPosterNode } from "./video-poster";
-import { MediaAutoplayNode } from "./media-autoplay";
-import { MediaControlsNode } from "./media-controls";
-import { MediaLoopNode } from "./media-loop";
-import { MediaMutedNode } from "./media-muted";
-import { MediaTrackNode } from "./media-track";
-import { MediaSourceNode } from "./media-source";
 import { BasicValue } from "../classes";
 
 export const VideoFields = [...FiltersFields, ...LocalizationFields, ...ReuseFields, ...ClassFields, ...SizeFields];

@@ -3,6 +3,7 @@ import { BaseNode } from './base';
 import { stringToChildTypes } from '../utils';
 import { NonAcceptedChildError } from '../classes';
 
+// TODO: add tests for an unknown node
 
 describe('Base Node children (nodes)', () => {
   class ChildNode extends BaseNode {
@@ -11,6 +12,9 @@ describe('Base Node children (nodes)', () => {
   class Child2Node extends BaseNode {
     static nodeName = 'child2';
   }
+
+  // TODO: add tests for not throwing an exception on wrong children
+
   describe('Cardinality', () => {
     it('[0..1] should accept only one child', () => {
       class ParentNode extends BaseNode {
@@ -61,6 +65,9 @@ describe('Base Node children (nodes)', () => {
       }).to.not.throw();
     });
   });
+  // TODO: add order tests for groups
+  // TODO: add going back in order tests for nodes
+  // TODO: add going back in order tests for groups
   describe('Order', () => {
     it('[0..1] should skip first child', () => {
       class ParentNode extends BaseNode {

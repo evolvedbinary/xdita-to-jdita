@@ -54,7 +54,7 @@ export function childTypesToString(type: ChildTypes, topLevel = true): string {
     }
 }
 
-export function stringToChildTypes(value: OrArray<string>): ChildTypes {
+export function stringToChildTypes(value: OrArray<string>, topLevel = true): ChildTypes[] {
     if (typeof value === 'string') {
         if (value === '') {
             return [];
@@ -77,16 +77,16 @@ export function stringToChildTypes(value: OrArray<string>): ChildTypes {
                 result.name = result.name.substr(1);
                 result.isGroup = true;
             }
-            return result;
+            return topLevel && !Array.isArray(result) ? [ result ] : result as unknown as ChildTypes[];
         } else {
-            return stringToChildTypes(splitTypenames(value));
+            return stringToChildTypes(splitTypenames(value), false);
         }
     } else {
-        return value.map(stringToChildTypes).filter(type => !Array.isArray(type) || type.length > 0);
+        return value.map(subType => stringToChildTypes(subType, false)).filter(type => !Array.isArray(type) || type.length > 0);
     }
 }
 
-export function acceptsNodeName(value: string, childType: string | ChildTypes): ChildType | undefined {
+export function acceptsNodeName(value: string, childType: ChildTypes): ChildType | undefined {
     if (Array.isArray(childType)) {
         let result: ChildType | undefined;
         childType.some(type => {
@@ -97,9 +97,6 @@ export function acceptsNodeName(value: string, childType: string | ChildTypes): 
         });
         return result;
     } else {
-        if (typeof childType === 'string') {
-            return acceptsNodeName(value, stringToChildTypes(childType));
-        }
         return !childType.isGroup
             ? (childType.name === value ? childType : undefined)
             : (has(nodeGroups[childType.name], value) ? childType : undefined);
@@ -122,6 +119,7 @@ export function isChildTypeSingle(childType: string | ChildType | ChildTypes): b
     }
 }
 export function isChildTypeRequired(childType: string | ChildType | ChildTypes): boolean {
+    console.log(childType);
     if (Array.isArray(childType)) {
         let result = true;
         childType.some(type => {
