@@ -34,24 +34,33 @@ export function splitTypenames(value: string): string[] {
         : value.slice(1, -1).split('|');
 }
 
-function childTypeToString(type: ChildType): string {
+function childTypeToString(type: ChildType, getNodeName?: (nodeName: string) => string): string {
     return (type.isGroup
         ? nodeGroups[type.name].length === 1
-            ? nodeGroups[type.name].join('|')
-            : '(' + nodeGroups[type.name].join('|') + ')'
-        : type.name
+            ? (getNodeName
+                ? nodeGroups[type.name].map(getNodeName)
+                : nodeGroups[type.name]
+            ).join('|')
+            : '(' + (getNodeName
+                ? nodeGroups[type.name].map(getNodeName)
+                : nodeGroups[type.name]
+            ).join('|') + ')'
+        : getNodeName ? getNodeName(type.name) : type.name
     ) + (type.single
         ? type.required ? '' : '?'
         : type.required ? '+' : '*');
 }
 
-export function childTypesToString(type: ChildTypes, topLevel = true): string {
+export function customChildTypesToString(type: ChildTypes, getNodeName?: (nodeName: string) => string, topLevel = true): string {
     if (Array.isArray(type)) {
-        const types = type.map(subType => childTypesToString(subType, false)).join('|');
+        const types = type.map(subType => customChildTypesToString(subType, getNodeName, false)).join('|');
         return topLevel || type.length === 1 ? types : '(' + types + ')';
     } else {
-        return childTypeToString(type)
+        return childTypeToString(type, getNodeName)
     }
+}
+export function childTypesToString(type: ChildTypes, topLevel = true): string {
+    return customChildTypesToString(type, undefined, topLevel);
 }
 
 export function stringToChildTypes(value: OrArray<string>, topLevel = true): ChildTypes[] {

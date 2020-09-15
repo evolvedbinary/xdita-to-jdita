@@ -1,5 +1,5 @@
 import { expect, assert } from 'chai';
-import { stringToChildTypes, splitTypenames, childTypesToString } from './utils';
+import { stringToChildTypes, splitTypenames, childTypesToString, customChildTypesToString } from './utils';
 import { ChildTypes } from './classes';
 
 // TODO: add a test for getting child types from: (X+|Y*|Z*)
@@ -157,6 +157,22 @@ describe('String from Childtype', () => {
   });
   it('should return the correct string (empty)', () => {
     assert.equal(childTypesToString(stringToChildTypes('')), '');
+  });
+});
+// TODO: add other cardinalities tests
+describe('Custom string from Childtype', () => {
+  it('[0..1] should return the correct custom string', () => {
+    assert.equal(customChildTypesToString([{
+      name: 'child1',
+      single: true,
+      required: false,
+      isGroup: false,
+    }, {
+      name: 'child2',
+      single: true,
+      required: false,
+      isGroup: false,
+    }], x => x === 'child1' ? 'text' : 'p'), 'text?|p?');
   });
 });
 describe('Childtypes from strings', () => {
