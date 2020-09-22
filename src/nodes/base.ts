@@ -1,4 +1,4 @@
-import { acceptsNodeName, isChildTypeRequired, stringToChildTypes, childTypesArray, isChildTypeSingle } from "../utils";
+import { acceptsNodeName, isChildTypeRequired, stringToChildTypes, isChildTypeSingle } from "../utils";
 import { ChildTypes, ChildType, OrArray, BasicValue, Attributes, NonAcceptedChildError, WrongAttributeTypeError, UnknownAttributeError, JDita } from "../classes";
 
 export abstract class BaseNode {
@@ -6,7 +6,7 @@ export abstract class BaseNode {
     static inline?: boolean;
     static fields: Array<string>;
     static childTypes: ChildTypes[];
-    public children?: BaseNode[];
+    public _children?: BaseNode[];
     protected _props!: Record<string, BasicValue>;
 
     constructor(attributes?: Attributes) {
@@ -32,11 +32,15 @@ export abstract class BaseNode {
         return this.constructor as typeof BaseNode;
     }
 
+    get children(): BaseNode[] {
+        return this._children || [];
+    }
+
     get json(): JDita {
         return {
             nodeName: this.static.nodeName,
             attributes: this._props,
-            children: this.children?.map(child => child.json),
+            children: this._children?.map(child => child.json),
         };
     }
     canAdd(child: BaseNode): boolean {
@@ -74,8 +78,8 @@ export abstract class BaseNode {
         return true;
     }
         add(child: BaseNode, breakOnError = true): void {
-        if (!this.children) {
-            this.children = [];
+        if (!this._children) {
+            this._children = [];
         }
         if (!this.canAdd(child)) {
             if (breakOnError) {
@@ -83,7 +87,7 @@ export abstract class BaseNode {
             }
             return;
         }
-        this.children.push(child)
+        this._children.push(child)
     }
     readProp<T = BasicValue>(field: string): T {
         if (this.static.fields.indexOf(field) < 0) {

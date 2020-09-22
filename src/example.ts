@@ -1,4 +1,5 @@
 import { xditaToJson, xditaToJdita } from "./converter";
+import { BaseNode, TextNode, TopicNode } from "./nodes";
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic PUBLIC "-//OASIS//DTD LIGHTWEIGHT DITA Topic//EN" "lw-topic.dtd">
@@ -63,9 +64,11 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>
   </body>
 </topic>
 `
-// xditaToJdita(xml)
-//   .then(result => console.log(JSON.stringify(result.pmJson)))
-//   .catch(e => console.log('Failed to convert:', e));
-// xditaToJson(xml)
-//   .then(result => console.log(JSON.stringify(result, null, 2)))
-//   .catch(e => console.log('Failed to convert:', e));
+xditaToJdita(xml)
+  .then(result => {
+    (result.children[0] as TopicNode).id = 'new-topic-id';
+    (result.children[0] as TopicNode).dir = 'ltr';
+    (result.children[0].children[0].children[0] as TextNode).content = 'New document title';
+    console.log(JSON.stringify(result.json, null, 2));
+  })
+  .catch(e => console.log('Failed to convert:', e));

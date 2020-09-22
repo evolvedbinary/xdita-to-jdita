@@ -4,7 +4,7 @@ import { BasicValue, JDita } from "../classes";
 
 export const TextFields = ['content'];
 export interface TextNode {
-  readonly 'content'?: string;
+  'content'?: string;
 }
 export const isTextNode = (value?: BasicValue): value is TextNode => typeof value === 'object' && 'content' in value && typeof value.content === 'string';
 
