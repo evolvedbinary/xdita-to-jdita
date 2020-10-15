@@ -7,9 +7,9 @@ os:
   - linux
   - osx
 
-after_script: yarn coverage
-
-after_success: yarn coveralls
+after_success:
+  - yarn coverage
+  - yarn coveralls
 
 cache:
   yarn: true
