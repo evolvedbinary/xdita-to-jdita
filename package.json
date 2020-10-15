@@ -1,19 +1,22 @@
 {
-  "name": "xdita-to-jdita",
-  "version": "0.0.1",
+  "name": "jdita",
+  "version": "0.2.4",
   "description": "Converts LwDITA XDITA format into JSON (a.k.a JDITA)",
-  "main": "build/xdita-to-jdita.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
     "start:dev": "nodemon",
-    "build": "rimraf ./build && tsc",
-    "start": "npm run build && node build/xdita-to-jdita.js",
-    "test": "mocha"
+    "build": "rimraf ./lib && tsc",
+    "start": "ts-node ./src/example.ts",
+    "test": "mocha",
+    "test:watch": "mocha -w",
+    "coverage": "rimraf coverage && nyc yarn mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evolvedbinary/xdita-to-jdita.git"
+    "url": "git+https://github.com/ccheraa/jdita.git"
   },
   "keywords": [
     "LwDITA",
@@ -24,17 +27,18 @@
   "author": "Evolved Binary",
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/evolvedbinary/xdita-to-jdita/issues"
+    "url": "https://github.com/ccheraa/jdita/issues"
   },
-  "homepage": "https://github.com/evolvedbinary/xdita-to-jdita#readme",
+  "homepage": "https://github.com/ccheraa/jdita#readme",
   "directories": {
     "src": "./src",
     "test": "./test"
   },
+  "files": [
+    "lib"
+  ],
   "dependencies": {
-    "@taoqf/javascript-state-machine": "^3.1.4",
-    "saxes": "^5.0.1",
-    "ts-javascript-state-machine": "^3.1.3"
+    "saxes": "^5.0.1"
   },
   "devDependencies": {
     "@types/chai": "^4.2.11",
@@ -43,10 +47,11 @@
     "@typescript-eslint/parser": "^2.30.0",
     "chai": "^4.2.0",
     "eslint": "^6.8.0",
-    "mocha": "^7.1.2",
+    "mocha": "^8.1.3",
     "nodemon": "^2.0.3",
+    "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
-    "ts-node": "^8.9.1",
+    "ts-node": "^8.10.2",
     "typescript": "^4.0.3"
   }
 }
